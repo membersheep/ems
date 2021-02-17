@@ -208,21 +208,23 @@ public TrackCircle getTrack(String id) {
   return track;
 }
 
- public void addTrack(TrackCircle track) {  
-        int i;
-        println("added 1");
-        if (tracks.length == 0) {
-          return;
-        }
-        for(i = 0; i < tracks.length - 1; i++) {
-          println("added 1");
-            if(tracks[i].mId == track.mId)
-                break;
-        }
-        println("added 2");
-        for(int k = i; k < tracks.length-1; k++) {
-            tracks[k+1] = tracks[k];
-            tracks[i] = track;
-        }
-        System.out.println(Arrays.toString(tracks));  
-    }
+public void addTrack(TrackCircle track) {  
+  int i;
+  println("added 1");
+  if (tracks.length == 0) {
+    println("added 1b");
+    return;
+  }
+  println("added 1c");
+  for(i = 0; i < tracks.length - 1; i++) {
+    println("added 1d");
+      if(tracks[i].mId == track.mId)
+          break;
+  }
+  println("added 2");
+  for(int k = i; k < tracks.length-1; k++) {
+      tracks[k+1] = tracks[k];
+      tracks[i] = track;
+  }
+  System.out.println(Arrays.toString(tracks));  
+}
