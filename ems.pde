@@ -5,8 +5,8 @@ import java.awt.*;
 
 OscP5 oscP5;
 NetAddress myRemoteLocation;
-
-HashMap circles;
+TrackCircle[] tracks;
+float size = 512;
 
 class Marker {
   private String mType;
@@ -29,14 +29,14 @@ class Marker {
   }
 }
 
-class CircleSequencer {
+class TrackCircle {
+  public String mId;
+  public int mLength;
   private float mX;
   private float mY;
   private float mRadius;
   private color mColor;
-  
   private float mPlayAngle;
-  
   private HashMap mMarkers;
   
   public Collection getMarkers() {
@@ -77,7 +77,9 @@ class CircleSequencer {
     Marker m = (Marker) mMarkers.get(inId);
     m.setAngle(inAngle);
   }
-  public CircleSequencer(float inRadius, float inX, float inY, color inColor) {
+  public TrackCircle(String id, int trackLength, float inRadius, float inX, float inY, color inColor) {
+    mId = id;
+    mLength = trackLength;
     mX = inX;
     mY = inY;
     mRadius = inRadius;
@@ -87,29 +89,11 @@ class CircleSequencer {
   }
 }
 
-class CircleSequencerDraw {
-  private CircleSequencer mCircleSequencer;
-  public CircleSequencerDraw(CircleSequencer inCs) {
-    mCircleSequencer = inCs;
-  }
-  public float getX() {
-    return mCircleSequencer.getX() * 2;
-  }
-  public float getY() {
-    return mCircleSequencer.getY() * 2;
-  }
-  public float getRadius() {
-    return mCircleSequencer.getRadius() * 2;
-  }
-}
-
 void setup() {
-  size(450, 250);
+  size(500, 500);
   frameRate(25);
-  /* start oscP5, listening for incoming messages at port 12000 */
-  oscP5 = new OscP5(this,9191);
-  
-  circles = new HashMap();
+  oscP5 = new OscP5(this,5000);  
+  tracks = new TrackCircle[8];
 }
 
 int getColorFromMarkerType(Marker m) {
@@ -127,87 +111,118 @@ int getColorFromMarkerType(Marker m) {
 }
 
 void draw() {
-  
   background(0);
   ellipseMode(CENTER);
   noFill();
-  Collection cs = circles.values();
+  Collection<TrackCircle> cs = Arrays.asList(tracks); 
   for (Iterator i = cs.iterator(); i.hasNext();) {  
-    CircleSequencer c = (CircleSequencer) i.next();
-    CircleSequencerDraw cd = new CircleSequencerDraw(c);
-    stroke(c.getColor());
-    ellipse(cd.getX(), cd.getY(), cd.getRadius() * 2, cd.getRadius() * 2);
+    TrackCircle track = (TrackCircle) i.next();
+    if (track != null) {
+      stroke(track.getColor());
+      ellipse(track.getX(), track.getY(), track.getRadius() * 2, track.getRadius() * 2);
+    }
   }
   noStroke();
   for (Iterator i = cs.iterator(); i.hasNext();) {
-    CircleSequencer c = (CircleSequencer) i.next();
-    CircleSequencerDraw cd = new CircleSequencerDraw(c);
-    Collection ms = c.getMarkers();
+    TrackCircle track = (TrackCircle) i.next();
+    if (track != null) {
+      Collection ms = track.getMarkers();
     for (Iterator j = ms.iterator(); j.hasNext();) {
       Marker m = (Marker) j.next();
       fill(getColorFromMarkerType(m));      
-      ellipse(cd.getX() + cd.getRadius() * cos(m.getAngle()), cd.getY() + cd.getRadius() * sin(m.getAngle()), 10, 10);
+      ellipse(track.getX() +track.getRadius() * cos(m.getAngle()), track.getY() + track.getRadius() * sin(m.getAngle()), 10, 10);
     }
     fill(0xFFFFFFFF);
-    ellipse(cd.getX() + cd.getRadius() * cos(c.getPlayAngle()), cd.getY() + cd.getRadius() * sin(c.getPlayAngle()), 4, 4);
+    ellipse(track.getX() + track.getRadius() * cos(track.getPlayAngle()), track.getY() + track.getRadius() * sin(track.getPlayAngle()), 16, 16);
+    }
   }
-
-
 }
 
 /* incoming osc message are forwarded to the oscEvent method. */
-void oscEvent(OscMessage theOscMessage) { //<>//
+void oscEvent(OscMessage message) { //<>//
   /* print the address pattern and the typetag of the received OscMessage */
-  // print("### received an osc message.");
-  // print(" addrpattern: "+theOscMessage.addrPattern());
-  // println(" typetag: "+theOscMessage.typetag());
-  
-  String addrpattern = theOscMessage.addrPattern();
-  if (addrpattern.equals("/circlesequencer/circle/create")) {
-    println("adding circle");
-    String circleId = theOscMessage.get(0).stringValue();
-    float radius = theOscMessage.get(1).floatValue();
-    float x = theOscMessage.get(2).floatValue();
-    float y = theOscMessage.get(3).floatValue();
-    CircleSequencer c = new CircleSequencer(radius, x, y, color(0xFF0000FF));
-    circles.put(circleId, c);
-    println("added circle");
-  } else if (addrpattern.equals("/circlesequencer/circle/update")) {
-    println("updating circle");
-    String circleId = theOscMessage.get(0).stringValue();
-    CircleSequencer c = (CircleSequencer) circles.get(circleId);
-    float radius = theOscMessage.get(1).floatValue();
-    float x = theOscMessage.get(2).floatValue();
-    float y = theOscMessage.get(3).floatValue();
-    if (c != null) {
-      c.setRadius(radius);
-      c.setX(x);
-      c.setY(y);
+  print("### received an osc message.");
+  print(" addrpattern: " + message.addrPattern());
+  println(" typetag: " + message.typetag());
+  String addrpattern = message.addrPattern();
+  if (addrpattern.equals("/track/create")) {
+    println("adding track");
+    String trackId = message.get(0).stringValue();
+    int trackLength = message.get(1).intValue();
+    float radius = size/9;
+    float x = size/2;
+    float y = size/2;
+    TrackCircle track = new TrackCircle(trackId, trackLength,radius, x, y, color(0xFF0000FF));
+    addTrack(track);
+    println("added track");
+  } else if (addrpattern.equals("/track/update")) {
+    println("updating track");
+    String trackId = message.get(0).stringValue();
+    TrackCircle track = getTrack(trackId);
+    float trackLength = message.get(1).floatValue(); // calculate radius from track length
+    float radius = message.get(1).floatValue(); // calculate radius from track length
+    float x = 250;
+    float y = 250;
+    if (track != null) {
+      track.setRadius(radius);
+      track.setX(x);
+      track.setY(y);
     }
     println("updated circle");
-  } else if (addrpattern.equals("/circlesequencer/marker/create")) {
-    String circleId = theOscMessage.get(0).stringValue();
-    CircleSequencer c = (CircleSequencer) circles.get(circleId);
-    if (c != null) {
-      String markerId = theOscMessage.get(1).stringValue();
-      float angle = theOscMessage.get(2).floatValue();
-      String type = theOscMessage.get(3).stringValue();
-      c.addMarker(markerId, angle, type);
+  } else if (addrpattern.equals("/tracksequencer/marker/create")) {
+    String trackId = message.get(0).stringValue();
+    TrackCircle track = getTrack(trackId);
+    if (track != null) {
+      String markerId = message.get(1).stringValue();
+      float angle = message.get(2).floatValue();
+      String type = message.get(3).stringValue();
+      track.addMarker(markerId, angle, type);
     }
-  } else if (addrpattern.equals("/circlesequencer/marker/update")) {
-    String circleId = theOscMessage.get(0).stringValue();
-    CircleSequencer c = (CircleSequencer) circles.get(circleId);
-    if (c != null) {
-      String markerId = theOscMessage.get(1).stringValue();
-      float angle = theOscMessage.get(2).floatValue();
-      c.updateMarker(markerId, angle);
+  } else if (addrpattern.equals("/tracksequencer/marker/update")) {
+    String trackId = message.get(0).stringValue();
+    TrackCircle track = getTrack(trackId);
+    if (track != null) {
+      String markerId = message.get(1).stringValue();
+      float angle = message.get(2).floatValue();
+      track.updateMarker(markerId, angle);
     }
-  } else if (addrpattern.equals("/circlesequencer/circle/playangle")) {
-    String circleId = theOscMessage.get(0).stringValue();
-    CircleSequencer c = (CircleSequencer) circles.get(circleId);
-    if (c != null) {
-      float angle = theOscMessage.get(1).floatValue();
-      c.setPlayAngle(angle);
+  } else if (addrpattern.equals("/tracksequencer/circle/playangle")) {
+    String trackId = message.get(0).stringValue();
+    TrackCircle track = getTrack(trackId);
+    if (track != null) {
+      float angle = message.get(1).floatValue();
+      track.setPlayAngle(angle);
     }
   }
 }
+
+public TrackCircle getTrack(String id) {
+  int i;
+  TrackCircle track = tracks[0];
+  for(i = 0; i < tracks.length-1; i++) {
+    if(tracks[i].mId == id) {
+      track = tracks[i];
+      break;
+    }
+  }
+  return track;
+}
+
+ public void addTrack(TrackCircle track) {  
+        int i;
+        println("added 1");
+        if (tracks.length == 0) {
+          return;
+        }
+        for(i = 0; i < tracks.length - 1; i++) {
+          println("added 1");
+            if(tracks[i].mId == track.mId)
+                break;
+        }
+        println("added 2");
+        for(int k = i; k < tracks.length-1; k++) {
+            tracks[k+1] = tracks[k];
+            tracks[i] = track;
+        }
+        System.out.println(Arrays.toString(tracks));  
+    }
