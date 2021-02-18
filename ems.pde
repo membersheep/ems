@@ -30,8 +30,8 @@ class Marker {
 }
 
 class TrackCircle {
-  public String mId;
-  public int mLength;
+  private String mId;
+  private int mLength;
   private float mX;
   private float mY;
   private float mRadius;
@@ -41,6 +41,14 @@ class TrackCircle {
   
   public Collection getMarkers() {
     return mMarkers.values();
+  }
+  
+  public String getId() {
+    return mId;
+  }
+  
+  public int getLength() {
+    return mLength;
   }
   
   public float getX() {
