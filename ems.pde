@@ -7,6 +7,7 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 TrackCircle[] tracks;
 float size = 512;
+int tick = 0;
 
 class Marker {
   private String mType;
@@ -135,6 +136,11 @@ void oscEvent(OscMessage message) { //<>//
     track.stepsCount = beatsCount;
     //track.tick = tick;
     println("updated circle");
+  } else if (addrpattern.equals("/tick")) {
+    println("updating tick");
+    int newTick = message.get(0).intValue();
+    tick = newTick;
+    println("updated tick");
   }
 }
 
