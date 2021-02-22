@@ -60,7 +60,8 @@ live_loop :midi_reader do
       osc "/steps", get[:current_track].to_s, scaledValue
     when 2
       length = get[:track1_length]
-      set :track1_beats, [length, value].min
+      scaledValue = length/128*value
+      set :track1_beats, [length, scaledValue].min
       osc "/beats", get[:current_track].to_s, scaledValue
     when 3
       beats = get[:track1_beats]

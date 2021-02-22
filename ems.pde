@@ -7,6 +7,7 @@ OscP5 oscP5;
 NetAddress myRemoteLocation;
 Map<String, Track> tracks = new HashMap<String, Track>();
 LinkedList<Map.Entry<String, Track>> sortedTracks;
+String currentTrackId = "1";
 float size = 512;
 int tick = 0;
 
@@ -73,6 +74,7 @@ void setup() {
 
 void draw() {
   background(0);
+  text(currentTrackId,20,20);
   ellipseMode(CENTER);
   noFill();
   Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
@@ -105,6 +107,7 @@ void oscEvent(OscMessage message) { //<>//
     println("updated beats");
   } else if (addrpattern.equals("/current")) {
     String trackId = message.get(0).stringValue();
+    currentTrackId = trackId;
     println("current track", trackId);
   } else if (addrpattern.equals("/tick")) {
     int newTick = message.get(0).intValue();
