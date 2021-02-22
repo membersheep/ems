@@ -103,6 +103,9 @@ void oscEvent(OscMessage message) { //<>//
     int beatsCount = message.get(1).intValue();
     track.beatsCount = beatsCount;
     println("updated beats");
+  } else if (addrpattern.equals("/current")) {
+    String trackId = message.get(0).stringValue();
+    println("current track", trackId);
   } else if (addrpattern.equals("/tick")) {
     int newTick = message.get(0).intValue();
     tick = newTick;

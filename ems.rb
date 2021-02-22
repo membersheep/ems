@@ -42,8 +42,6 @@ set :track1_max_velocity, 110 # 0-127
 set :track1_velocity_rate, 100 # 0-127
 
 use_osc '127.0.0.1', 5000
-osc "/track/create", "1", 16
-
 
 live_loop :midi_reader do
   use_real_time
@@ -51,6 +49,7 @@ live_loop :midi_reader do
   currentTrackIndex = sync "/midi:lpd8:1/program_change"
   if currentTrackIndex != nil
     set :current_track, currentTrackIndex
+    osc "/current", currentTrackIndex.to_s
   end
   if index != nil
     case index
@@ -58,9 +57,11 @@ live_loop :midi_reader do
       maxSteps = get[:max_steps]
       scaledValue = maxSteps/128*value
       set :track1_length, scaledValue
+      osc "/steps", get[:current_track].to_s, scaledValue
     when 2
       length = get[:track1_length]
       set :track1_beats, [length, value].min
+      osc "/beats", get[:current_track].to_s, scaledValue
     when 3
       beats = get[:track1_beats]
       set :track1_accent_beats, [beats, value].min
@@ -83,6 +84,7 @@ live_loop :sequencer do
   division = get[:beat_division]
   division.times do
     tick
+    osc "/tick", look
     sleepTime = 1.0/division
     sample :drum_cymbal_closed # test clock
     track1Gate = (spread get[:track1_beats],get[:track1_length] ).look offset: -get[:track1_offset]
