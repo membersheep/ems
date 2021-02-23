@@ -1,5 +1,5 @@
 # EMS - Euclidean Multitrack Sequencer
-# v0.1 - 2021-02-16
+# v0.1 - 2021-02-23
 # SonicPi v3.3.1 on Mac
 # by membersheep
 #
@@ -26,6 +26,7 @@
 
 set :bpm, 120
 set :accent_velocity, 127
+set :normal_velocity, 100
 set :beat_division, 4 # steps per beat
 set :max_steps, 64 # max steps sequence length
 set :track1_note, :c0
@@ -33,7 +34,7 @@ set :track1_note, :c0
 set :current_track, 0 # 0 - 7
 set :track1_length, 16 # 0 - 127
 set :track1_beats, 4 # 0 - length
-set :track1_offset, 0 # 0 - 127
+set :track1_rotate, 0 # 0 - 127
 set :track1_accent_beats, 1 # 0 - beats
 set :track1_accent_tick, 0
 set :track1_rate, 1 # 1-8
@@ -42,7 +43,28 @@ set :track1_max_velocity, 110 # 0-127
 set :track1_velocity_rate, 100 # 0-127
 
 use_osc '127.0.0.1', 5000
-osc "/test", (spread 4,8).to_s
+
+define :computeSequence do |id|
+  case id
+  when "1"
+    steps = (spread get[:track1_beats], get[:track1_length], rotate: get[:track1_rotate]).to_a
+    accents = (spread get[:track1_accent_beats], get[:track1_beats], rotate: get[:track1_rotate]).to_a
+    beatIndex = 0
+    velocities = steps.map { |beat|
+      if beat
+        if accents[beatIndex]
+          beatIndex = beatIndex + 1
+          get[:accent_velocity]
+        else
+          get[:normal_velocity]
+        end
+      else
+        0
+      end
+    }
+    return velocities
+  end
+end
 
 live_loop :midi_reader do
   use_real_time
@@ -58,25 +80,27 @@ live_loop :midi_reader do
       maxSteps = get[:max_steps]
       scaledValue = maxSteps/128*value
       set :track1_length, scaledValue
-      osc "/steps", get[:current_track].to_s, scaledValue
     when 2
       length = get[:track1_length]
       scaledValue = length/128*value
       set :track1_beats, [length, scaledValue].min
-      osc "/beats", get[:current_track].to_s, scaledValue
     when 3
       beats = get[:track1_beats]
-      set :track1_accent_beats, [beats, value].min
+      set :track1_rotate, [beats, value].min
     when 4
-      set :track1_rate, value
+      beats = get[:track1_beats]
+      set :track1_accent_beats, [beats, value].min
     when 5
-      set :track1_min_velocity, value
+      set :track1_rate, value
     when 6
-      set :track1_max_velocity, value
+      set :track1_min_velocity, value
     when 7
+      set :track1_max_velocity, value
+    when 8
       set :track1_velocity_rate, value
     end
   end
+  osc "/track/update", "1", (computeSequence "1").to_s
 end
 
 live_loop :sequencer do
@@ -89,7 +113,7 @@ live_loop :sequencer do
     osc "/tick", look
     sleepTime = 1.0/division
     sample :drum_cymbal_closed # test clock
-    track1Gate = (spread get[:track1_beats],get[:track1_length] ).look offset: -get[:track1_offset]
+    track1Gate = (spread get[:track1_beats],get[:track1_length], rotate: get[:track1_rotate]).look
     if track1Gate
       accent = (spread get[:track1_accent_beats],get[:track1_beats]).tick(:track1_accent_tick)
       velocity = accent ? get[:accent_velocity] : 100
