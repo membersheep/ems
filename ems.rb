@@ -42,6 +42,7 @@ set :track1_max_velocity, 110 # 0-127
 set :track1_velocity_rate, 100 # 0-127
 
 use_osc '127.0.0.1', 5000
+osc "/test", (spread 4,8).to_s
 
 live_loop :midi_reader do
   use_real_time

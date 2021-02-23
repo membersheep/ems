@@ -100,6 +100,11 @@ void oscEvent(OscMessage message) { //<>//
   } else if (addrpattern.equals("/tick")) {
     int newTick = message.get(0).intValue();
     tick = newTick;
+  } else if (addrpattern.equals("/track")) {
+    String ring = message.get(0).stringValue();
+      println(ring);
+    boolean[] steps = getSteps(ring, "(ring ", ")");
+      println(steps);
   }
 }
 
@@ -112,4 +117,15 @@ public void sortTracks() {
       }
   });
   sortedTracks = list;
+}
+
+public static boolean[] getSteps(String s, String prefix, String suffix) {
+  if (s != null && prefix != null && s.startsWith(prefix) && suffix != null && s.endsWith(suffix)) {
+    s = s.substring(prefix.length(), s.length() - suffix.length());
+  }
+  String[] parts = s.split(", ");
+  boolean[] array = new boolean[parts.length];
+  for (int i = 0; i < parts.length; i++)
+    array[i] = Boolean.parseBoolean(parts[i]);
+  return array;
 }
