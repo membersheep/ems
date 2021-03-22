@@ -37,7 +37,7 @@ void setup() {
   tracks.put("3", new Track("3", steps, Color.YELLOW.getRGB()));
   tracks.put("4", new Track("4", steps, Color.BLUE.getRGB()));
   tracks.put("5", new Track("5", steps, Color.GREEN.getRGB()));
-  tracks.put("6", new Track("6", steps, Color.WHITE.getRGB()));
+  tracks.put("6", new Track("6", steps, Color.PURPLE.getRGB()));
   tracks.put("7", new Track("7", steps, Color.CYAN.getRGB()));
   tracks.put("8", new Track("8", steps, Color.GRAY.getRGB()));
   sortedTracks = new LinkedList<Map.Entry<String, Track>>(tracks.entrySet());
@@ -57,16 +57,23 @@ void draw() {
     noFill();
     stroke(entry.getValue().trackColor);
     ellipse(size/2, size/2, radius, radius);
-    
-    float angle = TWO_PI / (float)entry.getValue().steps.length;
-    for(int i = 0; i < entry.getValue().steps.length; i++) {
+    int trackLength = entry.getValue().steps.length;
+    float angle = TWO_PI / (float)trackLength;
+    int currentStepIndex = tick % trackLength;
+    for(int i = 0; i < trackLength; i++) {
       int stepVelocity = entry.getValue().steps[i];
+      color stepColor;
+      if (i == currentStepIndex) {
+        stepColor = Color.WHITE.getRGB();
+      } else {
+        stepColor = entry.getValue().trackColor;
+      }
       if (stepVelocity == 0) {
         noFill();
-        stroke(entry.getValue().trackColor);
+        stroke(stepColor);
         stepVelocity = 100;
       } else {
-        fill(entry.getValue().trackColor);
+        fill(stepColor);
       }
       drawStep(radius/2 * sin(angle*i) + size/2, radius/2 * cos(angle*i) + size/2, stepVelocity);
     }
