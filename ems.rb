@@ -24,14 +24,16 @@
 # Send midi clock to external midi source https://gist.github.com/darinwilson/7cecd47f866357192aa715975a0e080e
 # Add osc connection to control visual effects
 
+## GENERAL PARAMETERS
 set :bpm, 120
 set :accent_velocity, 127
 set :normal_velocity, 100
 set :beat_division, 4 # steps per beat
 set :max_steps, 64 # max steps sequence length
-set :track1_note, :c0
-
 set :current_track, 0 # 0 - 7
+
+## TRACK PARAMETERS
+set :track1_note, :c0
 set :track1_length, 16 # 0 - 127
 set :track1_beats, 4 # 0 - length
 set :track1_rotate, 0 # 0 - 127
@@ -41,6 +43,18 @@ set :track1_rate, 1 # 1-8
 set :track1_min_velocity, 90 # 0-127
 set :track1_max_velocity, 110 # 0-127
 set :track1_velocity_rate, 100 # 0-127
+
+set :tracks_length, (ring 16, 16, 16, 16, 16, 16, 16, 16) # 0 - 127
+set :tracks_beats, (ring 4, 4, 4, 4, 4, 4, 4, 4) # 0 - length
+set :tracks_rotate, (ring 0, 0, 0, 0, 0, 0, 0, 0) # 0 - 127
+set :tracks_accent_beats, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 0 - beats
+set :tracks_accent_tick, (ring 0, 0, 0, 0, 0, 0, 0, 0)
+set :tracks_rate, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 1-8
+set :tracks_min_velocity, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
+set :tracks_max_velocity, (ring 127, 127, 127, 127, 127, 127, 127, 127) # 0-127
+set :tracks_velocity_rate, (ring 100, 100, 100, 100, 100, 100, 100, 100 # 0-127
+
+## SEQUENCE COMPTUTER
 
 use_osc '127.0.0.1', 5000
 
@@ -65,6 +79,8 @@ define :computeSequence do |id|
     return velocities
   end
 end
+
+## MIDI READER
 
 live_loop :midi_reader do
   use_real_time
@@ -102,6 +118,8 @@ live_loop :midi_reader do
   end
   osc "/track/update", "1", (computeSequence "1").to_s
 end
+
+## SEQUENCER
 
 live_loop :sequencer do
   #use_real_time
