@@ -52,32 +52,29 @@ set :tracks_accent_tick, (ring 0, 0, 0, 0, 0, 0, 0, 0)
 set :tracks_rate, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 1-8
 set :tracks_min_velocity, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
 set :tracks_max_velocity, (ring 127, 127, 127, 127, 127, 127, 127, 127) # 0-127
-set :tracks_velocity_rate, (ring 100, 100, 100, 100, 100, 100, 100, 100 # 0-127
+set :tracks_velocity_rate, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
 
 ## SEQUENCE COMPTUTER
 
 use_osc '127.0.0.1', 5000
 
 define :computeSequence do |id|
-  case id
-  when "1"
-    steps = (spread get[:track1_beats], get[:track1_length], rotate: get[:track1_rotate]).to_a
-    accents = (spread get[:track1_accent_beats], get[:track1_beats], rotate: get[:track1_rotate]).to_a
-    beatIndex = 0
-    velocities = steps.map { |beat|
-      if beat
-        if accents[beatIndex]
-          beatIndex = beatIndex + 1
-          get[:accent_velocity]
-        else
-          get[:normal_velocity]
-        end
+  steps = (spread get[:tracks_beats][id], get[:tracks_length][id], rotate: get[:tracks_rotate][id]).to_a
+  accents = (spread get[:track_accent_beats][id], get[:tracks_beats][id], rotate: get[:tracks_rotate][id]).to_a
+  beatIndex = 0
+  velocities = steps.map { |beat|
+    if beat
+      if accents[beatIndex]
+        beatIndex = beatIndex + 1
+        get[:accent_velocity]
       else
-        0
+        get[:normal_velocity]
       end
-    }
-    return velocities
-  end
+    else
+      0
+    end
+  }
+  return velocities
 end
 
 ## MIDI READER
@@ -91,6 +88,7 @@ live_loop :midi_reader do
     osc "/current", currentTrackIndex.to_s
   end
   if index != nil
+    currentTrackIndex = get[:current_track]
     case index
     when 1
       maxSteps = get[:max_steps]
@@ -116,7 +114,7 @@ live_loop :midi_reader do
       set :track1_velocity_rate, value
     end
   end
-  osc "/track/update", "1", (computeSequence "1").to_s
+  osc "/track/update", "1", (computeSequence currentIndex).to_s
 end
 
 ## SEQUENCER
