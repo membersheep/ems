@@ -122,7 +122,7 @@ live_loop :midi_reader do
       #set :track1_velocity_rate, value
     end
   end
-  osc "/track/update", "1", (computeSequence currentIndex).to_s
+  osc "/track/update", currentTrackIndex.to_s, (computeSequence currentIndex).to_s
 end
 
 ## SEQUENCER
