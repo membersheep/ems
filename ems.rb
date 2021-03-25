@@ -39,20 +39,19 @@ set :track1_beats, 4 # 0 - length
 set :track1_rotate, 0 # 0 - 127
 set :track1_accent_beats, 1 # 0 - beats
 set :track1_accent_tick, 0
-set :track1_rate, 1 # 1-8
-set :track1_min_velocity, 90 # 0-127
-set :track1_max_velocity, 110 # 0-127
-set :track1_velocity_rate, 100 # 0-127
 
+set :tracks_note, (ring :c2, :d2, :e2, :f2, :g2, :a2, :b2, :c3) # 0 - 127
 set :tracks_length, (ring 16, 16, 16, 16, 16, 16, 16, 16) # 0 - 127
 set :tracks_beats, (ring 4, 4, 4, 4, 4, 4, 4, 4) # 0 - length
 set :tracks_rotate, (ring 0, 0, 0, 0, 0, 0, 0, 0) # 0 - 127
 set :tracks_accent_beats, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 0 - beats
-set :tracks_accent_tick, (ring 0, 0, 0, 0, 0, 0, 0, 0)
-set :tracks_rate, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 1-8
-set :tracks_min_velocity, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
-set :tracks_max_velocity, (ring 127, 127, 127, 127, 127, 127, 127, 127) # 0-127
-set :tracks_velocity_rate, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
+set :tracks_accent_rotate, (ring 0, 0, 0, 0, 0, 0, 0, 0) # 0 - 127
+
+## ADDITIONAL PARAMETERS - Currently not used
+# set :tracks_rate, (ring 1, 1, 1, 1, 1, 1, 1, 1) # 1-8
+# set :tracks_min_velocity, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
+# set :tracks_max_velocity, (ring 127, 127, 127, 127, 127, 127, 127, 127) # 0-127
+# set :tracks_velocity_rate, (ring 100, 100, 100, 100, 100, 100, 100, 100) # 0-127
 
 ## SEQUENCE COMPTUTER
 
@@ -93,11 +92,15 @@ live_loop :midi_reader do
     when 1
       maxSteps = get[:max_steps]
       scaledValue = maxSteps/128*value
-      set :track1_length, scaledValue
+      tracksLength = get[:tracks_length]
+      newTracksLength = tracksLength.put(currentTrackIndex, scaledValue)
+      set :tracks_length, newTracksLength
     when 2
-      length = get[:track1_length]
+      length = get[:tracks_length][currentTrackIndex]
       scaledValue = length/128*value
-      set :track1_beats, [length, scaledValue].min
+      tracks = get[:tracks_beats]
+      newTracks = tracksLength.put(currentTrackIndex, [length, scaledValue].min)
+      set :tracks_beats, newTracks
     when 3
       beats = get[:track1_beats]
       set :track1_rotate, [beats, value].min
@@ -128,13 +131,16 @@ live_loop :sequencer do
     tick
     osc "/tick", look
     sleepTime = 1.0/division
-    sample :drum_cymbal_closed # test clock
-    track1Gate = (spread get[:track1_beats],get[:track1_length], rotate: get[:track1_rotate]).look
-    if track1Gate
-      accent = (spread get[:track1_accent_beats],get[:track1_beats]).tick(:track1_accent_tick)
-      velocity = accent ? get[:accent_velocity] : 100
-      # add code to apply velocity rate effects (random or lfo)
-      midi_note_on get[:track1_note], velocity
+    # test clock, to be removed
+    sample :perc_snap2
+    for i in 0..7
+      trackGate = (spread get[:tracks_beats][i],get[:tracks_length][i], rotate: get[:tracks_rotate][i]).look
+      if trackGate
+        accent = (spread get[:tracks_accent_beats][i],get[:tracks_beats][i]).look
+        velocity = accent ? get[:accent_velocity] : 100
+        # TODO: add code to apply velocity rate effects (random or lfo)
+        midi_note_on get[:tracks_note][i], velocity
+      end
     end
     sleep sleepTime
   end
