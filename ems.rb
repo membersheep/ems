@@ -38,7 +38,6 @@ set :track1_length, 16 # 0 - 127
 set :track1_beats, 4 # 0 - length
 set :track1_rotate, 0 # 0 - 127
 set :track1_accent_beats, 1 # 0 - beats
-set :track1_accent_tick, 0
 
 set :tracks_note, (ring :c2, :d2, :e2, :f2, :g2, :a2, :b2, :c3) # 0 - 127
 set :tracks_length, (ring 16, 16, 16, 16, 16, 16, 16, 16) # 0 - 127
@@ -96,25 +95,31 @@ live_loop :midi_reader do
       newTracksLength = tracksLength.put(currentTrackIndex, scaledValue)
       set :tracks_length, newTracksLength
     when 2
-      length = get[:tracks_length][currentTrackIndex]
-      scaledValue = length/128*value
-      tracks = get[:tracks_beats]
-      newTracks = tracksLength.put(currentTrackIndex, [length, scaledValue].min)
-      set :tracks_beats, newTracks
+      trackLength = get[:tracks_length][currentTrackIndex]
+      scaledValue = trackLength/128*value
+      tracksBeats = get[:tracks_beats]
+      newTracksBeats = tracksBeats.put(currentTrackIndex, [trackLength, scaledValue].min)
+      set :tracks_beats, newTracksBeats
     when 3
-      beats = get[:track1_beats]
-      set :track1_rotate, [beats, value].min
+      trackBeats = get[:tracks_beats][currentTrackIndex]
+      scaledValue = trackBeats/128*value
+      tracksRotate = get[:tracks_rotate]
+      newTracksRotate = tracksRotate.put(currentTrackIndex, [trackBeats, scaledValue].min)
+      set :tracks_rotate, newTracksRotate
     when 4
-      beats = get[:track1_beats]
-      set :track1_accent_beats, [beats, value].min
+      trackBeats = get[:tracks_beats][currentTrackIndex]
+      scaledValue = trackBeats/128*value
+      tracksAccents = get[:tracks_accent_beats]
+      newTracksAccents = tracksAccents.put(currentTrackIndex, [trackBeats, scaledValue].min)
+      set :tracks_accent_beats, newTracksAccents
     when 5
-      set :track1_rate, value
+      #set :track1_rate, value
     when 6
-      set :track1_min_velocity, value
+      #set :track1_min_velocity, value
     when 7
-      set :track1_max_velocity, value
+      #set :track1_max_velocity, value
     when 8
-      set :track1_velocity_rate, value
+      #set :track1_velocity_rate, value
     end
   end
   osc "/track/update", "1", (computeSequence currentIndex).to_s
