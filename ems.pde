@@ -1,10 +1,6 @@
-import oscP5.*;
-import netP5.*;
 import java.util.*;
 import java.awt.*;
 
-OscP5 oscP5;
-NetAddress myRemoteLocation;
 Map<String, Track> tracks = new HashMap<String, Track>();
 LinkedList<Map.Entry<String, Track>> sortedTracks;
 String currentTrackId = "1";
@@ -30,16 +26,11 @@ class Track {
 void setup() {
   size(512, 512);
   frameRate(25);
-  oscP5 = new OscP5(this,5000);  
   int[] steps = {127, 0, 100, 0, 110, 0, 100, 0};
   tracks.put("1", new Track("1", steps, Color.RED.getRGB()));
   tracks.put("2", new Track("2", steps, Color.ORANGE.getRGB()));
   tracks.put("3", new Track("3", steps, Color.YELLOW.getRGB()));
   tracks.put("4", new Track("4", steps, Color.BLUE.getRGB()));
-  tracks.put("5", new Track("5", steps, Color.GREEN.getRGB()));
-  tracks.put("6", new Track("6", steps, Color.PURPLE.getRGB()));
-  tracks.put("7", new Track("7", steps, Color.CYAN.getRGB()));
-  tracks.put("8", new Track("8", steps, Color.GRAY.getRGB()));
   sortedTracks = new LinkedList<Map.Entry<String, Track>>(tracks.entrySet());
   sortTracks();
 }
@@ -47,6 +38,10 @@ void setup() {
 void draw() {
   background(0);
   text(currentTrackId,20,20);
+  drawTracks();
+}
+
+void drawTracks() {
   ellipseMode(CENTER);
   noFill();
   Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
@@ -84,24 +79,6 @@ void draw() {
 void drawStep(float x, float y, int velocity) {
   float radius = ((float)velocity) / 127.0 * 20.0;
   ellipse(x, y, radius, radius);
-}
-
-void oscEvent(OscMessage message) { //<>//
-  String addrpattern = message.addrPattern();
-  if (addrpattern.equals("/current")) {
-    String trackId = message.get(0).stringValue();
-    currentTrackId = trackId;
-    println("current track", trackId);
-  } else if (addrpattern.equals("/tick")) {
-    int newTick = message.get(0).intValue();
-    tick = newTick;
-  } else if (addrpattern.equals("/track/update")) {
-    String trackId = message.get(0).stringValue();
-    String stepsString = message.get(1).stringValue();
-    Track track = tracks.get(trackId);
-    track.steps = getSteps(stepsString);
-    sortTracks();
-  }
 }
 
 public void sortTracks() {
