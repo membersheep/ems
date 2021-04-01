@@ -2,6 +2,7 @@ import java.util.*;
 import java.awt.*;
 import themidibus.*;
 
+Clock clock;
 Map<String, EMSTrack> tracks = new HashMap<String, EMSTrack>();
 LinkedList<Map.Entry<String, EMSTrack>> sortedTracks;
 String currentTrackId = "1";
@@ -10,6 +11,7 @@ int tick = 0;
 MidiBus midiBus;
 
 void setup() {
+  clock = new Clock();
   size(512, 512);
   frameRate(25);
   tracks.put("1", new EMSTrack("1", 60, 16, 4, 0, Color.RED.getRGB()));
@@ -36,6 +38,7 @@ void controllerChange(int channel, int number, int value) {
 // DRAW METHODS
 
 void draw() {
+  clock.update();
   background(0);
   text(currentTrackId,20,20);
   drawTracks();
