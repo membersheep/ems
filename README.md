@@ -1,10 +1,10 @@
 # Euclidean Multitrack Sequencer
 
 ## TODO
-Allow to select the input and output device with on screen buttons
+Get midi inputs from device and update the corresponding Track
+Send midi messages
+Allow to change internal BPM
+Allow Sync to extenal clock
 Allow to play/pause/stop with on screen buttons
-Get midi inputs from device
-	update the corresponding EMSTrack
-	generate midi Track with euclidean generator function
-	update the corresponding midi Track 
+Allow to select the input and output device with on screen buttons
 

@@ -3,14 +3,15 @@ import themidibus.*;
 class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
+  int midiChannel = 0;
   MidiBus midiBus;
   
   public Sequencer() {
     midiBus = new MidiBus(this, 0, 0);
     tracks.put("1", new Track("1", 60, 16, 4, 0, Color.RED.getRGB()));
-    tracks.put("2", new Track("2", 61, 8, 5, 0, Color.GREEN.getRGB()));
-    tracks.put("3", new Track("3", 62, 8, 3, 0, Color.YELLOW.getRGB()));
-    tracks.put("4", new Track("4", 63, 4, 1, 0, Color.BLUE.getRGB()));
+    tracks.put("2", new Track("2", 61, 8, 0, 0, Color.GREEN.getRGB()));
+    tracks.put("3", new Track("3", 62, 8, 0, 0, Color.YELLOW.getRGB()));
+    tracks.put("4", new Track("4", 63, 4, 0, 0, Color.BLUE.getRGB()));
     sortedTracks = new LinkedList<Map.Entry<String, Track>>(tracks.entrySet());
     sortTracks();
   }
@@ -74,5 +75,18 @@ class Sequencer implements ClockListener {
   void tick(int tick) {
     println(tick);
     // send midi messages basing on track ticks
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      int[] steps = track.computedSteps;
+      int index = tick % steps.length;
+      int velocity = steps[index];
+      if (velocity > 0) {
+        print("PLAY " );
+        print(track.id);
+        println(" " );
+        midiBus.sendNoteOn(midiChannel, track.note, velocity);
+      }
+    }
   }
 }
