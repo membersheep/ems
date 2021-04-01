@@ -1,20 +1,15 @@
 import java.util.*;
 import java.awt.*;
-import themidibus.*;
 
 Clock clock;
 Sequencer sequencer;
-Map<String, EMSTrack> tracks = new HashMap<String, EMSTrack>();
-LinkedList<Map.Entry<String, EMSTrack>> sortedTracks;
 String currentTrackId = "1";
 float size = 512;
-int tick = 0;
-MidiBus midiBus;
+
 
 void setup() {
   size(512, 512);
   frameRate(25);
-  midiBus = new MidiBus(this, 0, 0);
   sequencer = new Sequencer();
   clock = new Clock(sequencer);
 }
@@ -43,10 +38,10 @@ void draw() {
 void drawTracks() {
   ellipseMode(CENTER);
   noFill();
-  Iterator<Map.Entry<String, EMSTrack>> iterator = sortedTracks.iterator();
+  Iterator<Map.Entry<String, Track>> iterator = sequencer.sortedTracks.iterator();
   int index = 1;
   while (iterator.hasNext()) {
-    Map.Entry<String, EMSTrack> entry = iterator.next();
+    Map.Entry<String, Track> entry = iterator.next();
     float radius = size / 9 * index;
     noFill();
     stroke(entry.getValue().trackColor);
@@ -56,7 +51,7 @@ void drawTracks() {
       continue;
     }
     float angle = TWO_PI / (float)trackLength;
-    int currentStepIndex = tick % trackLength;
+    int currentStepIndex = clock.tick % trackLength;
     int[] steps = entry.getValue().computedSteps;
     for(int i = 0; i < trackLength; i++) {
       int stepVelocity = steps[i];

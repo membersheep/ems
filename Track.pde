@@ -1,5 +1,5 @@
 
-class EMSTrack {
+class Track {
   public String id;
   public int note;
   public int steps;
@@ -9,7 +9,7 @@ class EMSTrack {
   
   public int[] computedSteps;
   
-  public EMSTrack(String inId, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
+  public Track(String inId, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
     id = inId;
     note = inNote;
     steps = inSteps;
