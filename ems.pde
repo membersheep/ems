@@ -1,23 +1,39 @@
 import java.util.*;
 import java.awt.*;
-import javax.sound.midi.*;
+import themidibus.*;
 
 Map<String, EMSTrack> tracks = new HashMap<String, EMSTrack>();
 LinkedList<Map.Entry<String, EMSTrack>> sortedTracks;
 String currentTrackId = "1";
 float size = 512;
 int tick = 0;
+MidiBus midiBus;
 
 void setup() {
   size(512, 512);
   frameRate(25);
   tracks.put("1", new EMSTrack("1", 60, 16, 4, 0, Color.RED.getRGB()));
-  tracks.put("2", new EMSTrack("2", 61, 8, 5, 0, Color.ORANGE.getRGB()));
+  tracks.put("2", new EMSTrack("2", 61, 8, 5, 0, Color.GREEN.getRGB()));
   tracks.put("3", new EMSTrack("3", 62, 8, 3, 0, Color.YELLOW.getRGB()));
   tracks.put("4", new EMSTrack("4", 63, 4, 1, 0, Color.BLUE.getRGB()));
   sortedTracks = new LinkedList<Map.Entry<String, EMSTrack>>(tracks.entrySet());
   sortTracks();
+  midiBus = new MidiBus(this, 0, 0);
 }
+
+// CC METHODS
+
+void controllerChange(int channel, int number, int value) {
+  // Receive a controllerChange
+  println();
+  println("Controller Change:");
+  println("--------");
+  println("Channel:"+channel);
+  println("Number:"+number);
+  println("Value:"+value);
+}
+
+// DRAW METHODS
 
 void draw() {
   background(0);
