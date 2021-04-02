@@ -11,10 +11,10 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("1", 40, 16, 4, 0, color(255,196,61)));
-    tracks.put("2", new Track("2", 41, 16, 0, 0, color(239,71,111)));
-    tracks.put("3", new Track("3", 42, 16, 0, 0, color(27,154,170)));
-    tracks.put("4", new Track("4", 43, 16, 0, 0, color(178,237,197)));
+    tracks.put("1", new Track("1", 0, 40, 0, 0, 0, color(255,196,61)));
+    tracks.put("2", new Track("2", 1, 41, 0, 0, 0, color(239,71,111)));
+    tracks.put("3", new Track("3", 2, 42, 0, 0, 0, color(27,154,170)));
+    tracks.put("4", new Track("4", 3, 43, 0, 0, 0, color(178,237,197)));
     sortTracks();
   }
   
@@ -64,8 +64,8 @@ class Sequencer implements ClockListener {
       float radius = screenHeight / (activeTracksCount + 1) * index;
       // Draw track circle
       noFill();
-      stroke(entry.getValue().trackColor);
-      //ellipse(screenHeight/2, screenHeight/2, radius, radius);
+      stroke(entry.getValue().trackColor, 64);
+      ellipse(screenHeight/2, screenHeight/2, radius, radius);
       // Draw track steps
       noStroke();
       int trackLength = entry.getValue().steps;
@@ -84,11 +84,11 @@ class Sequencer implements ClockListener {
           if (stepVelocity == 0) {
             stepColor = entry.getValue().trackColor;
             fill(stepColor);
-            ellipse(x, y, 20, 20);
+            ellipse(x, y, 24, 24);
           } else {
             stepColor = Color.WHITE.getRGB();
             fill(stepColor);
-            ellipse(x, y, 20, 20);
+            ellipse(x, y, 24, 24);
           }
         } else {
           if (stepVelocity == 0) {
@@ -98,7 +98,7 @@ class Sequencer implements ClockListener {
           } else {
             stepColor = Color.WHITE.getRGB();
             fill(stepColor);
-            float stepRadius = ((float)stepVelocity) / 127.0 * 15.0;
+            float stepRadius = ((float)stepVelocity) / 127.0 * 16.0;
             ellipse(x, y, stepRadius, stepRadius);
           }
         }
@@ -118,14 +118,14 @@ class Sequencer implements ClockListener {
       int index = tick % steps.length;
       int velocity = steps[index];
       if (velocity > 0) {
-        print("PLAY track " );
-        print(track.id);
-        print(" tick " );
-        print(tick);
+        print("SENDING NOTE track " );
+        print(track.note);
+        print(" on channel " );
+        print(track.channel);
         println(" " );
-        midiBus.sendNoteOn(midiChannel, track.note, velocity);
+        midiBus.sendNoteOn(track.channel, track.note, velocity);
         delay(1);
-        midiBus.sendNoteOff(midiChannel, track.note, velocity);
+        midiBus.sendNoteOff(track.channel, track.note, velocity);
       }
     }
   }

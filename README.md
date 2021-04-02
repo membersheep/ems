@@ -1,7 +1,6 @@
 # Euclidean Multitrack Sequencer
 
 ## TODO
-Fix step offset of 1 from what we see
 Fix some step not playing
 Send midi messages through different channels per track
 Test with tanzmaus

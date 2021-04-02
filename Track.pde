@@ -1,6 +1,7 @@
 
 class Track {
   public String id;
+  public int channel;
   public int note;
   public int steps;
   public int beats;
@@ -9,8 +10,9 @@ class Track {
 
   public int[] computedSteps;
 
-  public Track(String inId, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
+  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
     id = inId;
+    channel = inChannel;
     note = inNote;
     steps = inSteps;
     beats = inBeats;
