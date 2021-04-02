@@ -22,6 +22,6 @@ class Clock {
   }
 }
 
-interface ClockListener{
+interface ClockListener {
     void tick();
 }

@@ -42,11 +42,23 @@ class Sequencer implements ClockListener {
     sortedTracks = list;
   }
   
+  private int activeTracksCount() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    int activeTracksCount = 0;
+    while (iterator.hasNext()) {
+      if (iterator.next().getValue().steps > 0) {
+        activeTracksCount++;
+      }
+    }
+    return activeTracksCount;
+  }
+  
   void drawTracks() {
     ellipseMode(CENTER);
     noFill();
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     int index = 1;
+    int activeTracksCount = 0;
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
       float radius = screenHeight / 9 * index;
