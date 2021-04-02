@@ -11,10 +11,10 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("1", 0, 60, 0, 0, 0, color(255,196,61)));
-    tracks.put("2", new Track("2", 1, 60, 0, 0, 0, color(239,71,111)));
-    tracks.put("3", new Track("3", 2, 60, 0, 0, 0, color(27,154,170)));
-    tracks.put("4", new Track("4", 3, 60, 0, 0, 0, color(178,237,197)));
+    tracks.put("1", new Track("1", 1, 60, 0, 0, 0, color(255,196,61)));
+    tracks.put("2", new Track("2", 2, 60, 0, 0, 0, color(239,71,111)));
+    tracks.put("3", new Track("3", 3, 60, 0, 0, 0, color(27,154,170)));
+    tracks.put("4", new Track("4", 4, 60, 0, 0, 0, color(178,237,197)));
     sortTracks();
   }
   
@@ -149,10 +149,5 @@ class Sequencer implements ClockListener {
   public void updateTrackOffset(String id, int value) {
     tracks.get(id).rotate = tracks.get(id).steps * value / 127;
     tracks.get(id).computeSteps();
-  }
-  
-  private void delay(int time) {
-    int current = millis();
-    while (millis () < current+time) Thread.yield();
   }
 }

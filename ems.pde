@@ -29,6 +29,10 @@ public void bpm(int bpm) {
   clock.bpm = bpm;
 }
 
+public void division(int division) {
+  clock.division = division;
+}
+
 public void play() {
   sequencer.play();
 }
@@ -39,6 +43,18 @@ public void pause() {
 
 public void stop() {
   sequencer.stop();
+}
+
+public void controller() {
+  // get next controller
+}
+
+public void input() {
+  // get next controller
+}
+
+public void output() {
+  // get next controller
 }
 
 void controllerChange(ControlChange change) {
