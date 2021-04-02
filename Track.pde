@@ -6,9 +6,9 @@ class Track {
   public int beats;
   public int rotate;
   public color trackColor;
-  
+
   public int[] computedSteps;
-  
+
   public Track(String inId, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
     id = inId;
     note = inNote;
@@ -16,55 +16,42 @@ class Track {
     beats = inBeats;
     rotate = inRotate;
     trackColor = inColor;
-    computedSteps = computeSteps();
+    computeSteps();
   }
-  
-  public int[] computeSteps() {
+
+  public void computeSteps() {
     Vector<Boolean> sequence = euclideanSequence();
+
     int[] beats = new int[sequence.capacity()];
-    for(int i = 0; i < sequence.size(); i++) {
+    for (int i = 0; i < sequence.size(); i++) {
       if (sequence.get(i) == true) {
         beats[i] = 127;
       } else {
         beats[i] = 0;
       }
     }
-    return beats;
+    ArrayRightRotation.rotateRight(beats, rotate, steps);
+    computedSteps = beats;
   }
-  
+
   private Vector<Boolean> euclideanSequence() {
     Vector<Boolean> pattern = new Vector<Boolean> ( );
-    if ( beats >= steps || steps == 1 || beats == 0 )
-    {
-      // test for input for sanity
-      if ( beats >= steps )
-      {
-        /** Fill every steps with a pulse. */
-        for ( int i = 0; i < steps; i++ )
-        {
-          pattern.add ( true );
-        }
+    if ( beats >= steps ) {
+      /** Fill every steps with a pulse. */
+      for ( int i = 0; i < steps; i++ ) {
+        pattern.add ( true );
       }
-      else if ( steps == 1 )
-      {
-        pattern.add ( beats == 1 );
+    } else if ( steps == 1 ) {
+      pattern.add ( beats == 1 );
+    } else if ( beats == 0 ) {
+      /** Fill every steps with a silence. */
+      for ( int i = 0; i < steps; i++ ) {
+        pattern.add ( false );
       }
-      else
-      {
-        /** Fill every steps with a silence. */
-        for ( int i = 0; i < steps; i++ )
-        {
-          pattern.add ( false );
-        }
-      }
-    }
-    else
-    {
-      // sane input
+    } else {
+      // SANE INPUT
       int pauses = steps - beats;
-      
-      if ( pauses >= beats )
-      { 
+      if ( pauses >= beats ) { 
         // first case more pauses than pulses
         int per_pulse = ( int ) Math.floor ( pauses / beats );
         int remainder = pauses % beats;
@@ -80,9 +67,7 @@ class Track {
             pattern.add ( false );
           }
         }
-      }
-      else
-      { 
+      } else { 
         // second case more pulses than pauses
         int per_pause = ( int ) Math.floor ( ( beats - pauses ) / pauses );
         int remainder = ( beats - pauses ) % pauses;

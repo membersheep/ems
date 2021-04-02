@@ -3,6 +3,7 @@ import themidibus.*;
 class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
+  int maxSteps = 32;
   int midiChannel = 0;
   MidiBus midiBus;
   
@@ -90,18 +91,26 @@ class Sequencer implements ClockListener {
   }
   
   public void incrementTrackLength(String id) {
-    
+    if (tracks.get(id).steps + 1 < maxSteps) {
+      tracks.get(id).steps = tracks.get(id).steps + 1;
+      tracks.get(id).computeSteps();
+    }
   }
   
   public void decrementTrackLength(String id) {
-    
+    if (tracks.get(id).steps - 1 >= 0) {
+      tracks.get(id).steps = tracks.get(id).steps - 1;
+      tracks.get(id).computeSteps();
+    }
   }
   
   public void updateTrackBeats(String id, int value) {
-    
+    tracks.get(id).beats = tracks.get(id).steps * value / 127;
+    tracks.get(id).computeSteps();
   }
   
   public void updateTrackOffset(String id, int value) {
-    
+    tracks.get(id).rotate = tracks.get(id).steps * value / 127;
+    tracks.get(id).computeSteps();
   }
 }

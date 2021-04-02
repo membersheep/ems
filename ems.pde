@@ -23,26 +23,23 @@ void draw() {
   background(0);
   text(currentTrackId,20,20);
   sequencer.drawTracks();
-} //<>//
+} //<>// //<>//
 
 void controllerChange(ControlChange change) {
-  // Receive a controllerChange
-  println();
-  println("Controller Change:");
-  println("--------");
-  println("Channel:"+change.channel());
-  println("Number:"+change.number());
-  println("Value:"+change.value());
+  switch (change.number()) {
+    case 1: sequencer.updateTrackBeats("1", change.value()); break;
+    case 2: sequencer.updateTrackBeats("2", change.value()); break;
+    case 3: sequencer.updateTrackBeats("3", change.value()); break;
+    case 4: sequencer.updateTrackBeats("4", change.value()); break;
+    case 5: sequencer.updateTrackOffset("1", change.value()); break;
+    case 6: sequencer.updateTrackOffset("2", change.value()); break;
+    case 7: sequencer.updateTrackOffset("3", change.value()); break;
+    case 8: sequencer.updateTrackOffset("4", change.value()); break;
+    default: break;
+  }
 }
 
 void noteOn(Note note) {
-  // Receive a noteOn
-  println();
-  println("Note On:");
-  println("--------");
-  println("Channel:"+note.channel());
-  println("Pitch:"+note.pitch());
-  println("Velocity:"+note.velocity());
   switch (note.pitch()) {
     case 36: sequencer.decrementTrackLength("1"); break;
     case 37: sequencer.decrementTrackLength("2"); break;
