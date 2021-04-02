@@ -42,7 +42,7 @@ class Sequencer implements ClockListener {
       if (trackLength == 0) {
         continue;
       }
-      float angle = TWO_PI / (float)trackLength;
+      float angle = -TWO_PI / (float)trackLength;
       int currentStepIndex = clock.tick % trackLength;
       int[] steps = entry.getValue().computedSteps;
       for(int i = 0; i < trackLength; i++) {
