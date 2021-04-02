@@ -2,28 +2,40 @@ import java.util.*;
 import java.awt.*;
 import themidibus.*;
 
+UI ui;
 Clock clock;
 Sequencer sequencer;
 MidiBus midiBus;
-String currentTrackId = "1";
-float size = 512;
-
+float screenWidth = 800;
+float screenHeight = 480;
 
 void setup() {
-  size(512, 512);
+  size(800, 480);
   frameRate(25);
   MidiBus.list();
-  midiBus = new MidiBus(this, "LPD8", 0);
+  midiBus = new MidiBus(this, "LPD8", "CRAVE");
   sequencer = new Sequencer(midiBus);
   clock = new Clock(sequencer);
+  ui = new UI(this);
 }
 
 void draw() {
-  clock.update();
   background(0);
-  text(currentTrackId,20,20);
+  clock.update();
   sequencer.drawTracks();
-} //<>// //<>//
+} //<>//
+
+public void PLAY() {
+  sequencer.play();
+}
+
+public void PAUSE() {
+  sequencer.pause();
+}
+
+public void STOP() {
+  sequencer.stop();
+}
 
 void controllerChange(ControlChange change) {
   switch (change.number()) {

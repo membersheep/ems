@@ -16,12 +16,12 @@ class Clock {
     long elapsedTime = currentTime - startTime;
     int newTick = (int)elapsedTime * bpm / 60000;
     if (tick != newTick) {
-      listener.tick(tick);
+      listener.tick();
     }
     tick = newTick;
   }
 }
 
 interface ClockListener{
-    void tick(int tick);
+    void tick();
 }
