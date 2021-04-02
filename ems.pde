@@ -25,15 +25,15 @@ void draw() {
   sequencer.drawTracks();
 } //<>//
 
-public void PLAY() {
+public void play() {
   sequencer.play();
 }
 
-public void PAUSE() {
+public void pause() {
   sequencer.pause();
 }
 
-public void STOP() {
+public void stop() {
   sequencer.stop();
 }
 
