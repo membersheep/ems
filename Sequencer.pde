@@ -11,10 +11,10 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("1", 60, 16, 4, 0, Color.RED.getRGB()));
-    tracks.put("2", new Track("2", 61, 16, 0, 0, Color.GREEN.getRGB()));
-    tracks.put("3", new Track("3", 62, 16, 0, 0, Color.YELLOW.getRGB()));
-    tracks.put("4", new Track("4", 63, 16, 0, 0, Color.BLUE.getRGB()));
+    tracks.put("1", new Track("1", 40, 16, 4, 0, color(255,196,61)));
+    tracks.put("2", new Track("2", 41, 16, 0, 0, color(239,71,111)));
+    tracks.put("3", new Track("3", 42, 16, 0, 0, color(27,154,170)));
+    tracks.put("4", new Track("4", 43, 16, 0, 0, color(178,237,197)));
     sortTracks();
   }
   
@@ -58,44 +58,53 @@ class Sequencer implements ClockListener {
     noFill();
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     int index = 1;
-    int activeTracksCount = 0;
+    int activeTracksCount = activeTracksCount();
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
-      float radius = screenHeight / 9 * index;
+      float radius = screenHeight / (activeTracksCount + 1) * index;
+      // Draw track circle
       noFill();
       stroke(entry.getValue().trackColor);
-      ellipse(screenHeight/2, screenHeight/2, radius, radius);
+      //ellipse(screenHeight/2, screenHeight/2, radius, radius);
+      // Draw track steps
+      noStroke();
       int trackLength = entry.getValue().steps;
       if (trackLength == 0) {
         continue;
       }
-      float angle = -TWO_PI / (float)trackLength;
+      float angle = TWO_PI / (float)trackLength;
       int currentStepIndex = tick % trackLength;
       int[] steps = entry.getValue().computedSteps;
       for(int i = 0; i < trackLength; i++) {
         int stepVelocity = steps[i];
         color stepColor;
+        float x = radius/2 * sin(angle*i) + screenHeight/2;
+        float y = radius/2 * -cos(angle*i) + screenHeight/2;
         if (i == currentStepIndex) {
-          stepColor = Color.WHITE.getRGB();
+          if (stepVelocity == 0) {
+            stepColor = entry.getValue().trackColor;
+            fill(stepColor);
+            ellipse(x, y, 20, 20);
+          } else {
+            stepColor = Color.WHITE.getRGB();
+            fill(stepColor);
+            ellipse(x, y, 20, 20);
+          }
         } else {
-          stepColor = entry.getValue().trackColor;
+          if (stepVelocity == 0) {
+            stepColor = entry.getValue().trackColor;
+            fill(stepColor);
+            ellipse(x, y, 8, 8);
+          } else {
+            stepColor = Color.WHITE.getRGB();
+            fill(stepColor);
+            float stepRadius = ((float)stepVelocity) / 127.0 * 15.0;
+            ellipse(x, y, stepRadius, stepRadius);
+          }
         }
-        if (stepVelocity == 0) {
-          noFill();
-          stroke(stepColor);
-          stepVelocity = 100;
-        } else {
-          fill(stepColor);
-        }
-        drawStep(radius/2 * sin(angle*i) + screenHeight/2, radius/2 * cos(angle*i) + screenHeight/2, stepVelocity);
       }
       index++;
     }
-  }
-  
-  private void  drawStep(float x, float y, int velocity) {
-    float radius = ((float)velocity) / 127.0 * 20.0;
-    ellipse(x, y, radius, radius);
   }
 
   @ Override
