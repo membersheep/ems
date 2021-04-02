@@ -25,6 +25,10 @@ void draw() {
   sequencer.drawTracks();
 } //<>//
 
+public void bpm(int bpm) {
+  clock.bpm = bpm;
+}
+
 public void play() {
   sequencer.play();
 }
