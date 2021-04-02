@@ -11,10 +11,10 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("1", 0, 40, 0, 0, 0, color(255,196,61)));
-    //tracks.put("2", new Track("2", 1, 41, 0, 0, 0, color(239,71,111)));
-    //tracks.put("3", new Track("3", 2, 42, 0, 0, 0, color(27,154,170)));
-    //tracks.put("4", new Track("4", 3, 43, 0, 0, 0, color(178,237,197)));
+    tracks.put("1", new Track("1", 0, 60, 0, 0, 0, color(255,196,61)));
+    tracks.put("2", new Track("2", 1, 60, 0, 0, 0, color(239,71,111)));
+    tracks.put("3", new Track("3", 2, 60, 0, 0, 0, color(27,154,170)));
+    tracks.put("4", new Track("4", 3, 60, 0, 0, 0, color(178,237,197)));
     sortTracks();
   }
   
@@ -112,27 +112,17 @@ class Sequencer implements ClockListener {
     if (!isPlaying) { return; }
     tick++;
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
-    print("tick " );
-    print(tick);
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       if (track.steps < 1) { continue; }
       int[] steps = track.computedSteps;
       int index = tick % track.steps;
       int velocity = steps[index];
-      println(track);
-      print(" index " );
-      print(index);
       if (velocity > 0) {
-        print(" SENDING NOTE " );
-        print(track.note);
-        print(" on channel " );
-        print(track.channel);
         midiBus.sendNoteOn(track.channel, track.note, velocity);
         midiBus.sendNoteOff(track.channel, track.note, velocity);
       }
     }
-    println("");
   }
   
   public void incrementTrackLength(String id) {

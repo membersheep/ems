@@ -13,7 +13,7 @@ void setup() {
   size(800, 480);
   frameRate(25);
   MidiBus.list();
-  midiBus = new MidiBus(this, "LPD8", "CRAVE");
+  midiBus = new MidiBus(this, "LPD8", "Unknown name");
   sequencer = new Sequencer(midiBus);
   clock = new Clock(sequencer);
   ui = new UI(this);
