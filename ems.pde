@@ -3,9 +3,11 @@ import java.awt.*;
 import themidibus.*;
 
 UI ui;
+DeviceManager deviceManager;
 Clock clock;
 Sequencer sequencer;
 MidiBus midiBus;
+
 float screenWidth = 800;
 float screenHeight = 480;
 
@@ -13,7 +15,8 @@ void setup() {
   size(800, 480);
   frameRate(25);
   MidiBus.list();
-  midiBus = new MidiBus(this, "LPD8", "Unknown name");
+  deviceManager = new DeviceManager();
+  midiBus = new MidiBus(this);
   sequencer = new Sequencer(midiBus);
   clock = new Clock(sequencer);
   ui = new UI(this);
@@ -46,15 +49,41 @@ public void stop() {
 }
 
 public void controller() {
-  // get next controller
+  MidiBus.findMidiDevices();
+  String name = deviceManager.getNextController();
+  int index = deviceManager.getNextControllerIndex();
+  if (deviceManager.controllerName != deviceManager.inputName) {
+    midiBus.removeInput(deviceManager.controllerName);
+  }
+  ui.controllerButton.setLabel("MIDI CONTROLLER: " + name);
+  deviceManager.controllerName = name;
+  deviceManager.controllerIndex = index;
+  if (name != deviceManager.inputName) {
+    midiBus.addInput(name);
+  }
 }
 
 public void input() {
-  // get next controller
+  MidiBus.findMidiDevices();
+  String name = deviceManager.getNextInput();
+  int index = deviceManager.getNextInputIndex();
+  if (deviceManager.controllerName != deviceManager.inputName) {
+    midiBus.removeInput(deviceManager.inputName);
+  }
+  ui.controllerButton.setLabel("MIDI CLOCK SOURCE: " + name);
+  deviceManager.inputName = name;
+  deviceManager.inputIndex = index;
+  if (name != deviceManager.controllerName) {
+    midiBus.addInput(name);
+  }
 }
 
 public void output() {
-  // get next controller
+  MidiBus.findMidiDevices();
+  String name = deviceManager.nextOutput();
+  ui.outputButton.setLabel("MIDI OUTPUT: " + name);
+  midiBus.clearOutputs();
+  midiBus.addOutput(name);
 }
 
 void controllerChange(ControlChange change) {

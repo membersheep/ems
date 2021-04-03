@@ -9,23 +9,27 @@ class UI {
   int buttonWidth = 90;
   int padding = 15;
   
+  controlP5.Button controllerButton;
+  controlP5.Button inputButton;
+  controlP5.Button outputButton;
+  
   public UI(PApplet parent) {
     cp5 = new ControlP5(parent);
     
-    cp5.addButton("controller")
+    controllerButton = cp5.addButton("controller")
+    .setLabel("SELECT MIDI CONTROLLER")
     .setPosition(screenWidth - uiWidth - padding, padding)
-    .setSize(buttonWidth, buttonHeight);
-    cp5.addTextlabel("controllerLabel", MidiBus.availableInputs()[0], (int)screenWidth - uiWidth - padding + buttonWidth, padding + buttonHeight/2 );
+    .setSize(uiWidth, buttonHeight);
     
-    cp5.addButton("input")
+    inputButton = cp5.addButton("input")
+    .setLabel("SELECT MIDI CLOCK SOURCE")
     .setPosition(screenWidth - uiWidth - padding, padding * 2 + sliderHeight)
-    .setSize(buttonWidth, buttonHeight);
-    cp5.addTextlabel("inputLabel", MidiBus.availableInputs()[0], (int)screenWidth - uiWidth - padding + buttonWidth, padding * 2 + buttonHeight * 3/2 );
+    .setSize(uiWidth, buttonHeight);
     
-    cp5.addButton("output")
+    outputButton = cp5.addButton("output")
+    .setLabel("SELECT MIDI OUTPUT")
     .setPosition(screenWidth - uiWidth - padding, padding * 3 + sliderHeight * 2)
-    .setSize(buttonWidth, buttonHeight);
-    cp5.addTextlabel("outputLabel", MidiBus.availableOutputs()[0], (int)screenWidth - uiWidth - padding + buttonWidth, padding * 3 + buttonHeight * 5/2 );
+    .setSize(uiWidth, buttonHeight);
     
     cp5.addSlider("bpm").setSliderMode(Slider.FLEXIBLE)
     .setPosition(screenWidth - uiWidth - padding, padding * 4 + sliderHeight * 3)
