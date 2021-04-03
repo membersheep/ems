@@ -60,17 +60,17 @@ class Sequencer implements ClockListener {
     int activeTracksCount = activeTracksCount();
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
-      float radius = screenHeight / (activeTracksCount + 1) * index;
+      int trackLength = entry.getValue().steps;
+      if (trackLength == 0) {
+        continue;
+      }
       // Draw track circle
+      float radius = screenHeight / (activeTracksCount + 1) * index;
       noFill();
       stroke(entry.getValue().trackColor, 64);
       ellipse(screenHeight/2, screenHeight/2, radius, radius);
       // Draw track steps
       noStroke();
-      int trackLength = entry.getValue().steps;
-      if (trackLength == 0) {
-        continue;
-      }
       float angle = TWO_PI / (float)trackLength;
       int currentStepIndex = tick % trackLength;
       int[] steps = entry.getValue().computedSteps;

@@ -23,14 +23,14 @@ void setup() {
   midiClock = new MIDIClock(sequencer);
   ui = new UI(this);
 }
-
+ //<>//
 void draw() {
   background(0);
   if (deviceManager.inputName == "INTERNAL") {
     clock.update();
   }
   sequencer.drawTracks();
-} //<>//
+}
 
 // BUTTON CALLBACKS
 
@@ -99,11 +99,9 @@ void rawMidi(byte[] data) {
     return;
   }
   if(data[0] == (byte)0xFC) {
-    print("MIDI clock stops");
     // reset timing when clock stops to stay in sync for the next start
   } else if(data[0] == (byte)0xF8) {
     midiClock.pulse();
-    print("MIDI clock pulse");
   }
 }
 
