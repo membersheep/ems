@@ -5,9 +5,8 @@ class UI {
   
   int sliderHeight = 48;
   int buttonHeight = 48;
-  int buttonWidth = 90;
   int padding = 15;
-  int uiWidth = 300-padding;
+  int uiWidth = 300 - padding;
 
   Group menuGroup;
   controlP5.Button controllerButton;
@@ -16,9 +15,11 @@ class UI {
   
   public UI(PApplet parent) {
     cp5 = new ControlP5(parent);
-    menuGroup = cp5.addGroup("menu")
+    int buttonWidth = (uiWidth - padding * 2)/3;
+    
+    menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)
-    .setSize(uiWidth, (int)screenHeight);
+    .setSize(uiWidth, (int)screenHeight - padding * 2).setOpen(false);
     
     controllerButton = cp5.addButton("controller")
     .setLabel("SELECT MIDI CONTROLLER")
@@ -51,16 +52,13 @@ class UI {
     .moveTo(menuGroup);
     
     cp5.addButton("play").setValue(0)
-    .setPosition(0, screenHeight - padding - sliderHeight)
-    .setSize(buttonWidth, buttonHeight)
-    .moveTo(menuGroup);
+    .setPosition(screenWidth - uiWidth - padding, screenHeight - padding - buttonHeight)
+    .setSize(buttonWidth, buttonHeight);
     cp5.addButton("pause").setValue(0)
-    .setPosition(0, screenHeight - padding - sliderHeight)
-    .setSize(buttonWidth, buttonHeight)
-    .moveTo(menuGroup);
+    .setPosition(screenWidth - uiWidth - padding + buttonWidth + padding, screenHeight - padding - buttonHeight)
+    .setSize(buttonWidth, buttonHeight);
     cp5.addButton("stop").setValue(0)
-    .setPosition(0, screenHeight - padding - sliderHeight)
-    .setSize(buttonWidth, buttonHeight)
-    .moveTo(menuGroup);
+    .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding - buttonHeight)
+    .setSize(buttonWidth, buttonHeight);
   }
 }
