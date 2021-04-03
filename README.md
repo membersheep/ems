@@ -1,9 +1,7 @@
 # Euclidean Multitrack Sequencer
 
 ## TODO
-Add control UI:
-	Allow to select the input and output device with on screen buttons
-	Allow to sync to extenal clock
+Allow to sync to extenal clock
 Radial visualization
 Make settings menu hidable
 Visualize track parameters under hidable menu

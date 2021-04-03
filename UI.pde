@@ -22,7 +22,7 @@ class UI {
     .setSize(uiWidth, buttonHeight);
     
     inputButton = cp5.addButton("input")
-    .setLabel("SELECT MIDI CLOCK SOURCE")
+    .setLabel("MIDI CLOCK SOURCE: INTERNAL")
     .setPosition(screenWidth - uiWidth - padding, padding * 2 + sliderHeight)
     .setSize(uiWidth, buttonHeight);
     

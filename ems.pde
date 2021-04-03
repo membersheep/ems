@@ -5,6 +5,7 @@ import themidibus.*;
 UI ui;
 DeviceManager deviceManager;
 Clock clock;
+MIDIClock midiClock;
 Sequencer sequencer;
 MidiBus midiBus;
 
@@ -19,14 +20,19 @@ void setup() {
   midiBus = new MidiBus(this);
   sequencer = new Sequencer(midiBus);
   clock = new Clock(sequencer);
+  midiClock = new MIDIClock(sequencer);
   ui = new UI(this);
 }
 
 void draw() {
   background(0);
-  clock.update();
+  if (deviceManager.inputName == "INTERNAL") {
+    clock.update();
+  }
   sequencer.drawTracks();
 } //<>//
+
+// BUTTON CALLBACKS
 
 public void bpm(int bpm) {
   clock.bpm = bpm;
@@ -70,10 +76,10 @@ public void input() {
   if (deviceManager.controllerName != deviceManager.inputName) {
     midiBus.removeInput(deviceManager.inputName);
   }
-  ui.controllerButton.setLabel("MIDI CLOCK SOURCE: " + name);
+  ui.inputButton.setLabel("MIDI CLOCK SOURCE: " + name);
   deviceManager.inputName = name;
   deviceManager.inputIndex = index;
-  if (name != deviceManager.controllerName) {
+  if (name != deviceManager.controllerName && name != "INTERNAL") {
     midiBus.addInput(name);
   }
 }
@@ -84,6 +90,21 @@ public void output() {
   ui.outputButton.setLabel("MIDI OUTPUT: " + name);
   midiBus.clearOutputs();
   midiBus.addOutput(name);
+}
+
+// MIDI CALLBACKS
+
+void rawMidi(byte[] data) {  
+  if (deviceManager.inputName == "INTERNAL") {
+    return;
+  }
+  if(data[0] == (byte)0xFC) {
+    print("MIDI clock stops");
+    // reset timing when clock stops to stay in sync for the next start
+  } else if(data[0] == (byte)0xF8) {
+    midiClock.pulse();
+    print("MIDI clock pulse");
+  }
 }
 
 void controllerChange(ControlChange change) {

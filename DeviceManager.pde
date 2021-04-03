@@ -2,7 +2,7 @@
 
 class DeviceManager {  
   int inputIndex = -1;
-  String inputName = "";
+  String inputName = "INTERNAL";
   int controllerIndex = -1;
   String controllerName = "";
   int outputIndex = -1;
@@ -31,18 +31,14 @@ class DeviceManager {
   public String getNextInput() {
     if (MidiBus.availableInputs().length > inputIndex + 1) {
       return MidiBus.availableInputs()[inputIndex + 1];
-    } else if (MidiBus.availableInputs().length > 0) {
-      return MidiBus.availableInputs()[0];
     } else {
-      return "";
+      return "INTERNAL";
     }
   }
   
   public int getNextInputIndex() {
     if (MidiBus.availableInputs().length > inputIndex + 1) {
       return inputIndex + 1;
-    } else if (MidiBus.availableInputs().length > 0) {
-      return 0;
     } else {
       return -1;
     }
