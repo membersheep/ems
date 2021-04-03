@@ -40,6 +40,7 @@ public void bpm(int bpm) {
 
 public void division(int division) {
   clock.division = division;
+  midiClock.division = division;
 }
 
 public void play() {

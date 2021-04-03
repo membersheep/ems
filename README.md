@@ -1,10 +1,14 @@
 # Euclidean Multitrack Sequencer
 
 ## TODO
-Allow to sync to extenal clock
-Radial visualization
+
+v1.0
 Make settings menu hidable
 Visualize track parameters under hidable menu
+Implement radial visualization
+Implement polygonal visualization
+
+v1.2
 Allow to select midi note number and midi channel for each track
 Write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
 Get inputs only from the selected midi controller
