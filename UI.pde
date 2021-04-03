@@ -12,9 +12,11 @@ class UI {
   controlP5.Button controllerButton;
   controlP5.Button inputButton;
   controlP5.Button outputButton;
+  controlP5.Textlabel[] trackLabels;
   
   public UI(PApplet parent) {
     cp5 = new ControlP5(parent);
+    trackLabels = new controlP5.Textlabel[sequencer.sortedTracks.size()];
     int buttonWidth = (uiWidth - padding * 2)/3;
     
     menuGroup = cp5.addGroup("settings")
@@ -60,5 +62,28 @@ class UI {
     cp5.addButton("stop").setValue(0)
     .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding - buttonHeight)
     .setSize(buttonWidth, buttonHeight);
+    
+    Iterator<Map.Entry<String, Track>> iterator = sequencer.sortedTracks.iterator();
+    int index = 0;
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      controlP5.Textlabel trackLabel = cp5
+      .addLabel(track.id)
+      .setText("TRACK " + track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate)
+      .setColor(track.trackColor)
+      .setPosition(screenWidth - uiWidth - padding, screenHeight - padding - buttonHeight - padding - padding * index);
+      trackLabels[index] = trackLabel;
+      index++;
+    }
   }
+  
+  public void updateTrackLabels() {
+    Iterator<Map.Entry<String, Track>> iterator = sequencer.sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      controlP5.Textlabel trackLabel = (controlP5.Textlabel)cp5.getController(track.id);
+      trackLabel.setText("TRACK " + track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate);
+    }
+  }
+  
 }

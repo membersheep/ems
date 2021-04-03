@@ -118,6 +118,7 @@ void controllerChange(ControlChange change) {
     case 8: sequencer.updateTrackOffset("4", change.value()); break;
     default: break;
   }
+  ui.updateTrackLabels();
 }
 
 void noteOn(Note note) {
@@ -132,4 +133,5 @@ void noteOn(Note note) {
     case 43: sequencer.incrementTrackLength("4"); break;
     default: break;
   }
+  ui.updateTrackLabels();
 }

@@ -3,7 +3,6 @@
 ## TODO
 
 v1.0
-Visualize track parameters under hidable menu
 Implement radial visualization
 Implement polygonal visualization
 
