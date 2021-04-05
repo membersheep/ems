@@ -3,11 +3,11 @@
 ## TODO
 v0.1
 Functions
-	- Fix sequence length limit to 31 instead of 32
-	- Detect an fix crash when modifying a sequence while playing
+	- Refresh input list without restarting
 	- Switch A/B pattern per track
 	- Save pattern
-	- Load pattern 
+	- Load pattern
+	- Detect an fix crash when modifying a sequence while playing
 UI
 	- Animate the beat dot
 	- Implement radial visualization
