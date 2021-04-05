@@ -47,7 +47,7 @@ class UI {
     .setRange(0, 480).setValue(120)
     .moveTo(menuGroup);
     
-    cp5.addRadioButton("division").setItemsPerRow(4).addItem("/1", 1).addItem("/2", 2).addItem("/3", 3).addItem("/4", 4)
+    cp5.addRadioButton("division").setItemsPerRow(4).addItem("by 1", 1).addItem("by 2", 2).addItem("by 3", 3).addItem("by 4", 4)
     .setSpacingColumn(padding*2)
     .setPosition(0, padding * 5 + sliderHeight * 4)
     .setSize(sliderHeight, sliderHeight)
@@ -69,7 +69,7 @@ class UI {
       Track track = iterator.next().getValue();
       controlP5.Textlabel trackLabel = cp5
       .addLabel(track.id)
-      .setText("TRACK " + track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate)
+      .setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate)
       .setColor(track.trackColor)
       .setPosition(screenWidth - uiWidth - padding, screenHeight - padding - buttonHeight - padding - padding * index);
       trackLabels[index] = trackLabel;
@@ -82,7 +82,7 @@ class UI {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       controlP5.Textlabel trackLabel = (controlP5.Textlabel)cp5.getController(track.id);
-      trackLabel.setText("TRACK " + track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate);
+      trackLabel.setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate);
     }
   }
   

@@ -10,10 +10,10 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("1", 1, 60, 0, 0, 0, color(255,196,61)));
-    tracks.put("2", new Track("2", 6, 60, 0, 0, 0, color(239,71,111)));
-    tracks.put("3", new Track("3", 2, 60, 0, 0, 0, color(27,154,170)));
-    tracks.put("4", new Track("4", 5, 60, 0, 0, 0, color(178,237,197)));
+    tracks.put("1", new Track("KICK", 1, 60, 16, 0, 0, color(255,196,61)));
+    tracks.put("2", new Track("SNARE", 2, 60, 16, 0, 0, color(239,71,111)));
+    tracks.put("3", new Track("TOM", 5, 60, 16, 0, 0, color(27,154,170)));
+    tracks.put("4", new Track("HAT", 6, 60, 16, 0, 0, color(178,237,197)));
     sortTracks();
   }
   
@@ -126,7 +126,7 @@ class Sequencer implements ClockListener {
   }
   
   public void incrementTrackLength(String id) {
-    if (tracks.get(id).steps + 1 < maxSteps) {
+    if (tracks.get(id).steps + 1 <= maxSteps) {
       tracks.get(id).steps = tracks.get(id).steps + 1;
       tracks.get(id).computeSteps();
       sortTracks();
