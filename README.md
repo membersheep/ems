@@ -3,11 +3,11 @@
 ## TODO
 v0.1
 Functions
-	- Refresh input list without restarting
-	- Switch A/B pattern per track
-	- Save pattern
-	- Load pattern
-	- Detect an fix crash when modifying a sequence while playing
+	- Save pattern menu: 8 slots (square buttons) to save the current pattern to
+	- Load pattern menu: 8 slots (square buttons) to load the current pattern from
+	- Detect and fix crash when modifying a sequence while playing
+	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
+	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 UI
 	- Animate the beat dot
 	- Implement radial visualization

@@ -3,8 +3,8 @@ import controlP5.*;
 class UI {
   ControlP5 cp5;
   
-  int sliderHeight = 48;
-  int buttonHeight = 48;
+  int sliderHeight = 36;
+  int buttonHeight = 36;
   int padding = 15;
   int uiWidth = 300 - padding;
 
@@ -18,6 +18,8 @@ class UI {
     cp5 = new ControlP5(parent);
     trackLabels = new controlP5.Textlabel[sequencer.sortedTracks.size()];
     int buttonWidth = (uiWidth - padding * 2)/3;
+    
+    addTrackLabels();
     
     menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)
@@ -47,7 +49,9 @@ class UI {
     .setRange(0, 480).setValue(120)
     .moveTo(menuGroup);
     
-    cp5.addRadioButton("division").setItemsPerRow(4).addItem("by 1", 1).addItem("by 2", 2).addItem("by 3", 3).addItem("by 4", 4)
+    cp5.addRadioButton("division")
+    .setItemsPerRow(4).addItem("by 1", 1).addItem("by 2", 2).addItem("by 3", 3).addItem("by 4", 4)
+    //.toggle(3) method not yet implemented
     .setSpacingColumn(padding*2)
     .setPosition(0, padding * 5 + sliderHeight * 4)
     .setSize(sliderHeight, sliderHeight)
@@ -63,6 +67,15 @@ class UI {
     .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding - buttonHeight)
     .setSize(buttonWidth, buttonHeight);
     
+    cp5.addButton("save").setValue(0)
+    .setPosition(screenWidth - uiWidth - padding, screenHeight - padding * 2 - buttonHeight * 2)
+    .setSize(buttonWidth, buttonHeight);
+    cp5.addButton("load").setValue(0)
+    .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding * 2 - buttonHeight * 2)
+    .setSize(buttonWidth, buttonHeight);
+  }
+  
+  private void addTrackLabels() {
     Iterator<Map.Entry<String, Track>> iterator = sequencer.sortedTracks.iterator();
     int index = 0;
     while (iterator.hasNext()) {
@@ -71,7 +84,7 @@ class UI {
       .addLabel(track.id)
       .setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate)
       .setColor(track.trackColor)
-      .setPosition(screenWidth - uiWidth - padding, screenHeight - padding - buttonHeight - padding - padding * index);
+      .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * index);
       trackLabels[index] = trackLabel;
       index++;
     }
