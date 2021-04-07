@@ -73,6 +73,10 @@ class UI {
     cp5.addButton("load").setValue(0)
     .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding * 2 - buttonHeight * 2)
     .setSize(buttonWidth, buttonHeight);
+    
+    cp5.addButton("visualization").setLabel("V")
+    .setPosition(padding, screenHeight - buttonHeight - padding)
+    .setSize(buttonHeight, buttonHeight);
   }
   
   private void addTrackLabels() {

@@ -8,7 +8,6 @@ Functions
 	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 UI
-	- Animate the beat dot
 	- Implement radial visualization
 	- Implement polygonal visualization
 Support Akai midi mix

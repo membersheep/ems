@@ -104,6 +104,10 @@ public void output() {
   midiBus.addOutput(name);
 }
 
+public void visualization() {
+  sequencer.visualization = (sequencer.visualization + 1)%3;
+}
+
 // MIDI CALLBACKS
 
 void rawMidi(byte[] data) {  

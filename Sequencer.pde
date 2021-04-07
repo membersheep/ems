@@ -7,6 +7,7 @@ class Sequencer implements ClockListener {
   MidiBus midiBus;
   public int tick = 0;
   boolean isPlaying = false;
+  int visualization = 0; // 0 circular - 1 radial - 2 polygonal
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
@@ -53,6 +54,12 @@ class Sequencer implements ClockListener {
   }
   
   void drawTracks() {
+    if (visualization == 0) {
+      drawCircularTracks();
+    }
+  }
+  
+  void drawCircularTracks() {
     ellipseMode(CENTER);
     noFill();
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
