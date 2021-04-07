@@ -3,8 +3,7 @@
 ## TODO
 v0.1
 Functions
-	- Save pattern menu: 8 slots (square buttons) to save the current pattern to
-	- Load pattern menu: 8 slots (square buttons) to load the current pattern from
+	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Detect and fix crash when modifying a sequence while playing
 	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
@@ -21,7 +20,9 @@ Support Akai midi mix
 Raspberry embedded version
 
 v0.2
-- Add settings: allow to select midi note number and midi channel for each track
+- Save pattern menu: 8 slots (square buttons) to save the current pattern to
+- Load pattern menu: 8 slots (square buttons) to load the current pattern from
+- Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
 - Get inputs only from the selected midi controller
 

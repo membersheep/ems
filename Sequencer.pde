@@ -77,30 +77,25 @@ class Sequencer implements ClockListener {
       for(int i = 0; i < trackLength; i++) {
         int stepVelocity = steps[i];
         color stepColor;
+        if (stepVelocity == 0) {
+          stepColor = entry.getValue().trackColor;
+        } else {
+          stepColor = Color.WHITE.getRGB();
+        }
         float x = radius/2 * sin(angle*i) + screenHeight/2;
         float y = radius/2 * -cos(angle*i) + screenHeight/2;
-        if (i == currentStepIndex) {
-          if (stepVelocity == 0) {
-            stepColor = entry.getValue().trackColor;
-            fill(stepColor);
-            ellipse(x, y, 24, 24);
-          } else {
-            stepColor = Color.WHITE.getRGB();
-            fill(stepColor);
-            ellipse(x, y, 24, 24);
-          }
+        float size;
+        if (i == currentStepIndex) { 
+          size = 24; 
         } else {
           if (stepVelocity == 0) {
-            stepColor = entry.getValue().trackColor;
-            fill(stepColor);
-            ellipse(x, y, 8, 8);
+            size = 8; 
           } else {
-            stepColor = Color.WHITE.getRGB();
-            fill(stepColor);
-            float stepRadius = ((float)stepVelocity) / 127.0 * 16.0;
-            ellipse(x, y, stepRadius, stepRadius);
+            size = ((float)stepVelocity) / 127.0 * 16.0;
           }
         }
+        fill(stepColor);
+        ellipse(x, y, size, size);
       }
       index++;
     }
