@@ -2,14 +2,18 @@
 
 ## TODO
 v0.1
+UI
+	- Implement radial visualization
+		for each track
+			get steps
+				draw bar from center to step position
+				draw white bar for current step?
+	- Implement polygonal visualization
 Functions
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Detect and fix crash when modifying a sequence while playing
 	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
-UI
-	- Implement radial visualization
-	- Implement polygonal visualization
 Support Akai midi mix
 	- Add 4 tracks
 	- Accents
