@@ -3,6 +3,7 @@ import themidibus.*;
 class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
+  LinkedList<Map.Entry<String, Track>> reversedTracks;
   int maxSteps = 32;
   MidiBus midiBus;
   public int tick = 0;
@@ -13,8 +14,8 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK", 1, 60, 0, 0, 0, 0, color(200,38,53))); //red
-    tracks.put("2", new Track("SNARE", 2, 60, 0, 0, 0, 0, color(255,127,81))); //orange
+    tracks.put("1", new Track("KICK", 1, 60, 10, 5, 0, 0, color(200,38,53))); //red
+    tracks.put("2", new Track("SNARE", 2, 60, 12, 3, 0, 0, color(255,127,81))); //orange
     tracks.put("3", new Track("RIM", 3, 60, 0, 0, 0, 0, color(239,138,23))); //peach
     tracks.put("4", new Track("CLAP", 4, 60, 0, 0, 0, 0, color(242,193,20))); //yellow
     tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
@@ -46,6 +47,14 @@ class Sequencer implements ClockListener {
         }
     });
     sortedTracks = list;
+    LinkedList<Map.Entry<String, Track>> reversedList = new LinkedList<Map.Entry<String, Track>>(tracks.entrySet());
+    Collections.sort(reversedList, new Comparator<Map.Entry<String, Track>>() {
+        @Override
+        public int compare(Map.Entry<String, Track> o1, Map.Entry<String, Track> o2) {
+           return o2.getValue().steps - o1.getValue().steps;      
+        }
+    });
+    reversedTracks = reversedList;
   }
   
   private int activeTracksCount() {
@@ -60,10 +69,40 @@ class Sequencer implements ClockListener {
   }
   
   void drawTracks() {
+    int activeTracksCount = activeTracksCount();
+    // Draw polygon
+    if (drawPolygon) {
+      int index = 1;
+      Iterator<Track> reverseIterator = reversedTracks.iterator();
+      while(reverseIterator.hasNext()) {
+        Track track = reverseIterator.next();
+        int[] steps = track.computedSteps.clone();
+        if (track.steps == 0) {
+          continue;
+        }
+        float radius = screenHeight / (activeTracksCount + 1) * index;
+        noStroke();
+        fill(track.trackColor);
+        beginShape();
+        float angle = TWO_PI / (float)track.steps;
+        for(int j = 0; j < steps.length; j++) {
+          int stepVelocity = steps[j];
+          if (stepVelocity != 0) {
+            float x = radius/2 * sin(angle*j) + screenHeight/2;
+            float y = radius/2 * -cos(angle*j) + screenHeight/2;
+            vertex(x,y);
+          }
+        }
+        endShape();
+        noFill();
+        noStroke();
+        index++;
+      }
+    }
+    
     ellipseMode(CENTER);
     noFill();
     int index = 1;
-    int activeTracksCount = activeTracksCount();
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
@@ -80,24 +119,7 @@ class Sequencer implements ClockListener {
         stroke(entry.getValue().trackColor, 64);
         ellipse(screenHeight/2, screenHeight/2, radius, radius);
         noStroke();
-      }
-      // Draw polygon
-      if (drawPolygon) {
-        noStroke();
-        fill(entry.getValue().trackColor);
-        beginShape();
-        float angle = TWO_PI / (float)trackLength;
-        for(int i = 0; i < trackLength; i++) {
-          int stepVelocity = steps[i];
-          if (stepVelocity != 0) {
-            float x = radius/2 * sin(angle*i) + screenHeight/2;
-            float y = radius/2 * -cos(angle*i) + screenHeight/2;
-            vertex(x,y);
-          }
-        }
-        endShape();
-        noFill();
-      }
+      }      
       
       // Draw track steps
       float angle = TWO_PI / (float)trackLength;
