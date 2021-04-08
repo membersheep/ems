@@ -67,6 +67,7 @@ class Sequencer implements ClockListener {
     int activeTracksCount = activeTracksCount();
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
+      int[] steps = entry.getValue().computedSteps.clone();
       int trackLength = entry.getValue().steps;
       if (trackLength == 0) {
         continue;
@@ -85,7 +86,6 @@ class Sequencer implements ClockListener {
         noStroke();
         fill(entry.getValue().trackColor);
         beginShape();
-        int[] steps = entry.getValue().computedSteps;
         float angle = TWO_PI / (float)trackLength;
         for(int i = 0; i < trackLength; i++) {
           int stepVelocity = steps[i];
@@ -102,7 +102,6 @@ class Sequencer implements ClockListener {
       // Draw track steps
       float angle = TWO_PI / (float)trackLength;
       int currentStepIndex = tick % trackLength;
-      int[] steps = entry.getValue().computedSteps;
       for(int i = 0; i < trackLength; i++) {
         int stepVelocity = steps[i];
         color stepColor;
