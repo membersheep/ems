@@ -9,7 +9,7 @@ class Track {
   public int accents;
   public color trackColor;
 
-  int normalVelocity = 110;
+  int normalVelocity = 100;
   int accentVelocity = 127;
   
   public int[] computedSteps;

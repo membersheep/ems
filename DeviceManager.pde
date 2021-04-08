@@ -2,7 +2,7 @@
 
 class DeviceManager {  
   int inputIndex = -1;
-  String inputName = "INTERNAL";
+  String inputName = "";
   int controllerIndex = -1;
   String controllerName = "";
   int outputIndex = -1;

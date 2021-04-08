@@ -65,7 +65,6 @@ public void load() {
 
 public void controller() {
   MidiBus.findMidiDevices();
-  MidiBus.list();
   String name = deviceManager.getNextController();
   int index = deviceManager.getNextControllerIndex();
   if (deviceManager.controllerName != deviceManager.inputName) {
@@ -81,7 +80,6 @@ public void controller() {
 
 public void input() {
   MidiBus.findMidiDevices();
-  MidiBus.list();
   String name = deviceManager.getNextInput();
   int index = deviceManager.getNextInputIndex();
   if (deviceManager.controllerName != deviceManager.inputName) {
@@ -97,7 +95,6 @@ public void input() {
 
 public void output() {
   MidiBus.findMidiDevices();
-  MidiBus.list();
   String name = deviceManager.nextOutput();
   ui.outputButton.setLabel("MIDI OUTPUT: " + name);
   midiBus.clearOutputs();

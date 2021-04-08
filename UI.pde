@@ -92,7 +92,7 @@ class UI {
       Track track = iterator.next().getValue();
       controlP5.Textlabel trackLabel = cp5
       .addLabel(track.id)
-      .setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate)
+      .setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate + "     accent     " + track.accents)
       .setColor(track.trackColor)
       .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * index);
       trackLabels[index] = trackLabel;
