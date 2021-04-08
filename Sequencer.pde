@@ -114,16 +114,16 @@ class Sequencer implements ClockListener {
         float y = radius/2 * -cos(angle*i) + screenHeight/2;
         float size;
         if (i == currentStepIndex) { 
-          size = 24; 
+          size = 16; 
         } else {
           if (stepVelocity == 127) {
-            size = 16; 
+            size = 14; 
           } else {
-            size = 8;
+            size = 10;
           }
         }
         // Draw radius
-        if (drawRadius) {
+        if (drawRadius && stepVelocity != 0) {
           stroke(entry.getValue().trackColor, 64);
           strokeWeight(size/2);
           line(screenHeight/2, screenHeight/2, x, y);
