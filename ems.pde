@@ -104,8 +104,12 @@ public void output() {
   midiBus.addOutput(name);
 }
 
-public void visualization() {
-  sequencer.visualization = (sequencer.visualization + 1)%3;
+public void circular() {
+  sequencer.drawCircle = !sequencer.drawCircle;
+}
+
+public void radial() {
+  sequencer.drawRadius = !sequencer.drawRadius;
 }
 
 // MIDI CALLBACKS
@@ -123,14 +127,38 @@ void rawMidi(byte[] data) {
 
 void controllerChange(ControlChange change) {
   switch (change.number()) {
-    case 1: sequencer.updateTrackBeats("1", change.value()); break;
-    case 2: sequencer.updateTrackBeats("2", change.value()); break;
-    case 3: sequencer.updateTrackBeats("3", change.value()); break;
-    case 4: sequencer.updateTrackBeats("4", change.value()); break;
-    case 5: sequencer.updateTrackOffset("1", change.value()); break;
-    case 6: sequencer.updateTrackOffset("2", change.value()); break;
-    case 7: sequencer.updateTrackOffset("3", change.value()); break;
-    case 8: sequencer.updateTrackOffset("4", change.value()); break;
+    case 16: sequencer.updateTrackBeats("1", change.value()); break;
+    case 17: sequencer.updateTrackOffset("1", change.value()); break;
+    case 18: sequencer.updateTrackAccents("1", change.value()); break;
+    case 19: sequencer.updateTrackLength("1", change.value()); break;
+    case 20: sequencer.updateTrackBeats("2", change.value()); break;
+    case 21: sequencer.updateTrackOffset("2", change.value()); break;
+    case 22: sequencer.updateTrackAccents("2", change.value()); break;
+    case 23: sequencer.updateTrackLength("2", change.value()); break;
+    case 24: sequencer.updateTrackBeats("3", change.value()); break;
+    case 25: sequencer.updateTrackOffset("3", change.value()); break;
+    case 26: sequencer.updateTrackAccents("3", change.value()); break;
+    case 27: sequencer.updateTrackLength("3", change.value()); break;
+    case 28: sequencer.updateTrackBeats("4", change.value()); break;
+    case 29: sequencer.updateTrackOffset("4", change.value()); break;
+    case 30: sequencer.updateTrackAccents("4", change.value()); break;
+    case 31: sequencer.updateTrackLength("4", change.value()); break;
+    case 46: sequencer.updateTrackBeats("5", change.value()); break;
+    case 47: sequencer.updateTrackOffset("5", change.value()); break;
+    case 48: sequencer.updateTrackAccents("5", change.value()); break;
+    case 49: sequencer.updateTrackLength("5", change.value()); break;
+    case 50: sequencer.updateTrackBeats("6", change.value()); break;
+    case 51: sequencer.updateTrackOffset("6", change.value()); break;
+    case 52: sequencer.updateTrackAccents("6", change.value()); break;
+    case 53: sequencer.updateTrackLength("6", change.value()); break;
+    case 54: sequencer.updateTrackBeats("7", change.value()); break;
+    case 55: sequencer.updateTrackOffset("7", change.value()); break;
+    case 56: sequencer.updateTrackAccents("7", change.value()); break;
+    case 57: sequencer.updateTrackLength("7", change.value()); break;
+    case 58: sequencer.updateTrackBeats("8", change.value()); break;
+    case 59: sequencer.updateTrackOffset("8", change.value()); break;
+    case 60: sequencer.updateTrackAccents("8", change.value()); break;
+    case 61: sequencer.updateTrackLength("8", change.value()); break;
     default: break;
   }
   ui.updateTrackLabels();

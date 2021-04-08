@@ -6,28 +6,41 @@ class Track {
   public int steps;
   public int beats;
   public int rotate;
+  public int accents;
   public color trackColor;
 
+  int normalVelocity = 110;
+  int accentVelocity = 127;
+  
   public int[] computedSteps;
+  public int[] computedAccents;
 
-  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, color inColor) {
+  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents,color inColor) {
     id = inId;
     channel = inChannel;
     note = inNote;
     steps = inSteps;
     beats = inBeats;
     rotate = inRotate;
+    accents = inAccents;
     trackColor = inColor;
     computeSteps();
   }
 
   public void computeSteps() {
-    Vector<Boolean> sequence = euclideanSequence();
-
+    Vector<Boolean> sequence = computeEuclideanSequence(beats, steps);
+    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents, beats);
+    
     int[] beats = new int[sequence.capacity()];
+    int beatIndex = 0;
     for (int i = 0; i < sequence.size(); i++) {
       if (sequence.get(i) == true) {
-        beats[i] = 127;
+        if (accentsSequence.get(beatIndex) == true) {
+          beats[i] = accentVelocity;
+        } else {
+          beats[i] = normalVelocity;
+        }
+        beatIndex++;
       } else {
         beats[i] = 0;
       }
@@ -35,8 +48,8 @@ class Track {
     ArrayRightRotation.rotateRight(beats, rotate, steps);
     computedSteps = beats;
   }
-
-  private Vector<Boolean> euclideanSequence() {
+  
+  private Vector<Boolean> computeEuclideanSequence(int beats, int steps) {
     Vector<Boolean> pattern = new Vector<Boolean> ( );
     if ( beats >= steps ) {
       /** Fill every steps with a pulse. */

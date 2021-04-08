@@ -3,18 +3,23 @@ import themidibus.*;
 class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
-  int maxSteps = 32; // TODO: make configurable?
+  int maxSteps = 32;
   MidiBus midiBus;
   public int tick = 0;
   boolean isPlaying = false;
-  int visualization = 0; // 0 circular - 1 radial - 2 polygonal
+  boolean drawCircle = true;
+  boolean drawRadius = false;
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK", 1, 60, 16, 0, 0, color(255,196,61)));
-    tracks.put("2", new Track("SNARE", 2, 60, 16, 0, 0, color(239,71,111)));
-    tracks.put("3", new Track("TOM", 5, 60, 16, 0, 0, color(27,154,170)));
-    tracks.put("4", new Track("HAT", 6, 60, 16, 0, 0, color(178,237,197)));
+    tracks.put("1", new Track("KICK", 1, 60, 2, 1, 0, 0, color(200,38,53))); //red
+    tracks.put("2", new Track("SNARE", 2, 60, 3, 1, 0, 0, color(255,127,81))); //orange
+    tracks.put("3", new Track("RIM", 3, 60, 4, 2, 0, 1, color(239,138,23))); //peach
+    tracks.put("4", new Track("CLAP", 4, 60, 5, 2, 0, 2, color(242,193,20))); //yellow
+    tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
+    tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152)));// green
+    tracks.put("7", new Track("SP2", 7, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
+    tracks.put("8", new Track("CH8", 8, 60, 0, 0, 0, 0, color(255,166,158)));// pink
     sortTracks();
   }
   
@@ -54,12 +59,6 @@ class Sequencer implements ClockListener {
   }
   
   void drawTracks() {
-    if (visualization == 0) {
-      drawCircularTracks();
-    }
-  }
-  
-  void drawCircularTracks() {
     ellipseMode(CENTER);
     noFill();
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
@@ -74,8 +73,11 @@ class Sequencer implements ClockListener {
       // Draw track circle
       float radius = screenHeight / (activeTracksCount + 1) * index;
       noFill();
-      stroke(entry.getValue().trackColor, 64);
-      ellipse(screenHeight/2, screenHeight/2, radius, radius);
+      if (drawCircle) {
+        strokeWeight(24);
+        stroke(entry.getValue().trackColor, 64);
+        ellipse(screenHeight/2, screenHeight/2, radius, radius);
+      }
       // Draw track steps
       noStroke();
       float angle = TWO_PI / (float)trackLength;
@@ -101,6 +103,14 @@ class Sequencer implements ClockListener {
             size = ((float)stepVelocity) / 127.0 * 16.0;
           }
         }
+        // Draw radius
+        if (drawRadius) {
+          stroke(entry.getValue().trackColor, 64);
+          strokeWeight(size/2);
+          line(screenHeight/2, screenHeight/2, x, y);
+          noStroke();
+        }
+        // Draw step
         fill(stepColor);
         ellipse(x, y, size, size);
       }
@@ -143,6 +153,12 @@ class Sequencer implements ClockListener {
     }
   }
   
+  public void updateTrackLength(String id, int value) {
+    tracks.get(id).steps = maxSteps * value / 127;
+    tracks.get(id).computeSteps();
+    sortTracks();
+  }
+  
   public void updateTrackBeats(String id, int value) {
     tracks.get(id).beats = tracks.get(id).steps * value / 127;
     tracks.get(id).computeSteps();
@@ -150,6 +166,11 @@ class Sequencer implements ClockListener {
   
   public void updateTrackOffset(String id, int value) {
     tracks.get(id).rotate = tracks.get(id).steps * value / 127;
+    tracks.get(id).computeSteps();
+  }
+  
+  public void updateTrackAccents(String id, int value) {
+    tracks.get(id).accents = tracks.get(id).beats * value / 127;
     tracks.get(id).computeSteps();
   }
 }

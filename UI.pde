@@ -74,8 +74,11 @@ class UI {
     .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding * 2 - buttonHeight * 2)
     .setSize(buttonWidth, buttonHeight);
     
-    cp5.addButton("visualization").setLabel("V")
+    cp5.addButton("circular").setLabel("C")
     .setPosition(padding, screenHeight - buttonHeight - padding)
+    .setSize(buttonHeight, buttonHeight);
+    cp5.addButton("radial").setLabel("R")
+    .setPosition(padding * 2 + buttonHeight, screenHeight - buttonHeight - padding)
     .setSize(buttonHeight, buttonHeight);
   }
   

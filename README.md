@@ -9,17 +9,18 @@ UI
 				draw bar from center to step position
 				draw white bar for current step?
 	- Implement polygonal visualization
+	- Better accented step visualization
+	- Better active step visualization (try a radial gradient under the step circle)
 Functions
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Detect and fix crash when modifying a sequence while playing
 	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 Support Akai midi mix
-	- Add 4 tracks
-	- Accents
 	- Flam
 	- Mute track
 	- Velocity LFO per track (we could use select track + master volume knob to regulate the lfo modulation amount)
+	- Use lights
 Raspberry embedded version
 
 v0.2
