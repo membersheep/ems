@@ -3,7 +3,8 @@
 ## TODO
 v0.1
 UI
-	- Better active step visualization (try a radial gradient under the step circle)
+	- Larger track texts
+	- Fix polygonal visualization (invert the track sorting to draw correctly)
 Functions
 	- Mute track use notes 01  04  07  10  13  16  19  22
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
@@ -20,7 +21,6 @@ v0.2
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
 - Get inputs only from the selected midi controller
-- Fix polygonal visualization (invert the track sorting to draw correctly)
 
 ## Input
 Akai LPD8
