@@ -19,8 +19,8 @@ class Sequencer implements ClockListener {
     tracks.put("4", new Track("CLAP", 4, 60, 0, 0, 0, 0, color(242,193,20))); //yellow
     tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
     tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152)));// green
-    tracks.put("7", new Track("SP2", 7, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
-    tracks.put("8", new Track("CH8", 8, 60, 0, 0, 0, 0, color(255,166,158)));// pink
+    tracks.put("7", new Track("SP2", 8, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
+    tracks.put("8", new Track("OTHER", 7, 60, 0, 0, 0, 0, color(255,166,158)));// pink
     sortTracks();
   }
   
@@ -62,9 +62,9 @@ class Sequencer implements ClockListener {
   void drawTracks() {
     ellipseMode(CENTER);
     noFill();
-    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     int index = 1;
     int activeTracksCount = activeTracksCount();
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
       int[] steps = entry.getValue().computedSteps.clone();

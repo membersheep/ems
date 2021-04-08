@@ -3,17 +3,13 @@
 ## TODO
 v0.1
 UI
-	- Implement polygonal visualization
-	- Better accented step visualization
 	- Better active step visualization (try a radial gradient under the step circle)
 Functions
+	- Mute track use notes 01  04  07  10  13  16  19  22
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
-	- Detect and fix crash when modifying a sequence while playing
 	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
-Support Akai midi mix
 	- Flam
-	- Mute track
 	- Velocity LFO per track (we could use select track + master volume knob to regulate the lfo modulation amount)
 	- Use lights
 Raspberry embedded version
@@ -24,13 +20,15 @@ v0.2
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
 - Get inputs only from the selected midi controller
+- Fix polygonal visualization (invert the track sorting to draw correctly)
 
 ## Input
-The programs uses the input from any CC message with the following mapping:
+Akai LPD8
 - CC number 1 to 4: set track number beats for tracks from 1 to 4
 - CC number 5 to 8: set track beats rotation for tracks from 1 to 4
 - Note number 36 to 39: decrement track length for tracks from 1 to 4
 - Note number 40 to 43: increment track length for tracks from 1 to 4
+Akai MIDI Mix
 
 ## Output
 ###Tanzmaus mappings
