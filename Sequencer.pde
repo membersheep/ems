@@ -14,8 +14,8 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK", 1, 60, 10, 5, 0, 0, color(200,38,53))); //red
-    tracks.put("2", new Track("SNARE", 2, 60, 12, 3, 0, 0, color(255,127,81))); //orange
+    tracks.put("1", new Track("KICK", 1, 60, 0, 0, 0, 0, color(200,38,53))); //red
+    tracks.put("2", new Track("SNARE", 2, 60, 0, 0, 0, 0, color(255,127,81))); //orange
     tracks.put("3", new Track("RIM", 3, 60, 0, 0, 0, 0, color(239,138,23))); //peach
     tracks.put("4", new Track("CLAP", 4, 60, 0, 0, 0, 0, color(242,193,20))); //yellow
     tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
