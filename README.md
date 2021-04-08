@@ -3,11 +3,6 @@
 ## TODO
 v0.1
 UI
-	- Implement radial visualization
-		for each track
-			get steps
-				draw bar from center to step position
-				draw white bar for current step?
 	- Implement polygonal visualization
 	- Better accented step visualization
 	- Better active step visualization (try a radial gradient under the step circle)

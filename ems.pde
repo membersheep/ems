@@ -112,6 +112,10 @@ public void radial() {
   sequencer.drawRadius = !sequencer.drawRadius;
 }
 
+public void polygonal() {
+  sequencer.drawPolygon = !sequencer.drawPolygon;
+}
+
 // MIDI CALLBACKS
 
 void rawMidi(byte[] data) {  

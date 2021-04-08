@@ -9,13 +9,14 @@ class Sequencer implements ClockListener {
   boolean isPlaying = false;
   boolean drawCircle = true;
   boolean drawRadius = false;
+  boolean drawPolygon = false;
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
     tracks.put("1", new Track("KICK", 1, 60, 2, 1, 0, 0, color(200,38,53))); //red
     tracks.put("2", new Track("SNARE", 2, 60, 3, 1, 0, 0, color(255,127,81))); //orange
-    tracks.put("3", new Track("RIM", 3, 60, 4, 2, 0, 1, color(239,138,23))); //peach
-    tracks.put("4", new Track("CLAP", 4, 60, 5, 2, 0, 2, color(242,193,20))); //yellow
+    tracks.put("3", new Track("RIM", 3, 60, 4, 3, 0, 1, color(239,138,23))); //peach
+    tracks.put("4", new Track("CLAP", 4, 60, 5, 3, 0, 2, color(242,193,20))); //yellow
     tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
     tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152)));// green
     tracks.put("7", new Track("SP2", 7, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
@@ -77,9 +78,28 @@ class Sequencer implements ClockListener {
         strokeWeight(24);
         stroke(entry.getValue().trackColor, 64);
         ellipse(screenHeight/2, screenHeight/2, radius, radius);
+        noStroke();
       }
+      // Draw polygon
+      if (drawPolygon) {
+        noStroke();
+        fill(entry.getValue().trackColor);
+        beginShape();
+        int[] steps = entry.getValue().computedSteps;
+        float angle = TWO_PI / (float)trackLength;
+        for(int i = 0; i < trackLength; i++) {
+          int stepVelocity = steps[i];
+          if (stepVelocity != 0) {
+            float x = radius/2 * sin(angle*i) + screenHeight/2;
+            float y = radius/2 * -cos(angle*i) + screenHeight/2;
+            vertex(x,y);
+          }
+        }
+        endShape();
+        noFill();
+      }
+      
       // Draw track steps
-      noStroke();
       float angle = TWO_PI / (float)trackLength;
       int currentStepIndex = tick % trackLength;
       int[] steps = entry.getValue().computedSteps;

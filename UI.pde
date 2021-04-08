@@ -80,6 +80,9 @@ class UI {
     cp5.addButton("radial").setLabel("R")
     .setPosition(padding * 2 + buttonHeight, screenHeight - buttonHeight - padding)
     .setSize(buttonHeight, buttonHeight);
+    cp5.addButton("polygonal").setLabel("P")
+    .setPosition(padding * 3 + buttonHeight * 2, screenHeight - buttonHeight - padding)
+    .setSize(buttonHeight, buttonHeight);
   }
   
   private void addTrackLabels() {
