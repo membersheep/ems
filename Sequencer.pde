@@ -72,15 +72,15 @@ class Sequencer implements ClockListener {
     int activeTracksCount = activeTracksCount();
     // Draw polygon
     if (drawPolygon) {
-      int index = 1;
-      Iterator<Track> reverseIterator = reversedTracks.iterator();
-      while(reverseIterator.hasNext()) {
-        Track track = reverseIterator.next();
+      int index = 0;
+      Iterator<Map.Entry<String, Track>> iterator = reversedTracks.iterator();
+      while(iterator.hasNext()) {
+        Track track = iterator.next().getValue();
         int[] steps = track.computedSteps.clone();
         if (track.steps == 0) {
           continue;
         }
-        float radius = screenHeight / (activeTracksCount + 1) * index;
+        float radius = screenHeight / (activeTracksCount + 1) * (activeTracksCount-index);
         noStroke();
         fill(track.trackColor);
         beginShape();

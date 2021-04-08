@@ -90,11 +90,18 @@ class UI {
     int index = 0;
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
+      controlP5.Textlabel trackNameLabel = cp5
+      .addLabel(track.id + index)
+      .setText(track.id)
+      .setColor(track.trackColor)
+      .setFont(createFont("Courier", 20))
+      .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * index);
       controlP5.Textlabel trackLabel = cp5
       .addLabel(track.id)
-      .setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate + "     accent     " + track.accents)
+      .setText(String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents))
       .setColor(track.trackColor)
-      .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * index);
+      .setFont(createFont("Courier", 20))
+      .setPosition(screenWidth - uiWidth + padding * 4, padding * 2 + padding * index);
       trackLabels[index] = trackLabel;
       index++;
     }
@@ -105,7 +112,7 @@ class UI {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       controlP5.Textlabel trackLabel = (controlP5.Textlabel)cp5.getController(track.id);
-      trackLabel.setText(track.id + "     steps     " + track.steps + "     beats     " + track.beats + "     rotation     " + track.rotate);
+      trackLabel.setText(String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents));
     }
   }
   

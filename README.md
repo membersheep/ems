@@ -2,9 +2,6 @@
 
 ## TODO
 v0.1
-UI
-	- Larger track texts
-	- Fix polygonal visualization (invert the track sorting to draw correctly)
 Functions
 	- Mute track use notes 01  04  07  10  13  16  19  22
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
