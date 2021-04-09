@@ -101,6 +101,7 @@ public void output() {
   ui.outputButton.setLabel("MIDI OUTPUT: " + name);
   midiBus.clearOutputs();
   if (name != "ALL") {
+    midiBus.addOutput(deviceManager.controllerName);
     midiBus.addOutput(name);
   } else {
     for (int i = 0; i < MidiBus.availableOutputs().length; i++) {

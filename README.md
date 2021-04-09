@@ -3,8 +3,6 @@
 ## TODO
 v0.1
 Functions
-	- Mute lights not working
-	- Avoid removing controller from outputs when changing outputs
 	- Add solo function
 	- shift+recarm to edit LFO
 	- notify while modifying LFO with UI under the tracks
