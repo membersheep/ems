@@ -179,51 +179,75 @@ boolean isShifting = false;
 
 void noteOn(Note note) {
   println("ON note number:" + note.pitch);
+  if (isShifting) {
+    switch (note.pitch()) {
+      case 3: sequencer.editTrackLFO("1"); break;
+      case 6: sequencer.editTrackLFO("2"); break;
+      case 9: sequencer.editTrackLFO("3"); break;
+      case 12: sequencer.editTrackLFO("4"); break;
+      case 15: sequencer.editTrackLFO("5"); break;
+      case 18: sequencer.editTrackLFO("6"); break;
+      case 21: sequencer.editTrackLFO("7"); break;
+      case 24: sequencer.editTrackLFO("8"); break;
+      default: break;
+    }  
+  } else {
+      switch (note.pitch()) {
+        case 1: sequencer.muteTrack("1"); break;
+        case 4: sequencer.muteTrack("2"); break;
+        case 7: sequencer.muteTrack("3"); break;
+        case 10: sequencer.muteTrack("4"); break;
+        case 13: sequencer.muteTrack("5"); break;
+        case 16: sequencer.muteTrack("6"); break;
+        case 19: sequencer.muteTrack("7"); break;
+        case 22: sequencer.muteTrack("8"); break;
+        case 3: sequencer.rollTrack("1"); break;
+        case 6: sequencer.rollTrack("2"); break;
+        case 9: sequencer.rollTrack("3"); break;
+        case 12: sequencer.rollTrack("4"); break;
+        case 15: sequencer.rollTrack("5"); break;
+        case 18: sequencer.rollTrack("6"); break;
+        case 21: sequencer.rollTrack("7"); break;
+        case 24: sequencer.rollTrack("8"); break;
+        case 27: isShifting = true; break;
+        default: break;
+      }
+  }
   switch (note.pitch()) {
-    case 1: sequencer.muteTrack("1"); break;
-    case 4: sequencer.muteTrack("2"); break;
-    case 7: sequencer.muteTrack("3"); break;
-    case 10: sequencer.muteTrack("4"); break;
-    case 13: sequencer.muteTrack("5"); break;
-    case 16: sequencer.muteTrack("6"); break;
-    case 19: sequencer.muteTrack("7"); break;
-    case 22: sequencer.muteTrack("8"); break;
-    case 3: sequencer.rollTrack("1"); break;
-    case 6: sequencer.rollTrack("2"); break;
-    case 9: sequencer.rollTrack("3"); break;
-    case 12: sequencer.rollTrack("4"); break;
-    case 15: sequencer.rollTrack("5"); break;
-    case 18: sequencer.rollTrack("6"); break;
-    case 21: sequencer.rollTrack("7"); break;
-    case 24: sequencer.rollTrack("8"); break;
-    case 2: sequencer.editTrackLFO("1"); break;
-    case 5: sequencer.editTrackLFO("2"); break;
-    case 8: sequencer.editTrackLFO("3"); break;
-    case 11: sequencer.editTrackLFO("4"); break;
-    case 14: sequencer.editTrackLFO("5"); break;
-    case 17: sequencer.editTrackLFO("6"); break;
-    case 20: sequencer.editTrackLFO("7"); break;
-    case 23: sequencer.editTrackLFO("8"); break;
+    case 2: sequencer.soloTrack("1"); break;
+    case 5: sequencer.soloTrack("2"); break;
+    case 8: sequencer.soloTrack("3"); break;
+    case 11: sequencer.soloTrack("4"); break;
+    case 14: sequencer.soloTrack("5"); break;
+    case 17: sequencer.soloTrack("6"); break;
+    case 20: sequencer.soloTrack("7"); break;
+    case 23: sequencer.soloTrack("8"); break;
     case 25: sequencer.masterIncrement(); break;
     case 26: sequencer.masterIncrement(); break;
-    case 27: isShifting = true; break;
     default: break;
-  }
+  } 
   ui.updateTrackLabels();
 }
 
 void noteOff(Note note) {
   println("OFF note number:" + note.pitch);
-  switch (note.pitch()) {
-    case 3: sequencer.rollTrack("1"); break;
-    case 6: sequencer.rollTrack("2"); break;
-    case 9: sequencer.rollTrack("3"); break;
-    case 12: sequencer.rollTrack("4"); break;
-    case 15: sequencer.rollTrack("5"); break;
-    case 18: sequencer.rollTrack("6"); break;
-    case 21: sequencer.rollTrack("7"); break;
-    case 24: sequencer.rollTrack("8"); break;
-    case 27: isShifting = false; break;
-    default: break;
+  if (isShifting) {
+    switch (note.pitch()) {
+      case 27: isShifting = false; break;
+      default: break;
+    }
+  } else {
+    switch (note.pitch()) {
+      case 3: sequencer.rollTrack("1"); break;
+      case 6: sequencer.rollTrack("2"); break;
+      case 9: sequencer.rollTrack("3"); break;
+      case 12: sequencer.rollTrack("4"); break;
+      case 15: sequencer.rollTrack("5"); break;
+      case 18: sequencer.rollTrack("6"); break;
+      case 21: sequencer.rollTrack("7"); break;
+      case 24: sequencer.rollTrack("8"); break;
+      case 27: isShifting = false; break;
+      default: break;
+    }
   }
 }

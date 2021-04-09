@@ -4,7 +4,6 @@
 v0.1
 Functions
 	- Add solo function
-	- shift+recarm to edit LFO
 	- notify while modifying LFO with UI under the tracks
 	- use bank lights to A/B
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)

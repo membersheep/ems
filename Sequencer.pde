@@ -184,22 +184,18 @@ class Sequencer implements ClockListener {
         }
         midiBus.sendNoteOn(track.channel, track.note, velocity);
         midiBus.sendNoteOff(track.channel, track.note, velocity);
-        midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127);
+        if (isEditingTrackId == "") {
+          midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127); // blink track light
+        }
       }
     }
   }
   
   @Override 
   void tock() {
-    // Turn off lights
-    midiBus.sendNoteOn(0, 3, 0);
-    midiBus.sendNoteOn(0, 6, 0);
-    midiBus.sendNoteOn(0, 9, 0);
-    midiBus.sendNoteOn(0, 12, 0);
-    midiBus.sendNoteOn(0, 15, 0);
-    midiBus.sendNoteOn(0, 18, 0);
-    midiBus.sendNoteOn(0, 21, 0);
-    midiBus.sendNoteOn(0, 24, 0);
+    if (isEditingTrackId == "") {
+      turnOffBeatLights();
+    }
   }
   
   @Override 
@@ -214,6 +210,21 @@ class Sequencer implements ClockListener {
         midiBus.sendNoteOff(track.channel, track.note, track.normalVelocity);
       }
     }
+  }
+  
+  private void turnOffBeatLights() {
+    midiBus.sendNoteOn(0, 3, 0);
+    midiBus.sendNoteOn(0, 6, 0);
+    midiBus.sendNoteOn(0, 9, 0);
+    midiBus.sendNoteOn(0, 12, 0);
+    midiBus.sendNoteOn(0, 15, 0);
+    midiBus.sendNoteOn(0, 18, 0);
+    midiBus.sendNoteOn(0, 21, 0);
+    midiBus.sendNoteOn(0, 24, 0);
+  }
+  
+  private void turnOnBeatLightFor(String id) {
+    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote + 2, 127);
   }
   
   public void incrementTrackLength(String id) {
@@ -259,14 +270,23 @@ class Sequencer implements ClockListener {
     midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
   }
   
-  public void rollTrack(String id) {
+  public void soloTrack(String id) {
+    tracks.get(id).isMuted = !tracks.get(id).isMuted;
+    int velocity = tracks.get(id).isMuted ? 127 : 0;
+    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
+  }
+  
+  public void rollTrack(String id) {println("ROLL");
     tracks.get(id).isRolling = !tracks.get(id).isRolling;
   }
   
   public void editTrackLFO(String id) {
-    if (isEditingTrackId == "") {
+    if (isEditingTrackId == "") { // start editing
       isEditingTrackId = id;
-    } else {
+      turnOffBeatLights();
+      turnOnBeatLightFor(id);
+    } else { // end editing
+      turnOffBeatLights();
       isEditingTrackId = "";
     }
   }
