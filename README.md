@@ -4,8 +4,7 @@
 v0.1
 Functions
 	- Add solo function
-	- notify while modifying LFO with UI under the tracks
-	- use bank lights to A/B
+	- while modifying LFO display a UI under the tracks
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
@@ -19,6 +18,7 @@ UI
 Raspberry embedded version
 
 v0.2
+- Allow to sync LFO to tick
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track

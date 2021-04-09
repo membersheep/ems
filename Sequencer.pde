@@ -291,27 +291,19 @@ class Sequencer implements ClockListener {
     }
   }
   
-  public void updateMasterFader(int value) {
+  public void updateLFOAmount(int value) {
     if (isEditingTrackId == "") {
       return;
     } else {
-      tracks.get(isEditingTrackId).lfoAmount = 25 * value / 127; // lfo amount value from -25 to +25
+      tracks.get(isEditingTrackId).lfoAmount = 27 * value / 127;
     }
   }
   
-  public void masterIncrement() {
+  public void updateLFOPeriod(int value) {
     if (isEditingTrackId == "") {
       return;
-    } else {
-      tracks.get(isEditingTrackId).lfoPeriod = tracks.get(isEditingTrackId).lfoPeriod + 1;
-    }
-  }
-  
-  public void masterDecrement() {
-    if (isEditingTrackId == "") {
-      return;
-    } else if (tracks.get(isEditingTrackId).lfoPeriod > 1) {
-      tracks.get(isEditingTrackId).lfoPeriod = tracks.get(isEditingTrackId).lfoPeriod - 1;
+    } else if (value > 0) {
+      tracks.get(isEditingTrackId).lfoPeriod = value; 
     }
   }
 }
