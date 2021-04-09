@@ -5,11 +5,15 @@ v0.1
 Functions
 	- Mute track use notes 01  04  07  10  13  16  19  22
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
-	- Allow multiple midi outputs (add ALL OUTPUTS option to add all midi devices)
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 	- Flam
 	- Velocity LFO per track (we could use select track + master volume knob to regulate the lfo modulation amount)
 	- Use lights
+
+MUTE 01  04  07  10  13  16  19  22
+SOLO 02  04  08  11  14  17  20  23
+REC ARM Buttons03  06  09  12  15  18  21  24
+
 Raspberry embedded version
 
 v0.2

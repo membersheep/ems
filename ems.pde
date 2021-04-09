@@ -98,7 +98,13 @@ public void output() {
   String name = deviceManager.nextOutput();
   ui.outputButton.setLabel("MIDI OUTPUT: " + name);
   midiBus.clearOutputs();
-  midiBus.addOutput(name);
+  if (name != "ALL") {
+    midiBus.addOutput(name);
+  } else {
+    for (int i = 0; i < MidiBus.availableOutputs().length; i++) {
+      midiBus.addOutput(MidiBus.availableOutputs()[i]);
+    }
+  }
 }
 
 public void circular() {

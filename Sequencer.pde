@@ -21,7 +21,7 @@ class Sequencer implements ClockListener {
     tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
     tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152)));// green
     tracks.put("7", new Track("SP2", 8, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
-    tracks.put("8", new Track("OTHER", 7, 60, 0, 0, 0, 0, color(255,166,158)));// pink
+    tracks.put("8", new Track("OTHER", 10, 60, 0, 0, 0, 0, color(255,166,158)));// pink
     sortTracks();
   }
   
