@@ -166,7 +166,7 @@ class Sequencer implements ClockListener {
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      if (track.steps < 1) { continue; }
+      if (track.steps < 1 || track.isMuted) { continue; }
       int[] steps = track.computedSteps;
       int index = tick % track.steps;
       int velocity = steps[index];
@@ -213,5 +213,9 @@ class Sequencer implements ClockListener {
   public void updateTrackAccents(String id, int value) {
     tracks.get(id).accents = tracks.get(id).beats * value / 127;
     tracks.get(id).computeSteps();
+  }
+  
+  public void muteTrack(String id) {
+    tracks.get(id).isMuted = !tracks.get(id).isMuted;
   }
 }

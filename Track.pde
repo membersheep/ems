@@ -8,6 +8,7 @@ class Track {
   public int rotate;
   public int accents;
   public color trackColor;
+  public boolean isMuted = false;
 
   int normalVelocity = 100;
   int accentVelocity = 127;
@@ -15,7 +16,7 @@ class Track {
   public int[] computedSteps;
   public int[] computedAccents;
 
-  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents,color inColor) {
+  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor) {
     id = inId;
     channel = inChannel;
     note = inNote;

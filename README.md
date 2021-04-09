@@ -3,7 +3,7 @@
 ## TODO
 v0.1
 Functions
-	- Mute track use notes 01  04  07  10  13  16  19  22
+	- Mute track
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 	- Flam
@@ -21,7 +21,6 @@ v0.2
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
-- Get inputs only from the selected midi controller
 
 ## Input
 Akai LPD8

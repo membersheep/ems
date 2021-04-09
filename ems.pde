@@ -174,14 +174,14 @@ void controllerChange(ControlChange change) {
 void noteOn(Note note) {
   println("Received note number:" + note.pitch);
   switch (note.pitch()) {
-    case 36: sequencer.decrementTrackLength("1"); break;
-    case 37: sequencer.decrementTrackLength("2"); break;
-    case 38: sequencer.decrementTrackLength("3"); break;
-    case 39: sequencer.decrementTrackLength("4"); break;
-    case 40: sequencer.incrementTrackLength("1"); break;
-    case 41: sequencer.incrementTrackLength("2"); break;
-    case 42: sequencer.incrementTrackLength("3"); break;
-    case 43: sequencer.incrementTrackLength("4"); break;
+    case 1: sequencer.muteTrack("1"); break;
+    case 4: sequencer.muteTrack("2"); break;
+    case 7: sequencer.muteTrack("3"); break;
+    case 10: sequencer.muteTrack("4"); break;
+    case 13: sequencer.muteTrack("5"); break;
+    case 16: sequencer.muteTrack("6"); break;
+    case 19: sequencer.muteTrack("7"); break;
+    case 22: sequencer.muteTrack("8"); break;
     default: break;
   }
   ui.updateTrackLabels();
