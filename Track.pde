@@ -9,6 +9,7 @@ class Track {
   public int accents;
   public color trackColor;
   public boolean isMuted = false;
+  public boolean isSolo = false;
   public boolean isRolling = false;
   public int rollPeriod = 2; // when rolling, play a note every *rollPeriod* pulses
   public int lfoPeriod = 32; // period in ticks, from 0 to 127

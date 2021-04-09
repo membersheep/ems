@@ -224,14 +224,14 @@ void noteOn(Note note) {
     }
   }
   switch (note.pitch()) {
-    case 2: sequencer.soloTrack("1"); break;
-    case 5: sequencer.soloTrack("2"); break;
-    case 8: sequencer.soloTrack("3"); break;
-    case 11: sequencer.soloTrack("4"); break;
-    case 14: sequencer.soloTrack("5"); break;
-    case 17: sequencer.soloTrack("6"); break;
-    case 20: sequencer.soloTrack("7"); break;
-    case 23: sequencer.soloTrack("8"); break;
+    case 2: sequencer.addSoloTrack("1"); break;
+    case 5: sequencer.addSoloTrack("2"); break;
+    case 8: sequencer.addSoloTrack("3"); break;
+    case 11: sequencer.addSoloTrack("4"); break;
+    case 14: sequencer.addSoloTrack("5"); break;
+    case 17: sequencer.addSoloTrack("6"); break;
+    case 20: sequencer.addSoloTrack("7"); break;
+    case 23: sequencer.addSoloTrack("8"); break;
     default: break;
   } 
   ui.updateTrackLabels();
@@ -241,7 +241,10 @@ void noteOff(Note note) {
   println("OFF note number:" + note.pitch);
   if (isShifting) {
     switch (note.pitch()) {
-      case 27: isShifting = false; break;
+      case 27: 
+        isShifting = false;
+        sequencer.clearSoloTracks();
+        break;
       default: break;
     }
   } else {
@@ -258,4 +261,15 @@ void noteOff(Note note) {
       default: break;
     }
   }
+  switch (note.pitch()) {
+    case 2: sequencer.removeSoloTrack("1"); break;
+    case 5: sequencer.removeSoloTrack("2"); break;
+    case 8: sequencer.removeSoloTrack("3"); break;
+    case 11: sequencer.removeSoloTrack("4"); break;
+    case 14: sequencer.removeSoloTrack("5"); break;
+    case 17: sequencer.removeSoloTrack("6"); break;
+    case 20: sequencer.removeSoloTrack("7"); break;
+    case 23: sequencer.removeSoloTrack("8"); break;
+    default: break;
+  } 
 }

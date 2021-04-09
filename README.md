@@ -3,27 +3,26 @@
 ## TODO
 v0.1
 Functions
-	- Add solo function
 	- while modifying LFO display a UI under the tracks
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-	- Refresh input list without restarting. findMidiDevices() is not working as advertised
+	- refresh input list without restarting. findMidiDevices() is not working as advertised
 UI
-	- Draw polygons with bezier curves varying over time
-	- Fix polygon colors sometimes switching
+	- draw polygons with bezier curves varying over time
+	- fix polygon colors sometimes switching
 
 Raspberry embedded version
 
 v0.2
-- Allow to sync LFO to tick
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
 - Flam function (similar to accent but play a flam instead of an accented note). It needs 3 knobs: for beats, rotation and level (2-3-4).
+- Enable/Disable steps by tapping them.
 
 ## Input
 Akai LPD8

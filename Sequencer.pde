@@ -9,6 +9,7 @@ class Sequencer implements ClockListener {
   public int tick = 0;
   public int pulse = 0;
   boolean isPlaying = false;
+  boolean isSoloing = false;
   boolean drawCircle = true;
   boolean drawRadius = false;
   boolean drawPolygon = false;
@@ -169,12 +170,13 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       if (track.steps < 1 || track.isMuted) { continue; }
+      if (isSoloing && track.isSolo == false) { continue; }
       int[] steps = track.computedSteps;
       int index = tick % track.steps;
       int velocity = steps[index];
       if (velocity > 0) {
         if (track.lfoAmount > 0) {
-          double degrees = (double)((pulse % track.lfoPeriod) * 360 / track.lfoPeriod);
+          double degrees = (double)((tick % track.lfoPeriod) * 360 / track.lfoPeriod);
           double radians = Math.toRadians(degrees);
           int modifier = (int)(Math.sin(radians) * track.lfoAmount);
           velocity = velocity + modifier;
@@ -270,13 +272,40 @@ class Sequencer implements ClockListener {
     midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
   }
   
-  public void soloTrack(String id) {
-    tracks.get(id).isMuted = !tracks.get(id).isMuted;
-    int velocity = tracks.get(id).isMuted ? 127 : 0;
-    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
+  public void addSoloTrack(String id) {
+    tracks.get(id).isSolo = true;
+    boolean hasSoloTrack = false;
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      if (iterator.next().getValue().isSolo) {
+        hasSoloTrack = true;
+      }
+    }
+    isSoloing = hasSoloTrack;
   }
   
-  public void rollTrack(String id) {println("ROLL");
+  public void removeSoloTrack(String id) {
+    tracks.get(id).isSolo = false;
+    boolean hasSoloTrack = false;
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      if (iterator.next().getValue().isSolo) {
+        hasSoloTrack = true;
+      }
+    }
+    isSoloing = hasSoloTrack;
+  }
+  
+  public void clearSoloTracks() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      track.isSolo = false;
+    }
+    isSoloing = false;
+  }
+  
+  public void rollTrack(String id) {
     tracks.get(id).isRolling = !tracks.get(id).isRolling;
   }
   
