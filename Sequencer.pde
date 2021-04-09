@@ -160,6 +160,29 @@ class Sequencer implements ClockListener {
       }
       index++;
     }
+    
+    drawLFO();
+  }
+  
+  void drawLFO() {
+    if (isEditingTrackId != "") {
+      Track track = tracks.get(isEditingTrackId);
+      stroke(track.trackColor);
+      strokeWeight(2);
+      int x = (int)screenWidth - 300;
+      int y = (int)screenHeight - 200;
+      int lineSpacing = 4;
+      float period = 300.0 / 127.0 * track.lfoPeriod;
+      double degrees = (double)((tick % track.lfoPeriod) * 360 / track.lfoPeriod);
+      float a = (float)Math.toRadians(degrees);
+      float increment = TWO_PI/period * lineSpacing;
+      int amp = track.lfoAmount * 2;
+      for (int i = 0; i < 300; i = i + lineSpacing) {
+        line(x+i, y, x+i, y + -sin(a) * amp);
+        a = a + increment;
+      }
+      noStroke();
+    }
   }
 
   @ Override

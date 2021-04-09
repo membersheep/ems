@@ -3,16 +3,17 @@
 ## TODO
 v0.1
 Functions
-	- while modifying LFO display a UI under the tracks
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-	- refresh input list without restarting. findMidiDevices() is not working as advertised
 UI
 	- draw polygons with bezier curves varying over time
 	- fix polygon colors sometimes switching
+Known bugs
+	- impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
+	- polygon wrong colors on tracks
 
 Raspberry embedded version
 

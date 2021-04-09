@@ -188,7 +188,6 @@ void controllerChange(ControlChange change) {
 boolean isShifting = false;
 
 void noteOn(Note note) {
-  println("ON note number:" + note.pitch);
   if (isShifting) {
     switch (note.pitch()) {
       case 3: sequencer.editTrackLFO("1"); break;
@@ -238,7 +237,6 @@ void noteOn(Note note) {
 }
 
 void noteOff(Note note) {
-  println("OFF note number:" + note.pitch);
   if (isShifting) {
     switch (note.pitch()) {
       case 27: 
