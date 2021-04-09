@@ -2,6 +2,8 @@
 
 ## TODO
 v0.1
+UI
+	- Draw polygons with bezier curves varying over time
 Functions
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
@@ -10,6 +12,7 @@ Functions
 		- muted tracks (mute button light on)
 		- note played (mute button light on-off when note is played)
 		- lfo frequency (rec arm button light blinking with lfo period)
+		- blink bank lights when editing LFO
 
 MUTE 01  04  07  10  13  16  19  22
 SOLO 02  04  08  11  14  17  20  23

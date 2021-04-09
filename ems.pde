@@ -166,10 +166,13 @@ void controllerChange(ControlChange change) {
     case 59: sequencer.updateTrackOffset("8", change.value()); break;
     case 60: sequencer.updateTrackBeats("8", change.value()); break;
     case 61: sequencer.updateTrackLength("8", change.value()); break;
+    case 62: sequencer.updateMasterFader(change.value()); break; 
     default: break;
   }
   ui.updateTrackLabels();
 }
+
+boolean isShifting = false;
 
 void noteOn(Note note) {
   println("ON note number:" + note.pitch);
@@ -190,6 +193,17 @@ void noteOn(Note note) {
     case 18: sequencer.rollTrack("6"); break;
     case 21: sequencer.rollTrack("7"); break;
     case 24: sequencer.rollTrack("8"); break;
+    case 2: sequencer.editTrackLFO("1"); break;
+    case 5: sequencer.editTrackLFO("2"); break;
+    case 8: sequencer.editTrackLFO("3"); break;
+    case 11: sequencer.editTrackLFO("4"); break;
+    case 14: sequencer.editTrackLFO("5"); break;
+    case 17: sequencer.editTrackLFO("6"); break;
+    case 20: sequencer.editTrackLFO("7"); break;
+    case 23: sequencer.editTrackLFO("8"); break;
+    case 25: sequencer.masterIncrement(); break;
+    case 26: sequencer.masterIncrement(); break;
+    case 27: isShifting = true; break;
     default: break;
   }
   ui.updateTrackLabels();
@@ -206,7 +220,7 @@ void noteOff(Note note) {
     case 18: sequencer.rollTrack("6"); break;
     case 21: sequencer.rollTrack("7"); break;
     case 24: sequencer.rollTrack("8"); break;
+    case 27: isShifting = false; break;
     default: break;
   }
-  ui.updateTrackLabels();
 }

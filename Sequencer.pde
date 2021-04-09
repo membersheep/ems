@@ -7,10 +7,12 @@ class Sequencer implements ClockListener {
   int maxSteps = 32;
   MidiBus midiBus;
   public int tick = 0;
+  public int pulse = 0;
   boolean isPlaying = false;
   boolean drawCircle = true;
   boolean drawRadius = false;
   boolean drawPolygon = false;
+  String isEditingTrackId = "";
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
@@ -171,8 +173,18 @@ class Sequencer implements ClockListener {
       int index = tick % track.steps;
       int velocity = steps[index];
       if (velocity > 0) {
+        if (track.lfoAmount > 0) {
+          double degrees = (double)((pulse % track.lfoPeriod) * 360 / track.lfoPeriod);
+          double radians = Math.toRadians(degrees);
+          int modifier = (int)(Math.sin(radians) * track.lfoAmount);
+          println("deg " + degrees + " sin " + Math.sin(radians) + " amount" + track.lfoAmount + " mod" + modifier);
+          velocity = velocity + modifier;
+          if (velocity > 127) {
+            velocity = 127;
+          }
+        }
+        println("velocity " + velocity);
         midiBus.sendNoteOn(track.channel, track.note, velocity);
-        // We could try to group the on and the off commands to yield for a default gate length among them
         midiBus.sendNoteOff(track.channel, track.note, velocity);
       }
     }
@@ -181,10 +193,11 @@ class Sequencer implements ClockListener {
   @Override 
   void pulse() {
     if (!isPlaying) { return; }
+    pulse++;
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      if (!track.isMuted && track.isRolling) {
+      if (!track.isMuted && track.isRolling && pulse % track.rollPeriod == 0) {
         midiBus.sendNoteOn(track.channel, track.note, track.normalVelocity);
         midiBus.sendNoteOff(track.channel, track.note, track.normalVelocity);
       }
@@ -234,5 +247,37 @@ class Sequencer implements ClockListener {
   
   public void rollTrack(String id) {
     tracks.get(id).isRolling = !tracks.get(id).isRolling;
+  }
+  
+  public void editTrackLFO(String id) {
+    if (isEditingTrackId == "") {
+      isEditingTrackId = id;
+    } else {
+      isEditingTrackId = "";
+    }
+  }
+  
+  public void updateMasterFader(int value) {
+    if (isEditingTrackId == "") {
+      return;
+    } else {
+      tracks.get(isEditingTrackId).lfoAmount = 25 * value / 127; // lfo amount value from -25 to +25
+    }
+  }
+  
+  public void masterIncrement() {
+    if (isEditingTrackId == "") {
+      return;
+    } else {
+      tracks.get(isEditingTrackId).lfoPeriod = tracks.get(isEditingTrackId).lfoPeriod + 1;
+    }
+  }
+  
+  public void masterDecrement() {
+    if (isEditingTrackId == "") {
+      return;
+    } else if (tracks.get(isEditingTrackId).lfoPeriod > 1) {
+      tracks.get(isEditingTrackId).lfoPeriod = tracks.get(isEditingTrackId).lfoPeriod - 1;
+    }
   }
 }

@@ -67,12 +67,12 @@ class UI {
     .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding - buttonHeight)
     .setSize(buttonWidth, buttonHeight);
     
-    cp5.addButton("save").setValue(0)
-    .setPosition(screenWidth - uiWidth - padding, screenHeight - padding * 2 - buttonHeight * 2)
-    .setSize(buttonWidth, buttonHeight);
-    cp5.addButton("load").setValue(0)
-    .setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding * 2 - buttonHeight * 2)
-    .setSize(buttonWidth, buttonHeight);
+    //cp5.addButton("save").setValue(0)
+    //.setPosition(screenWidth - uiWidth - padding, screenHeight - padding * 2 - buttonHeight * 2)
+    //.setSize(buttonWidth, buttonHeight);
+    //cp5.addButton("load").setValue(0)
+    //.setPosition(screenWidth - uiWidth - padding + buttonWidth * 2 + padding * 2, screenHeight - padding * 2 - buttonHeight * 2)
+    //.setSize(buttonWidth, buttonHeight);
     
     cp5.addButton("circular").setLabel("C")
     .setPosition(padding, screenHeight - buttonHeight - padding)
@@ -90,8 +90,7 @@ class UI {
     int index = 0;
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      controlP5.Textlabel trackNameLabel = cp5
-      .addLabel(track.id + index)
+      cp5.addLabel(track.id + index)
       .setText(track.id)
       .setColor(track.trackColor)
       .setFont(createFont("Courier", 20))
