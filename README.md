@@ -2,17 +2,22 @@
 
 ## TODO
 v0.1
+Functions
+	- Mute lights not working
+	- Avoid removing controller from outputs when changing outputs
+	- Add solo function
+	- shift+recarm to edit LFO
+	- notify while modifying LFO with UI under the tracks
+	- use bank lights to A/B
+	- A/B function: bank left button -> A: enables A (immediately) (A led on)
+					bank right button -> B: enables B (immediately) (B led on)
+					shift + A: copy A to B
+					shift + B: copy B to A
+					A + B: chains A and B (both led on)
+	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 UI
 	- Draw polygons with bezier curves varying over time
 	- Fix polygon colors sometimes switching
-Functions
-	- Use lights to indicate
-		- muted tracks (mute button light on)
-		- note played (mute button light on-off when note is played)
-		- lfo frequency (rec arm button light blinking with lfo period)
-		- blink bank lights when editing LFO
-	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
-	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 
 Raspberry embedded version
 

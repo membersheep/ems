@@ -184,8 +184,22 @@ class Sequencer implements ClockListener {
         }
         midiBus.sendNoteOn(track.channel, track.note, velocity);
         midiBus.sendNoteOff(track.channel, track.note, velocity);
+        midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127);
       }
     }
+  }
+  
+  @Override 
+  void tock() {
+    // Turn off lights
+    midiBus.sendNoteOn(0, 3, 0);
+    midiBus.sendNoteOn(0, 6, 0);
+    midiBus.sendNoteOn(0, 9, 0);
+    midiBus.sendNoteOn(0, 12, 0);
+    midiBus.sendNoteOn(0, 15, 0);
+    midiBus.sendNoteOn(0, 18, 0);
+    midiBus.sendNoteOn(0, 21, 0);
+    midiBus.sendNoteOn(0, 24, 0);
   }
   
   @Override 

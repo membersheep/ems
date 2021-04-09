@@ -26,26 +26,30 @@ class Clock {
 
 class MIDIClock {
   public ClockListener listener;
-  public int tick;
+  public int pulse;
   public int division;
   
   public MIDIClock(ClockListener inListener) {
     listener = inListener; 
-    tick = 0;
+    pulse = 0;
     division = 4;
   }
   
   public void pulse() {
     listener.pulse();
-    tick++;
+    pulse++;
     int pulsesPerTick = 24 / division; // 24 - 12 - 8 - 6
-    if (tick % pulsesPerTick == 0) {
+    if (pulse % pulsesPerTick == 0) {
       listener.tick();
+    }
+    if (pulse % pulsesPerTick == pulsesPerTick/2) {
+      listener.tock();
     }
   }
 }
 
 interface ClockListener {
     void tick();
+    void tock();
     void pulse();
 }
