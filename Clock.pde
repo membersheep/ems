@@ -36,6 +36,7 @@ class MIDIClock {
   }
   
   public void pulse() {
+    listener.pulse();
     tick++;
     int pulsesPerTick = 24 / division; // 24 - 12 - 8 - 6
     if (tick % pulsesPerTick == 0) {
@@ -46,4 +47,5 @@ class MIDIClock {
 
 interface ClockListener {
     void tick();
+    void pulse();
 }

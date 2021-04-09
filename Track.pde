@@ -9,6 +9,7 @@ class Track {
   public int accents;
   public color trackColor;
   public boolean isMuted = false;
+  public boolean isRolling = false;
 
   int normalVelocity = 100;
   int accentVelocity = 127;

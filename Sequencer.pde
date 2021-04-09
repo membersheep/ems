@@ -178,6 +178,19 @@ class Sequencer implements ClockListener {
     }
   }
   
+  @Override 
+  void pulse() {
+    if (!isPlaying) { return; }
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      if (!track.isMuted && track.isRolling) {
+        midiBus.sendNoteOn(track.channel, track.note, track.normalVelocity);
+        midiBus.sendNoteOff(track.channel, track.note, track.normalVelocity);
+      }
+    }
+  }
+  
   public void incrementTrackLength(String id) {
     if (tracks.get(id).steps + 1 <= maxSteps) {
       tracks.get(id).steps = tracks.get(id).steps + 1;
@@ -217,5 +230,9 @@ class Sequencer implements ClockListener {
   
   public void muteTrack(String id) {
     tracks.get(id).isMuted = !tracks.get(id).isMuted;
+  }
+  
+  public void rollTrack(String id) {
+    tracks.get(id).isRolling = !tracks.get(id).isRolling;
   }
 }

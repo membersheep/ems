@@ -3,12 +3,13 @@
 ## TODO
 v0.1
 Functions
-	- Mute track
 	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
 	- Refresh input list without restarting. findMidiDevices() is not working as advertised
-	- Flam
 	- Velocity LFO per track (we could use select track + master volume knob to regulate the lfo modulation amount)
-	- Use lights
+	- Use lights to indicate 
+		- muted tracks (mute button light on)
+		- note played (mute button light on-off when note is played)
+		- lfo frequency (rec arm button light blinking with lfo period)
 
 MUTE 01  04  07  10  13  16  19  22
 SOLO 02  04  08  11  14  17  20  23
@@ -21,6 +22,7 @@ v0.2
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
 - Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
+- Flam function (similar to accent but play a flam instead of an accented note). It needs 3 knobs: for beats, rotation and level (2-3-4).
 
 ## Input
 Akai LPD8

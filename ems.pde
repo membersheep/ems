@@ -172,7 +172,7 @@ void controllerChange(ControlChange change) {
 }
 
 void noteOn(Note note) {
-  println("Received note number:" + note.pitch);
+  println("ON note number:" + note.pitch);
   switch (note.pitch()) {
     case 1: sequencer.muteTrack("1"); break;
     case 4: sequencer.muteTrack("2"); break;
@@ -182,6 +182,30 @@ void noteOn(Note note) {
     case 16: sequencer.muteTrack("6"); break;
     case 19: sequencer.muteTrack("7"); break;
     case 22: sequencer.muteTrack("8"); break;
+    case 3: sequencer.rollTrack("1"); break;
+    case 6: sequencer.rollTrack("2"); break;
+    case 9: sequencer.rollTrack("3"); break;
+    case 12: sequencer.rollTrack("4"); break;
+    case 15: sequencer.rollTrack("5"); break;
+    case 18: sequencer.rollTrack("6"); break;
+    case 21: sequencer.rollTrack("7"); break;
+    case 24: sequencer.rollTrack("8"); break;
+    default: break;
+  }
+  ui.updateTrackLabels();
+}
+
+void noteOff(Note note) {
+  println("OFF note number:" + note.pitch);
+  switch (note.pitch()) {
+    case 3: sequencer.rollTrack("1"); break;
+    case 6: sequencer.rollTrack("2"); break;
+    case 9: sequencer.rollTrack("3"); break;
+    case 12: sequencer.rollTrack("4"); break;
+    case 15: sequencer.rollTrack("5"); break;
+    case 18: sequencer.rollTrack("6"); break;
+    case 21: sequencer.rollTrack("7"); break;
+    case 24: sequencer.rollTrack("8"); break;
     default: break;
   }
   ui.updateTrackLabels();
