@@ -94,13 +94,13 @@ class UI {
       .setText(track.id)
       .setColor(track.trackColor)
       .setFont(createFont("Courier", 20))
-      .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * index);
+      .setPosition(screenWidth - uiWidth - padding, padding * 2 + padding * 2 * index);
       controlP5.Textlabel trackLabel = cp5
       .addLabel(track.id)
       .setText(String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents))
       .setColor(track.trackColor)
       .setFont(createFont("Courier", 20))
-      .setPosition(screenWidth - uiWidth + padding * 4, padding * 2 + padding * index);
+      .setPosition(screenWidth - uiWidth + padding * 4, padding * 2 + padding * 2 * index);
       trackLabels[index] = trackLabel;
       index++;
     }

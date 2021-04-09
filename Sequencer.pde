@@ -358,4 +358,12 @@ class Sequencer implements ClockListener {
       tracks.get(isEditingTrackId).lfoPeriod = value; 
     }
   }
+  
+  public void switchToA() {
+    
+  }
+  
+  public void switchToB() {
+    
+  }
 }

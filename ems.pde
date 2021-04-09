@@ -218,6 +218,8 @@ void noteOn(Note note) {
       case 18: sequencer.rollTrack("6"); break;
       case 21: sequencer.rollTrack("7"); break;
       case 24: sequencer.rollTrack("8"); break;
+      case 25: sequencer.switchToA(); break;
+      case 26: sequencer.switchToB(); break;
       case 27: isShifting = true; break;
       default: break;
     }
