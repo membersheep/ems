@@ -4,19 +4,15 @@
 v0.1
 UI
 	- Draw polygons with bezier curves varying over time
+	- Fix polygon colors sometimes switching
 Functions
-	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
-	- Refresh input list without restarting. findMidiDevices() is not working as advertised
-	- Velocity LFO per track (we could use select track + master volume knob to regulate the lfo modulation amount)
-	- Use lights to indicate 
+	- Use lights to indicate
 		- muted tracks (mute button light on)
 		- note played (mute button light on-off when note is played)
 		- lfo frequency (rec arm button light blinking with lfo period)
 		- blink bank lights when editing LFO
-
-MUTE 01  04  07  10  13  16  19  22
-SOLO 02  04  08  11  14  17  20  23
-REC ARM Buttons03  06  09  12  15  18  21  24
+	- A/B function: A button, B button, A->B button to toggle chaining, copy to A/B button
+	- Refresh input list without restarting. findMidiDevices() is not working as advertised
 
 Raspberry embedded version
 

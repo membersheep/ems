@@ -69,12 +69,14 @@ public void controller() {
   int index = deviceManager.getNextControllerIndex();
   if (deviceManager.controllerName != deviceManager.inputName) {
     midiBus.removeInput(deviceManager.controllerName);
+    midiBus.removeOutput(deviceManager.controllerName);
   }
   ui.controllerButton.setLabel("MIDI CONTROLLER: " + name);
   deviceManager.controllerName = name;
   deviceManager.controllerIndex = index;
   if (name != deviceManager.inputName) {
     midiBus.addInput(name);
+    midiBus.addOutput(name);
   }
 }
 

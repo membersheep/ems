@@ -13,6 +13,7 @@ class Track {
   public int rollPeriod = 2; // when rolling, play a note every *rollPeriod* pulses
   public int lfoPeriod = 24; // period in pulses
   public int lfoAmount = 0; // -25 - +25
+  public int controllerLightNote;
 
   int normalVelocity = 100;
   int accentVelocity = 127;
@@ -20,7 +21,7 @@ class Track {
   public int[] computedSteps;
   public int[] computedAccents;
 
-  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor) {
+  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor, int inControllerLightNote) {
     id = inId;
     channel = inChannel;
     note = inNote;
@@ -29,6 +30,7 @@ class Track {
     rotate = inRotate;
     accents = inAccents;
     trackColor = inColor;
+    controllerLightNote = inControllerLightNote;
     computeSteps();
   }
 

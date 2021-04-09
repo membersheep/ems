@@ -48,12 +48,9 @@ class DeviceManager {
     if (MidiBus.availableOutputs().length > outputIndex + 1) {
       outputIndex = outputIndex + 1;
       outputName = MidiBus.availableOutputs()[outputIndex];
-    } else if (MidiBus.availableOutputs().length > 0) {
-      outputIndex = 0;
-      outputName = MidiBus.availableOutputs()[0];
     } else {
       outputIndex = -1;
-      outputName = "";
+      outputName = "ALL";
     }
     return outputName;
   }

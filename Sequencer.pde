@@ -16,14 +16,14 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK", 1, 60, 0, 0, 0, 0, color(200,38,53))); //red
-    tracks.put("2", new Track("SNARE", 2, 60, 0, 0, 0, 0, color(255,127,81))); //orange
-    tracks.put("3", new Track("RIM", 3, 60, 0, 0, 0, 0, color(239,138,23))); //peach
-    tracks.put("4", new Track("CLAP", 4, 60, 0, 0, 0, 0, color(242,193,20))); //yellow
-    tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95)));// blue
-    tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152)));// green
-    tracks.put("7", new Track("SP2", 8, 60, 0, 0, 0, 0, color(117,159,188)));// light blue
-    tracks.put("8", new Track("OTHER", 10, 60, 0, 0, 0, 0, color(255,166,158)));// pink
+    tracks.put("1", new Track("KICK", 1, 60, 0, 0, 0, 0, color(200,38,53), 1)); //red
+    tracks.put("2", new Track("SNARE", 2, 60, 0, 0, 0, 0, color(255,127,81), 4)); //orange
+    tracks.put("3", new Track("RIM", 3, 60, 0, 0, 0, 0, color(239,138,23), 7)); //peach
+    tracks.put("4", new Track("CLAP", 4, 60, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
+    tracks.put("5", new Track("TOM", 5, 60, 0, 0, 0, 0, color(17,75,95), 13));// blue
+    tracks.put("6", new Track("SP1", 6, 60, 0, 0, 0, 0, color(136,212,152), 16));// green
+    tracks.put("7", new Track("SP2", 8, 60, 0, 0, 0, 0, color(117,159,188), 19));// light blue
+    tracks.put("8", new Track("OTHER", 10, 60, 0, 0, 0, 0, color(255,166,158), 22));// pink
     sortTracks();
   }
   
@@ -177,13 +177,11 @@ class Sequencer implements ClockListener {
           double degrees = (double)((pulse % track.lfoPeriod) * 360 / track.lfoPeriod);
           double radians = Math.toRadians(degrees);
           int modifier = (int)(Math.sin(radians) * track.lfoAmount);
-          println("deg " + degrees + " sin " + Math.sin(radians) + " amount" + track.lfoAmount + " mod" + modifier);
           velocity = velocity + modifier;
           if (velocity > 127) {
             velocity = 127;
           }
         }
-        println("velocity " + velocity);
         midiBus.sendNoteOn(track.channel, track.note, velocity);
         midiBus.sendNoteOff(track.channel, track.note, velocity);
       }
@@ -243,6 +241,8 @@ class Sequencer implements ClockListener {
   
   public void muteTrack(String id) {
     tracks.get(id).isMuted = !tracks.get(id).isMuted;
+    int velocity = tracks.get(id).isMuted ? 127 : 0;
+    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
   }
   
   public void rollTrack(String id) {
