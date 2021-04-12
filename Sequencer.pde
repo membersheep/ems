@@ -252,6 +252,8 @@ class Sequencer implements ClockListener {
     midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote + 2, 127);
   }
   
+  // LENGTH
+  
   public void incrementTrackLength(String id) {
     if (tracks.get(id).steps + 1 <= maxSteps) {
       tracks.get(id).steps = tracks.get(id).steps + 1;
@@ -274,20 +276,42 @@ class Sequencer implements ClockListener {
     sortTracks();
   }
   
+  // BEATS
+  
   public void updateTrackBeats(String id, int value) {
     tracks.get(id).beats = tracks.get(id).steps * value / 127;
     tracks.get(id).computeSteps();
   }
+  
+  // OFFSET
   
   public void updateTrackOffset(String id, int value) {
     tracks.get(id).rotate = tracks.get(id).steps * value / 127;
     tracks.get(id).computeSteps();
   }
   
+  public void incrementTrackOffset(String id) {
+    if (tracks.get(id).rotate + 1 <= maxSteps) {
+      tracks.get(id).rotate = tracks.get(id).rotate + 1;
+      tracks.get(id).computeSteps();
+    }
+  }
+  
+  public void decrementTrackOffset(String id) {
+    if (tracks.get(id).rotate - 1 >= 0) {
+      tracks.get(id).rotate = tracks.get(id).rotate - 1;
+      tracks.get(id).computeSteps();
+    }
+  }
+  
+  // ACCENTS
+  
   public void updateTrackAccents(String id, int value) {
     tracks.get(id).accents = tracks.get(id).beats * value / 127;
     tracks.get(id).computeSteps();
   }
+  
+  // MUTE/SOLO
   
   public void muteTrack(String id) {
     tracks.get(id).isMuted = !tracks.get(id).isMuted;
@@ -328,9 +352,13 @@ class Sequencer implements ClockListener {
     isSoloing = false;
   }
   
+  // ROLL
+  
   public void rollTrack(String id) {
     tracks.get(id).isRolling = !tracks.get(id).isRolling;
   }
+  
+  // LFO
   
   public void editTrackLFO(String id) {
     if (isEditingTrackId == "") { // start editing
@@ -358,6 +386,8 @@ class Sequencer implements ClockListener {
       tracks.get(isEditingTrackId).lfoPeriod = value; 
     }
   }
+  
+  // A/B
   
   public void switchToA() {
     

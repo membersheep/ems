@@ -10,6 +10,7 @@ Functions
 					A + B: chains A and B (both led on)
 	- Branch con max steps a 16, e controllo dei beats da 0 a 16 non da 0 a length, idem per il rotate e per l'accent
 	- Branch for LPD8+RD8 configuration
+	- Generate and send midi CLOCK
 UI
 	- draw polygons with bezier curves varying over time
 	- Funzione per far ruotare i poligoni con il tick
