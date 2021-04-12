@@ -8,22 +8,23 @@ Functions
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-	- Generate and send midi CLOCK
 UI
-	- draw polygons with bezier curves varying over time
-	- rotate polygons with tick
+	- Rotate polygons with tick
+	- Draw polygons with bezier curves varying over time
+	- Fix polygon wrong colors on tracks
 Known bugs
 	- impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
-	- polygon wrong colors on tracks
 
 Raspberry embedded version
 
 v0.2
+- Draw polygons with bezier curves varying over time
 - Settings: Allow to set max steps
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
-- Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
+- Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer. 
+- Send midi clock.
 - Flam function (similar to accent but play a flam instead of an accented note). It needs 3 knobs: for beats, rotation and level (2-3-4).
 - Enable/Disable steps by tapping them.
 
