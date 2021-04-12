@@ -8,12 +8,10 @@ Functions
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-	- Branch con max steps a 16, e controllo dei beats da 0 a 16 non da 0 a length, idem per il rotate e per l'accent
-	- Branch for LPD8+RD8 configuration
 	- Generate and send midi CLOCK
 UI
 	- draw polygons with bezier curves varying over time
-	- Funzione per far ruotare i poligoni con il tick
+	- rotate polygons with tick
 Known bugs
 	- impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
 	- polygon wrong colors on tracks
@@ -21,6 +19,7 @@ Known bugs
 Raspberry embedded version
 
 v0.2
+- Settings: Allow to set max steps
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track

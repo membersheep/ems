@@ -279,14 +279,14 @@ class Sequencer implements ClockListener {
   // BEATS
   
   public void updateTrackBeats(String id, int value) {
-    tracks.get(id).beats = tracks.get(id).steps * value / 127;
+    tracks.get(id).beats = maxSteps * value / 127; 
     tracks.get(id).computeSteps();
   }
   
   // OFFSET
   
   public void updateTrackOffset(String id, int value) {
-    tracks.get(id).rotate = tracks.get(id).steps * value / 127;
+    tracks.get(id).rotate = maxSteps * value / 127; 
     tracks.get(id).computeSteps();
   }
   
