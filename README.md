@@ -8,9 +8,11 @@ Functions
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
+	- Branch con max steps a 16, e controllo dei beats da 0 a 16 non da 0 a length, idem per il rotate e per l'accent
+	- Branch for LPD8+RD8 configuration
 UI
 	- draw polygons with bezier curves varying over time
-	- fix polygon colors sometimes switching
+	- Funzione per far ruotare i poligoni con il tick
 Known bugs
 	- impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
 	- polygon wrong colors on tracks
@@ -27,10 +29,10 @@ v0.2
 
 ## Input
 Akai LPD8
-- CC number 1 to 4: set track number beats for tracks from 1 to 4
-- CC number 5 to 8: set track beats rotation for tracks from 1 to 4
-- Note number 36 to 39: decrement track length for tracks from 1 to 4
-- Note number 40 to 43: increment track length for tracks from 1 to 4
+- CC number 1 to 4: set track number length for tracks from 1 to 4
+- CC number 5 to 8: set track beats beats for tracks from 1 to 4
+- Note number 36 to 39: decrement track rotation for tracks from 1 to 4
+- Note number 40 to 43: increment track rotation for tracks from 1 to 4
 Akai MIDI Mix
 
 ## Output
@@ -58,6 +60,7 @@ https://www.geeksforgeeks.org/thue-morse-sequence/
 https://github.com/rmoscowitz/fractal-music
 
 ## EMS Visuals
+Registrare grafica generata dal suono con processing mentre si suona e registrare anche i poligoni col sequencer e poi sovrapporre tutto per fare un visual e farlo montare da morto
 
 https://rbnrpi.wordpress.com/2017/09/20/a-visualiser-for-sonic-pi-3/
 
