@@ -3,6 +3,8 @@
 ## TODO
 v0.1
 Functions
+	- Add all available outputs at startup
+	- Add LPD8 and MIDI Mix inputs if found
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
@@ -10,15 +12,16 @@ Functions
 					A + B: chains A and B (both led on)
 	- Generate and send midi CLOCK
 UI
-	- draw polygons with bezier curves varying over time
-	- rotate polygons with tick
+	- Draw polygons with bezier curves varying over time
+	- Rotate polygons with tick
 Known bugs
-	- impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
-	- polygon wrong colors on tracks
+	- Impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
+	- Polygon wrong colors on tracks
 
 Raspberry embedded version
 
 v0.2
+- Rewrite with java midi instead of midibus library to fix known mmidi bug
 - Settings: Allow to set max steps
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
@@ -28,15 +31,12 @@ v0.2
 - Enable/Disable steps by tapping them.
 
 ## Input
-Akai LPD8
-- CC number 1 to 4: set track number length for tracks from 1 to 4
-- CC number 5 to 8: set track beats beats for tracks from 1 to 4
-- Note number 36 to 39: decrement track rotation for tracks from 1 to 4
-- Note number 40 to 43: increment track rotation for tracks from 1 to 4
-Akai MIDI Mix
+Supported MIDI controllers: 
+- Akai LPD8
+- Akai MIDI Mix
 
 ## Output
-###Tanzmaus mappings
+### Tanzmaus mappings
 MIDI Channels:
 - 1 kick
 - 2 snare
@@ -48,6 +48,10 @@ MIDI Channels:
 - 8 sp2
 - 9 sp2-alt
 Note: 60
+
+### Behringer RD8
+Channel 1, default notes.
+Alredy configured in the rd8 branch.
 
 ## Melodic sequencer
 
