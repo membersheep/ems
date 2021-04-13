@@ -2,32 +2,29 @@
 
 ## TODO
 v0.1
-Functions
-	- Add all available outputs at startup
-	- Add LPD8 and MIDI Mix inputs if found
+- Functions
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
 	- Generate and send midi CLOCK
-UI
+- UI
 	- Draw polygons with bezier curves varying over time
 	- Rotate polygons with tick
-Known bugs
-	- Impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
 	- Polygon wrong colors on tracks
-
-Raspberry embedded version
+- Raspberry embedded version
 
 v0.2
-- Rewrite with java midi instead of midibus library to fix known mmidi bug
+- Rewrite with java midi instead of midibus library to 
+	- Impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
+	- Add all available outputs at startup
+	- Add LPD8 and MIDI Mix inputs if found
 - Settings: Allow to set max steps
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
 - Add settings: allow to select midi note number and midi channel for each track, and to name each track
-- Internal sequencer: write a more consistent internal clock which avoids yielding the current thread. Maybe use the java midi sequencer.
-- Flam function (similar to accent but play a flam instead of an accented note). It needs 3 knobs: for beats, rotation and level (2-3-4).
+- Flam function (similar to accent but play a flam instead of an accented note). It needs 3 additional knobs per track: for beats, rotation and level (2-3-4).
 - Enable/Disable steps by tapping them.
 
 ## Input

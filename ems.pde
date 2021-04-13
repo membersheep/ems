@@ -17,7 +17,7 @@ void setup() {
   frameRate(25);
   MidiBus.list();
   deviceManager = new DeviceManager();
-  midiBus = new MidiBus(this);
+  midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   clock = new Clock(sequencer);
   midiClock = new MIDIClock(sequencer);
@@ -104,9 +104,7 @@ public void output() {
     midiBus.addOutput(deviceManager.controllerName);
     midiBus.addOutput(name);
   } else {
-    for (int i = 0; i < MidiBus.availableOutputs().length; i++) {
-      midiBus.addOutput(MidiBus.availableOutputs()[i]);
-    }
+    deviceManager.addAllOutputs();
   }
 }
 

@@ -54,4 +54,25 @@ class DeviceManager {
     }
     return outputName;
   }
+  
+  public Boolean addAllOutputs() {
+    Boolean found = false;
+    for (int i = 0; i < MidiBus.availableOutputs().length; i++) {
+      midiBus.addOutput(MidiBus.availableOutputs()[i]);
+      found = true;
+    }
+    return found;
+  }
+  
+  // Adds LPD8 and MIDI Mix controllers if found
+  public Boolean addKnownInputs() {
+    Boolean found = false;
+    for (int i = 0; i < MidiBus.availableInputs().length; i++) {
+      if (MidiBus.availableInputs()[i] == "LPD8" || MidiBus.availableInputs()[i] == "MIDI Mix") {
+        midiBus.addInput(MidiBus.availableInputs()[i]);
+        found = true;
+      }
+    }
+    return found;
+  }
 }
