@@ -17,14 +17,14 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK",0, 36, 0, 0, 0, 0, color(200,38,53), 1)); //red
-    tracks.put("2", new Track("SNARE", 0, 40, 0, 0, 0, 0, color(255,127,81), 4)); //orange
-    tracks.put("3", new Track("RIM", 0, 37, 0, 0, 0, 0, color(239,138,23), 7)); //peach
-    tracks.put("4", new Track("CLAP", 0, 39, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
-    tracks.put("5", new Track("TOM", 0, 45, 0, 0, 0, 0, color(17,75,95), 13));// blue
-    tracks.put("6", new Track("SP1", 0, 47, 0, 0, 0, 0, color(136,212,152), 16));// green
-    tracks.put("7", new Track("SP2", 0, 50, 0, 0, 0, 0, color(117,159,188), 19));// light blue
-    tracks.put("8", new Track("OTHER", 0, 42, 0, 0, 0, 0, color(255,166,158), 22));// pink
+    tracks.put("1", new Track("KICK",9, 36, 0, 0, 0, 0, color(200,38,53), 1)); //red
+    tracks.put("2", new Track("SNARE", 9, 40, 0, 0, 0, 0, color(255,127,81), 4)); //orange
+    tracks.put("3", new Track("RIM", 9, 37, 0, 0, 0, 0, color(239,138,23), 7)); //peach
+    tracks.put("4", new Track("CLAP", 9, 39, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
+    tracks.put("5", new Track("TOM", 9, 45, 0, 0, 0, 0, color(17,75,95), 13));// blue
+    tracks.put("6", new Track("SP1", 9, 47, 0, 0, 0, 0, color(136,212,152), 16));// green
+    tracks.put("7", new Track("SP2", 9, 50, 0, 0, 0, 0, color(117,159,188), 19));// light blue
+    tracks.put("8", new Track("OTHER", 9, 42, 0, 0, 0, 0, color(255,166,158), 22));// pink
     sortTracks();
   }
   
