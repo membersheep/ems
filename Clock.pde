@@ -30,6 +30,8 @@ class InternalClock extends Thread {
           continue;
         } 
         listener.pulse();
+        //byte[] pulseMessage= {(byte)0xF8};
+        //midiBus.sendMessage(pulseMessage);
         pulse++;
         int pulsesPerTick = ppqn / division; // 24 - 12 - 8 - 6
         if (pulse % pulsesPerTick == 0) {

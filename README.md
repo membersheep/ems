@@ -3,17 +3,17 @@
 ## TODO
 v0.1
 - Functions
-	- Send midi CLOCK message when internal clock is running
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
+- Raspberry embedded version
+	- Send midi CLOCK message when internal clock is running
 - UI
 	- Draw polygons with bezier curves varying over time
 	- Rotate polygons with tick
 	- Polygon wrong colors on tracks
-- Raspberry embedded version
 
 v0.2
 - Rewrite with java midi instead of midibus library
@@ -27,30 +27,13 @@ v0.2
 - Flam function (similar to accent but play a flam instead of an accented note). It needs 3 additional knobs per track: for beats, rotation and level (2-3-4).
 - Enable/Disable steps by tapping them.
 
-## Input
+## Controllers
 Supported MIDI controllers: 
 - Akai LPD8
 - Akai MIDI Mix
 
-## Output
-### Tanzmaus mappings
-MIDI Channels:
-- 1 kick
-- 2 snare
-- 3 rim
-- 4 clap
-- 5 tom
-- 6 sp1
-- 7 sp1-alt
-- 8 sp2
-- 9 sp2-alt
-Note: 60
-
-### Behringer RD8
-Channel 1, default notes.
-Alredy configured in the rd8 branch.
-
 ## Melodic sequencer
+2 tracks controlled by LPD8
 
 http://gershonwolfe.com/wordpress/?p=104
 

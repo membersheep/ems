@@ -1,5 +1,3 @@
-
-
 class DeviceManager {  
   int inputIndex = -1;
   String inputName = "";
