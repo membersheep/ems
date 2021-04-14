@@ -3,12 +3,12 @@
 ## TODO
 v0.1
 - Functions
+	- Send midi CLOCK message when internal clock is running
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-	- Generate and send midi CLOCK
 - UI
 	- Draw polygons with bezier curves varying over time
 	- Rotate polygons with tick

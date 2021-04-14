@@ -39,7 +39,7 @@ class InternalClock extends Thread {
           listener.tock();
         }
         // calculate real time until next pulse
-        long delay = ((long)pulseInterval*2 - (System.nanoTime() - previousTime));
+        long delay = ((long)pulseInterval*5/3 - (System.nanoTime() - previousTime));
         previousTime = System.nanoTime();
         if (delay > 0) {
           Thread.sleep(delay/1000000);
