@@ -6,30 +6,31 @@ class InternalClock extends Thread {
   int ppqn = 24; // pulses per quarter note MIDI standard value is 24
   
   Boolean isActive = true;
+  Boolean isRunning = true;
   long previousTime; // in ns
   double pulseInterval; // in ns
 
   InternalClock(ClockListener inListener) {
     listener = inListener;
-    pulseInterval = 1000.0 / (bpm / 60.0 * (ppqn/division)) * 1000000; 
+    pulseInterval = 1000.0 / (bpm / 60.0 * ppqn) * 1000000; 
     previousTime = System.nanoTime();
   }
   
   public void setBPM(int newBpm) {
     bpm = newBpm;
-    pulseInterval = 1000.0 / (bpm / 60.0 * (ppqn/division)) * 1000000; 
+    pulseInterval = 1000.0 / (bpm / 60.0 * ppqn) * 1000000; 
   }
 
   void run() {
     try {
       while(isActive) {
+        if (!isRunning) { continue; }
         long timePassed = System.nanoTime() - previousTime;
         if (timePassed < (long)pulseInterval) {
           continue;
         } 
         listener.pulse();
         pulse++;
-        println("pulse " + pulse);
         int pulsesPerTick = ppqn / division; // 24 - 12 - 8 - 6
         if (pulse % pulsesPerTick == 0) {
           listener.tick();

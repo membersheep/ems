@@ -92,10 +92,9 @@ public void input() {
     midiBus.addInput(name);
   }
   if (name == "INTERNAL") {
-    try {internalClock.wait(); }
-    catch (InterruptedException e) { println("force quit..."); }
+    internalClock.isRunning = true;
   } else {
-    internalClock.notify();
+    internalClock.isRunning = false;
   }
 }
 
