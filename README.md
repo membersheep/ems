@@ -16,7 +16,7 @@ v0.1
 - Raspberry embedded version
 
 v0.2
-- Rewrite with java midi instead of midibus library to 
+- Rewrite with java midi instead of midibus library
 	- Impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
 	- Add all available outputs at startup
 	- Add LPD8 and MIDI Mix inputs if found

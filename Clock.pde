@@ -1,28 +1,54 @@
-class Clock {
+class InternalClock extends Thread {
   public ClockListener listener;
-  public int tick;
-  public int bpm;
-  public int division;
-  public long startTime;
+  public int bpm = 120;
+  public int pulse = 0;
+  public int division = 4;
+  int ppqn = 24; // pulses per quarter note MIDI standard value is 24
   
-  public Clock(ClockListener inListener) {
-    listener = inListener; 
-    tick = 0;
-    bpm = 120;
-    division = 4;
-    startTime = millis();
+  Boolean isActive = true;
+  long previousTime; // in ns
+  double pulseInterval; // in ns
+
+  InternalClock(ClockListener inListener) {
+    listener = inListener;
+    pulseInterval = 1000.0 / (bpm / 60.0 * (ppqn/division)) * 1000000; 
+    previousTime = System.nanoTime();
   }
   
-  public void update() {
-    long currentTime = millis();
-    long elapsedTime = currentTime - startTime;
-    int newTick = (int)elapsedTime * bpm * division / 60000;
-    if (tick != newTick) {
-      listener.tick();
+  public void setBPM(int newBpm) {
+    bpm = newBpm;
+    pulseInterval = 1000.0 / (bpm / 60.0 * (ppqn/division)) * 1000000; 
+  }
+
+  void run() {
+    try {
+      while(isActive) {
+        long timePassed = System.nanoTime() - previousTime;
+        if (timePassed < (long)pulseInterval) {
+          continue;
+        } 
+        listener.pulse();
+        pulse++;
+        println("pulse " + pulse);
+        int pulsesPerTick = ppqn / division; // 24 - 12 - 8 - 6
+        if (pulse % pulsesPerTick == 0) {
+          listener.tick();
+        }
+        if (pulse % pulsesPerTick == pulsesPerTick/2) {
+          listener.tock();
+        }
+        // calculate real time until next pulse
+        long delay = ((long)pulseInterval*2 - (System.nanoTime() - previousTime));
+        previousTime = System.nanoTime();
+        if (delay > 0) {
+          Thread.sleep(delay/1000000);
+        }
+      }
+    }  catch(InterruptedException e) {
+      println("force quit...");
     }
-    tick = newTick;
   }
-}
+} 
 
 class MIDIClock {
   public ClockListener listener;
