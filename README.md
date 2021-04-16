@@ -33,23 +33,30 @@ Supported MIDI controllers:
 - Akai MIDI Mix
 
 ## Melodic sequencer
-2 tracks controlled by LPD8
-
-http://gershonwolfe.com/wordpress/?p=104
-
-https://www.musicradar.com/how-to/how-to-create-music-in-any-style-and-genre-with-fractals
-
-https://www.geeksforgeeks.org/thue-morse-sequence/
-
+Akai LPD8 controller
+Knobs:
+	1. steps
+	2. beats
+	3. rotate
+	4. accent
+	5. accent rotate
+	6. root note (could use 2 pads)
+	7. scale (could use 2 pads)
+	8. undersample factor 0-127
 https://github.com/rmoscowitz/fractal-music
+- how do we generate and play note length?
+
+Apply thue-morse over the generated euclidean sequence
+https://reglos.de/musinum/
+http://gershonwolfe.com/wordpress/?p=104
+https://www.musicradar.com/how-to/how-to-create-music-in-any-style-and-genre-with-fractals
+https://www.geeksforgeeks.org/thue-morse-sequence/
 
 ## EMS Visuals
 Registrare grafica generata dal suono con processing mentre si suona e registrare anche i poligoni col sequencer e poi sovrapporre tutto per fare un visual e farlo montare da morto
 
 https://rbnrpi.wordpress.com/2017/09/20/a-visualiser-for-sonic-pi-3/
-
 https://www.youtube.com/watch?v=nepm_IOR02M
-
 https://gist.github.com/rbnpi/abf9fb2fbea3c1a4fe435819eb032e80
 
 ## MIDI sequencer to manage 4 channel audio
