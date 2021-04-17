@@ -1027,10 +1027,10 @@ class UI {
     
     addTrackLabels();
     
-    cp5.addButton("quit")
-    .setLabel("QUIT")
-    .setPosition(0, 0)
-    .setSize(buttonHeight, buttonHeight);
+    //cp5.addButton("quit")
+    //.setLabel("QUIT")
+    //.setPosition(0, 0)
+    //.setSize(buttonHeight, buttonHeight);
     
     menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)
