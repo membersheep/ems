@@ -4,6 +4,8 @@
 v0.1
 - Raspberry embedded version
 	- Run at startup
+	- Update from ssh
+	- Optimize raspbian to run ems
 	- Send midi CLOCK message when internal clock is running
 - Functions
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
