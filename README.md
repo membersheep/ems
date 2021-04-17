@@ -5,6 +5,7 @@ v0.1
 - Raspberry embedded version
 	- Run at startup
 	- Update from ssh
+	- Set default input and output
 	- Optimize raspbian to run ems
 	- Send midi CLOCK message when internal clock is running
 - Functions
