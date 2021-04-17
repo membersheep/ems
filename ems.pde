@@ -13,14 +13,17 @@ float screenWidth = 800;
 float screenHeight = 480;
 
 void setup() {
-  size(800, 480);
+  fullScreen();
+  noCursor();
+  //size(800, 480); // debug
   frameRate(25);
   MidiBus.list();
   deviceManager = new DeviceManager();
   midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
+  //midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);
-  internalClock = new InternalClock(sequencer);
+  internalClock = new InternalClock(sequencer); //<>//
   ui = new UI(this);
   internalClock.start();
 }
@@ -137,7 +140,7 @@ void rawMidi(byte[] data) {
 }
 
 void controllerChange(ControlChange change) {
-  if (deviceManager.controllerName.equals("MIDI Mix")) {
+  if (deviceManager.controllerName.contains("Mix")) {
     switch (change.number()) {
       case 16: sequencer.updateTrackAccents("1", change.value()); break;
       case 17: sequencer.updateTrackOffset("1", change.value()); break;
@@ -184,7 +187,7 @@ void controllerChange(ControlChange change) {
         default: break;
       }
     }
-  } else if (deviceManager.controllerName.equals("LPD8")) {
+  } else if (deviceManager.controllerName.contains("LPD8")) {
     switch (change.number()) {
       case 1: sequencer.updateTrackBeats("1", change.value()); break;
       case 2: sequencer.updateTrackBeats("2", change.value()); break;
@@ -203,7 +206,7 @@ void controllerChange(ControlChange change) {
 boolean isShifting = false;
 
 void noteOn(Note note) {
-  if (deviceManager.controllerName.equals("MIDI Mix")) {
+  if (deviceManager.controllerName.contains("Mix")) {
     if (isShifting) {
       switch (note.pitch()) {
         case 3: sequencer.editTrackLFO("1"); break;
@@ -251,7 +254,7 @@ void noteOn(Note note) {
       case 23: sequencer.addSoloTrack("8"); break;
       default: break;
     } 
-  } else if (deviceManager.controllerName.equals("LPD8")) {
+  } else if (deviceManager.controllerName.contains("LPD8")) {
     switch (note.pitch()) {
       case 36: sequencer.decrementTrackOffset("1"); break;
       case 37: sequencer.decrementTrackOffset("2"); break;
