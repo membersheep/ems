@@ -64,6 +64,10 @@ public void load() {
   // OPEN LOAD MENU
 }
 
+public void quit() {
+  exit();
+}
+
 public void controller() {
   MidiBus.findMidiDevices();
   String name = deviceManager.getNextController();

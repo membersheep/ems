@@ -2,14 +2,15 @@
 
 ## TODO
 v0.1
+- Raspberry embedded version
+	- Run at startup
+	- Send midi CLOCK message when internal clock is running
 - Functions
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
 					shift + A: copy A to B
 					shift + B: copy B to A
 					A + B: chains A and B (both led on)
-- Raspberry embedded version
-	- Send midi CLOCK message when internal clock is running
 - UI
 	- Draw polygons with bezier curves varying over time
 	- Rotate polygons with tick
