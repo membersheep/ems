@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name = ems
+Comment = Euclidean Multitrack Sequencer
+Exec = /home/pi/ems/build/ems
+Terminal = false
+Type = Application
