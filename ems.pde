@@ -14,28 +14,15 @@ float screenHeight = 480;
 
 void setup() {
   fullScreen();
-  noCursor();
+  //noCursor();
   //size(800, 480); // debug
   frameRate(25);
   MidiBus.list();
   deviceManager = new DeviceManager();
-  String[] outputs = MidiBus.availableOutputs();
-  String[] inputs = MidiBus.availableInputs();
-  String output = "";
-  String input = "";
-  for (int i = 0; i < outputs.length; i++) {
-    if (outputs[i].contains("fmidi")) {
-      output = outputs[i];
-      println("default output found");
-    }
-  }
-  for (int i = 0; i < inputs.length; i++) {
-    if (inputs[i].contains("Mix")) {
-      input = inputs[i];
-      println("default input found");
-    }
-  }
-  midiBus = new MidiBus(this, input, output);
+  String[] defaults = deviceManager.defaults();
+  println(defaults[0]);
+  println(defaults[1]);
+  midiBus = new MidiBus(this, defaults[0], defaults[1]);
   //midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);

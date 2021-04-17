@@ -6,6 +6,26 @@ class DeviceManager {
   int outputIndex = -1;
   String outputName = "";
   
+  public String[] defaults() {
+    String[] outputs = MidiBus.availableOutputs();
+    String[] inputs = MidiBus.availableInputs();
+    String output = "";
+    String input = "";
+    for (int i = 0; i < outputs.length; i++) {
+      if (outputs[i].contains("fmidi")) {
+        output = outputs[i];
+        println("default output found");
+      }
+    }
+    for (int i = 0; i < inputs.length; i++) {
+      if (inputs[i].contains("Mix")) {
+        input = inputs[i];
+        println("default input found");
+      }
+    }
+    return new String[]{input, output};
+  }
+  
   public String getNextController() {
     if (MidiBus.availableInputs().length > controllerIndex + 1) {
       return MidiBus.availableInputs()[controllerIndex + 1];
