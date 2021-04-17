@@ -61,11 +61,11 @@ public void setup() {
   //midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);
-  internalClock = new InternalClock(sequencer);
+  internalClock = new InternalClock(sequencer); //<>//
   ui = new UI(this);
   internalClock.start();
 }
-
+ //<>//
 public void draw() {
   background(0);
   sequencer.drawTracks();
@@ -1043,10 +1043,10 @@ class UI {
     
     addTrackLabels();
     
-    //cp5.addButton("quit")
-    //.setLabel("QUIT")
-    //.setPosition(0, 0)
-    //.setSize(buttonHeight, buttonHeight);
+    cp5.addButton("quit")
+    .setLabel("QUIT")
+    .setPosition(0, 0)
+    .setSize(buttonHeight, buttonHeight);
     
     menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)

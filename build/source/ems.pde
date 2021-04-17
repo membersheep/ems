@@ -39,11 +39,11 @@ void setup() {
   //midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);
-  internalClock = new InternalClock(sequencer);
+  internalClock = new InternalClock(sequencer); //<>//
   ui = new UI(this);
   internalClock.start();
 }
-
+ //<>//
 void draw() {
   background(0);
   sequencer.drawTracks();
