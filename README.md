@@ -4,8 +4,11 @@
 v0.1
 - Raspberry embedded version
 	- Set default input and output
+	- Fix midi out not working
+	- Optimize raspbian to run ems
 	- Send midi CLOCK message when internal clock is running
 	- Optimize raspbian to run ems
+- Draw new UI without controlP5
 - Functions
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
