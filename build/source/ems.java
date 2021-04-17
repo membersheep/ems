@@ -49,7 +49,7 @@ public void setup() {
   ui = new UI(this);
   internalClock.start();
 }
- //<>//
+
 public void draw() {
   background(0);
   sequencer.drawTracks();
@@ -84,6 +84,10 @@ public void save() {
 
 public void load() {
   // OPEN LOAD MENU
+}
+
+public void quit() {
+  exit();
 }
 
 public void controller() {
@@ -1023,6 +1027,11 @@ class UI {
     
     addTrackLabels();
     
+    cp5.addButton("quit")
+    .setLabel("QUIT")
+    .setPosition(0, 0)
+    .setSize(buttonHeight, buttonHeight);
+    
     menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)
     .setSize(uiWidth, (int)screenHeight - padding * 2).setOpen(false);
@@ -1137,7 +1146,7 @@ public static class ArrayRightRotation {
 }
   public void settings() {  fullScreen(); }
   static public void main(String[] passedArgs) {
-    String[] appletArgs = new String[] { "--present", "--window-color=#666666", "--stop-color=#cccccc", "ems" };
+    String[] appletArgs = new String[] { "ems" };
     if (passedArgs != null) {
       PApplet.main(concat(appletArgs, passedArgs));
     } else {

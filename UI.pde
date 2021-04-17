@@ -24,7 +24,7 @@ class UI {
     cp5.addButton("quit")
     .setLabel("QUIT")
     .setPosition(0, 0)
-    .setSize(50, 50);
+    .setSize(buttonHeight, buttonHeight);
     
     menuGroup = cp5.addGroup("settings")
     .setPosition(screenWidth - uiWidth - padding, padding).setWidth(uiWidth)

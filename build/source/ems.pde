@@ -27,7 +27,7 @@ void setup() {
   ui = new UI(this);
   internalClock.start();
 }
- //<>//
+
 void draw() {
   background(0);
   sequencer.drawTracks();
@@ -62,6 +62,10 @@ public void save() {
 
 public void load() {
   // OPEN LOAD MENU
+}
+
+public void quit() {
+  exit();
 }
 
 public void controller() {

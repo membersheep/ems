@@ -3,11 +3,9 @@
 ## TODO
 v0.1
 - Raspberry embedded version
-	- Run at startup
-	- Update from ssh
 	- Set default input and output
-	- Optimize raspbian to run ems
 	- Send midi CLOCK message when internal clock is running
+	- Optimize raspbian to run ems
 - Functions
 	- A/B function: bank left button -> A: enables A (immediately) (A led on)
 					bank right button -> B: enables B (immediately) (B led on)
@@ -35,6 +33,13 @@ v0.2
 Supported MIDI controllers: 
 - Akai LPD8
 - Akai MIDI Mix
+
+## Raspberry
+### Install
+Clone the repository to your home folder. The build folder contains the executable for ARMv6.
+
+### Autostart
+copy ems.desktop file to ~/.config/autostart/
 
 ## Melodic sequencer
 Akai LPD8 controller
