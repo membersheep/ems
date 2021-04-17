@@ -35,17 +35,17 @@ float screenWidth = 800;
 float screenHeight = 480;
 
 public void setup() {
-  
+  //fullScreen();
   //noCursor();
   //size(800, 480); // debug
   frameRate(25);
   MidiBus.list();
   deviceManager = new DeviceManager();
-  String[] defaults = deviceManager.defaults();
-  println(defaults[0]);
-  println(defaults[1]);
-  midiBus = new MidiBus(this, defaults[0], defaults[1]);
-  //midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
+  //String[] defaults = deviceManager.defaults();
+  //println(defaults[0]);
+  //println(defaults[1]);
+  //midiBus = new MidiBus(this, defaults[0], defaults[1]);
+  midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);
   internalClock = new InternalClock(sequencer); //<>//
@@ -1167,7 +1167,6 @@ public static class ArrayRightRotation {
       array[0] = temp;   
   }
 }
-  public void settings() {  fullScreen(); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "ems" };
     if (passedArgs != null) {
