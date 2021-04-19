@@ -10,9 +10,7 @@ class Sequencer implements ClockListener {
   public int pulse = 0;
   boolean isPlaying = true;
   boolean isSoloing = false;
-  boolean drawCircle = true;
-  boolean drawRadius = false;
-  boolean drawPolygon = false;
+  int visualizationIndex = 1;
   String isEditingTrackId = "";
   
   public Sequencer(MidiBus bus) {
@@ -43,15 +41,19 @@ class Sequencer implements ClockListener {
   }
   
   public void toggleVisualization() {
-    if (drawCircle && !drawPolygon) {
-      drawPolygon = true;
-    } else if (drawCircle && drawPolygon) {
-      drawPolygon = true;
-      drawCircle = false;
-    } else if (drawPolygon) {
-      drawPolygon = false;
-      drawCircle = true;
-    }
+    visualizationIndex++;
+  }
+  
+  private Boolean drawSteps() {
+    return visualizationIndex%6 == 0 || visualizationIndex%6 == 1 || visualizationIndex%6 == 2 || visualizationIndex%6 == 5; 
+  }
+  
+  private Boolean drawCircle() {
+    return visualizationIndex%6 == 1 || visualizationIndex%6 == 2 || visualizationIndex%6 == 3; 
+  }
+  
+  private Boolean drawPolygon() {
+    return visualizationIndex%6 == 2 || visualizationIndex%6 == 3 || visualizationIndex%6 == 4 || visualizationIndex%6 == 5; 
   }
   
   private void sortTracks() {
@@ -87,7 +89,7 @@ class Sequencer implements ClockListener {
   void drawTracks() {
     int activeTracksCount = activeTracksCount();
     // Draw polygon
-    if (drawPolygon) {
+    if (drawPolygon()) {
       int index = 0;
       Iterator<Map.Entry<String, Track>> iterator = reversedTracks.iterator();
       while(iterator.hasNext()) {
@@ -130,46 +132,47 @@ class Sequencer implements ClockListener {
       // Draw track circle
       float radius = screenHeight / (activeTracksCount + 1) * index;
       noFill();
-      if (drawCircle) {
+      if (drawCircle()) {
         strokeWeight(24);
         stroke(entry.getValue().trackColor, 64);
         ellipse(screenHeight/2, screenHeight/2, radius, radius);
         noStroke();
       }      
-      
       // Draw track steps
-      float angle = TWO_PI / (float)trackLength;
-      int currentStepIndex = tick % trackLength;
-      for(int i = 0; i < trackLength; i++) {
-        int stepVelocity = steps[i];
-        color stepColor;
-        if (stepVelocity == 0) {
-          stepColor = entry.getValue().trackColor;
-        } else {
-          stepColor = Color.WHITE.getRGB();
-        }
-        float x = radius/2 * sin(angle*i) + screenHeight/2;
-        float y = radius/2 * -cos(angle*i) + screenHeight/2;
-        float size;
-        if (i == currentStepIndex) { 
-          size = 16; 
-        } else {
-          if (stepVelocity == 127) {
-            size = 14; 
+      if (drawSteps()) {
+        float angle = TWO_PI / (float)trackLength;
+        int currentStepIndex = tick % trackLength;
+        for(int i = 0; i < trackLength; i++) {
+          int stepVelocity = steps[i];
+          color stepColor;
+          if (stepVelocity == 0) {
+            stepColor = entry.getValue().trackColor;
           } else {
-            size = 10;
+            stepColor = Color.WHITE.getRGB();
           }
+          float x = radius/2 * sin(angle*i) + screenHeight/2;
+          float y = radius/2 * -cos(angle*i) + screenHeight/2;
+          float size;
+          if (i == currentStepIndex) { 
+            size = 16; 
+          } else {
+            if (stepVelocity == 127) {
+              size = 14; 
+            } else {
+              size = 10;
+            }
+          }
+          // Draw radius
+          //if (drawRadius && stepVelocity != 0) {
+          //  stroke(entry.getValue().trackColor, 64);
+          //  strokeWeight(size/2);
+          //  line(screenHeight/2, screenHeight/2, x, y);
+          //  noStroke();
+          //}
+          // Draw step
+          fill(stepColor);
+          ellipse(x, y, size, size);
         }
-        // Draw radius
-        if (drawRadius && stepVelocity != 0) {
-          stroke(entry.getValue().trackColor, 64);
-          strokeWeight(size/2);
-          line(screenHeight/2, screenHeight/2, x, y);
-          noStroke();
-        }
-        // Draw step
-        fill(stepColor);
-        ellipse(x, y, size, size);
       }
       index++;
     }
