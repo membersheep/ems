@@ -7,7 +7,7 @@ class DeviceManager {
     addAllOutputs();
   }
   
-  // Adds LPD8 and MIDI Mix controllers if found
+  // Adds MIDI Mix controller if found
   public Boolean addControllerInputs() {
     Boolean found = false;
     for (int i = 0; i < MidiBus.availableInputs().length; i++) {
@@ -27,8 +27,7 @@ class DeviceManager {
   
   public void addAllInputs() {
     for (int i = 0; i < MidiBus.availableInputs().length; i++) {
-      println(MidiBus.availableInputs()[i]);
-      println(midiBus.addInput(MidiBus.availableInputs()[i]));
+      midiBus.addInput(MidiBus.availableInputs()[i]);
     }
   }
   

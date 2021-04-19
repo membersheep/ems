@@ -42,6 +42,19 @@ class Sequencer implements ClockListener {
     tick = 0;
   }
   
+  public void toggleVisualization() {
+    if (drawCircle && drawPolygon) {
+      drawPolygon = false;
+    } else if (drawCircle) {
+      drawPolygon = true;
+    } else if (drawPolygon) {
+      drawPolygon = false;
+      drawCircle = true;
+    } else {
+      drawCircle = true;
+    } 
+  }
+  
   private void sortTracks() {
     LinkedList<Map.Entry<String, Track>> list = new LinkedList<Map.Entry<String, Track>>(tracks.entrySet());
     Collections.sort(list, new Comparator<Map.Entry<String, Track>>() {

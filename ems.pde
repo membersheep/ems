@@ -17,8 +17,9 @@ void setup() {
   size(800, 480); // debug
   frameRate(25);
   MidiBus.list();
-  deviceManager = new DeviceManager();
   midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
+  deviceManager = new DeviceManager();
+  deviceManager.setupIODevices();
   sequencer = new Sequencer(midiBus);
   clockManager = new ClockManager(sequencer); //<>//
   ui = new UI();

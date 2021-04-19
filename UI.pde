@@ -28,12 +28,13 @@ class UI {
   
   void onTap() {
     if (playButton.mouseIsOver()) {
+      sequencer.play();
     } else if (pauseButton.mouseIsOver()) {
-      
+      sequencer.pause();
     } else if (stopButton.mouseIsOver()) {
-      
+      sequencer.stop();
     } else if (viewButton.mouseIsOver()) {
-      
+      sequencer.toggleVisualization();
     } else if (clockButton.mouseIsOver()) {
       toggleClock();
     } else if (ioButton.mouseIsOver()) {
@@ -88,14 +89,5 @@ class UI {
       clockManager.useInternalClock();
       deviceManager.removeNonControllerInputs();
     }
-  }
-  
-  public void bpm(int bpm) {
-    clockManager.internalClock.setBPM(bpm);
-  }
-
-  public void division(int division) {
-    clockManager.internalClock.division = division;
-    clockManager.midiClock.division = division;
   }
 }
