@@ -17,14 +17,15 @@ class Sequencer implements ClockListener {
   
   public Sequencer(MidiBus bus) {
     midiBus = bus;
-    tracks.put("1", new Track("KICK", 0, 76, 0, 0, 0, 0, color(200,38,53), 1)); //red
-    tracks.put("2", new Track("SNARE", 0, 79, 0, 0, 0, 0, color(255,127,81), 4)); //orange
-    tracks.put("3", new Track("RIM", 0, 81, 0, 0, 0, 0, color(239,138,23), 7)); //peach
-    tracks.put("4", new Track("CLAP", 0, 82, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
-    tracks.put("5", new Track("TOM", 0, 83, 0, 0, 0, 0, color(17,75,95), 13));// blue
-    tracks.put("6", new Track("SP1", 0, 86, 0, 0, 0, 0, color(136,212,152), 16));// green
-    tracks.put("7", new Track("SP2", 0, 91, 0, 0, 0, 0, color(117,159,188), 19));// light blue
-    tracks.put("8", new Track("SQ1", 1, 76, 0, 0, 0, 0, color(255,166,158), 22));// pink
+    tracks.put("1", new Track("KICK", 0, 76, 0, 0, 0, 0, color(237,28,36), 1)); //red
+    tracks.put("2", new Track("SNARE", 0, 79, 0, 0, 0, 0, color(238,185,2), 4)); //yellow
+    tracks.put("3", new Track("RIM", 0, 81, 0, 0, 0, 0, color(244,93,1), 7)); //orange
+    //tracks.put("4", new Track("CLAP", 0, 82, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
+    tracks.put("4", new Track("TOM", 0, 83, 0, 0, 0, 0, color(162,220,4), 10));// green
+    tracks.put("5", new Track("SP1", 0, 86, 0, 0, 0, 0, color(78,20,140), 13));// purple
+    tracks.put("6", new Track("SP2", 0, 91, 0, 0, 0, 0, color(255,112,166), 16));// pink
+    tracks.put("7", new Track("SQ1-A", 1, 52, 0, 0, 0, 0, color(45,125,210), 19));// light blue
+    tracks.put("8", new Track("SQ1-B", 2, 52, 0, 0, 0, 0, color(0,49,102), 22));// blue
     sortTracks();
   }
   
@@ -207,8 +208,13 @@ class Sequencer implements ClockListener {
             velocity = 127;
           }
         }
-        midiBus.sendNoteOn(track.channel, track.note, velocity);
-        midiBus.sendNoteOff(track.channel, track.note, velocity);
+        if (track.id.contains("SQ1")) {
+          midiBus.sendNoteOn(track.channel, velocity, velocity);
+          midiBus.sendNoteOff(track.channel, velocity, velocity);
+        } else {
+          midiBus.sendNoteOn(track.channel, track.note, velocity);
+          midiBus.sendNoteOff(track.channel, track.note, velocity);
+        }
         if (isEditingTrackId == "") {
           midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127); // blink track light
         }
