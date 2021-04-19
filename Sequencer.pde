@@ -43,16 +43,15 @@ class Sequencer implements ClockListener {
   }
   
   public void toggleVisualization() {
-    if (drawCircle && drawPolygon) {
-      drawPolygon = false;
-    } else if (drawCircle) {
+    if (drawCircle && !drawPolygon) {
       drawPolygon = true;
+    } else if (drawCircle && drawPolygon) {
+      drawPolygon = true;
+      drawCircle = false;
     } else if (drawPolygon) {
       drawPolygon = false;
       drawCircle = true;
-    } else {
-      drawCircle = true;
-    } 
+    }
   }
   
   private void sortTracks() {
