@@ -25,7 +25,7 @@ void setup() {
   sequencer = new Sequencer(midiBus);
   midiClock = new MIDIClock(sequencer);
   internalClock = new InternalClock(sequencer); //<>//
-  ui = new UI(this);
+  ui = new UI();
   internalClock.start();
 }
  //<>//
@@ -34,6 +34,11 @@ void draw() {
   sequencer.drawTracks();
   ui.draw();
 }
+
+void mousePressed() {
+  ui.onTap();
+}
+
 
 // BUTTON CALLBACKS
 
@@ -70,55 +75,55 @@ public void quit() {
   exit();
 }
 
-public void controller() {
-  MidiBus.findMidiDevices();
-  String name = deviceManager.getNextController();
-  int index = deviceManager.getNextControllerIndex();
-  if (deviceManager.controllerName != deviceManager.inputName) {
-    midiBus.removeInput(deviceManager.controllerName);
-    midiBus.removeOutput(deviceManager.controllerName);
-  }
-  ui.controllerButton.setLabel("MIDI CONTROLLER: " + name);
-  deviceManager.controllerName = name;
-  deviceManager.controllerIndex = index;
-  if (name != deviceManager.inputName) {
-    midiBus.addInput(name);
-    midiBus.addOutput(name);
-  }
-}
+//public void controller() {
+//  MidiBus.findMidiDevices();
+//  String name = deviceManager.getNextController();
+//  int index = deviceManager.getNextControllerIndex();
+//  if (deviceManager.controllerName != deviceManager.inputName) {
+//    midiBus.removeInput(deviceManager.controllerName);
+//    midiBus.removeOutput(deviceManager.controllerName);
+//  }
+//  ui.controllerButton.setLabel("MIDI CONTROLLER: " + name);
+//  deviceManager.controllerName = name;
+//  deviceManager.controllerIndex = index;
+//  if (name != deviceManager.inputName) {
+//    midiBus.addInput(name);
+//    midiBus.addOutput(name);
+//  }
+//}
 
-public void input() {
-  MidiBus.findMidiDevices();
-  String name = deviceManager.getNextInput();
-  int index = deviceManager.getNextInputIndex();
-  if (deviceManager.controllerName != deviceManager.inputName) {
-    midiBus.removeInput(deviceManager.inputName);
-  }
-  ui.inputButton.setLabel("MIDI CLOCK SOURCE: " + name);
-  deviceManager.inputName = name;
-  deviceManager.inputIndex = index;
-  if (name != deviceManager.controllerName && name != "INTERNAL") {
-    midiBus.addInput(name);
-  }
-  if (name == "INTERNAL") {
-    internalClock.isRunning = true;
-  } else {
-    internalClock.isRunning = false;
-  }
-}
+//public void input() {
+//  MidiBus.findMidiDevices();
+//  String name = deviceManager.getNextInput();
+//  int index = deviceManager.getNextInputIndex();
+//  if (deviceManager.controllerName != deviceManager.inputName) {
+//    midiBus.removeInput(deviceManager.inputName);
+//  }
+//  ui.inputButton.label = "MIDI CLOCK SOURCE: " + name;
+//  deviceManager.inputName = name;
+//  deviceManager.inputIndex = index;
+//  if (name != deviceManager.controllerName && name != "INTERNAL") {
+//    midiBus.addInput(name);
+//  }
+//  if (name == "INTERNAL") {
+//    internalClock.isRunning = true;
+//  } else {
+//    internalClock.isRunning = false;
+//  }
+//}
 
-public void output() {
-  MidiBus.findMidiDevices();
-  String name = deviceManager.nextOutput();
-  ui.outputButton.setLabel("MIDI OUTPUT: " + name);
-  midiBus.clearOutputs();
-  if (name != "ALL") {
-    midiBus.addOutput(deviceManager.controllerName);
-    midiBus.addOutput(name);
-  } else {
-    deviceManager.addAllOutputs();
-  }
-}
+//public void output() {
+//  MidiBus.findMidiDevices();
+//  String name = deviceManager.nextOutput();
+//  ui.outputButton.setLabel("MIDI OUTPUT: " + name);
+//  midiBus.clearOutputs();
+//  if (name != "ALL") {
+//    midiBus.addOutput(deviceManager.controllerName);
+//    midiBus.addOutput(name);
+//  } else {
+//    deviceManager.addAllOutputs();
+//  }
+//}
 
 public void circular() {
   sequencer.drawCircle = !sequencer.drawCircle;

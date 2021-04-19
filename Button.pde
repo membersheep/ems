@@ -4,6 +4,7 @@ class Button {
   float y;    // top left corner y position
   float w;    // width of button
   float h;    // height of button
+  PFont font = createFont("PreschoolBits.ttf", 16);
   
   Button(String labelB, float xpos, float ypos, float widthB, float heightB) {
     label = labelB;
@@ -14,11 +15,11 @@ class Button {
   }
   
   void draw() {
-    fill(218);
-    stroke(141);
+    fill(255);
     rect(x, y, w, h);
     textAlign(CENTER, CENTER);
     fill(0);
+    textFont(font);
     text(label, x + (w / 2), y + (h / 2));
   }
   
