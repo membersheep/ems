@@ -4,8 +4,7 @@ import themidibus.*;
 
 UI ui;
 DeviceManager deviceManager;
-MIDIClock midiClock;
-InternalClock internalClock;
+ClockManager clockManager;
 Sequencer sequencer;
 MidiBus midiBus;
 
@@ -20,13 +19,9 @@ void setup() {
   MidiBus.list();
   deviceManager = new DeviceManager();
   midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
-  midiBus.addInput("MIDI Mix");
-  midiBus.addOutput("Unknown name");
   sequencer = new Sequencer(midiBus);
-  midiClock = new MIDIClock(sequencer);
-  internalClock = new InternalClock(sequencer); //<>//
+  clockManager = new ClockManager(sequencer); //<>//
   ui = new UI();
-  internalClock.start();
 }
  //<>//
 void draw() {
@@ -38,35 +33,21 @@ void draw() {
 void mousePressed() {
   ui.onTap();
 }
-
-
-// BUTTON CALLBACKS
-
-public void bpm(int bpm) {
-  internalClock.setBPM(bpm);
-}
-
-public void division(int division) {
-  internalClock.division = division;
-  midiClock.division = division;
-}
-
 // MIDI CALLBACKS
 
 void rawMidi(byte[] data) {  
-  if (ui.clockButton.label == "CLOCK: INTERNAL") {
+  if (clockManager.internalClock.isRunning) {
     return;
   }
   if(data[0] == (byte)0xFC) {
     // reset timing when clock stops to stay in sync for the next start
   } else if(data[0] == (byte)0xF8) { // CLOCK PULSE
-    midiClock.pulse();
+    clockManager.midiClock.pulse();
   }
 }
 
 void controllerChange(ControlChange change) {
-  if (deviceManager.controllerName.contains("Mix")) {
-    switch (change.number()) {
+  switch (change.number()) {
       case 16: sequencer.updateTrackAccents("1", change.value()); break;
       case 17: sequencer.updateTrackOffset("1", change.value()); break;
       case 18: sequencer.updateTrackBeats("1", change.value()); break;
@@ -111,28 +92,27 @@ void controllerChange(ControlChange change) {
         case 62: sequencer.updateLFOAmount(change.value()); break; 
         default: break;
       }
-    }
-  } else if (deviceManager.controllerName.contains("LPD8")) {
-    switch (change.number()) {
-      case 1: sequencer.updateTrackBeats("1", change.value()); break;
-      case 2: sequencer.updateTrackBeats("2", change.value()); break;
-      case 3: sequencer.updateTrackBeats("3", change.value()); break;
-      case 4: sequencer.updateTrackBeats("4", change.value()); break;
-      case 5: sequencer.updateTrackLength("1", change.value()); break;
-      case 6: sequencer.updateTrackLength("2", change.value()); break;
-      case 7: sequencer.updateTrackLength("3", change.value()); break;
-      case 8: sequencer.updateTrackLength("4", change.value()); break;
-      default: break;
-    }
-  }
+    } 
+  //else if (deviceManager.controllerName.contains("LPD8")) {
+  //  switch (change.number()) {
+  //    case 1: sequencer.updateTrackBeats("1", change.value()); break;
+  //    case 2: sequencer.updateTrackBeats("2", change.value()); break;
+  //    case 3: sequencer.updateTrackBeats("3", change.value()); break;
+  //    case 4: sequencer.updateTrackBeats("4", change.value()); break;
+  //    case 5: sequencer.updateTrackLength("1", change.value()); break;
+  //    case 6: sequencer.updateTrackLength("2", change.value()); break;
+  //    case 7: sequencer.updateTrackLength("3", change.value()); break;
+  //    case 8: sequencer.updateTrackLength("4", change.value()); break;
+  //    default: break;
+  //  }
+  //}
   ui.updateTrackLabels();
 }
 
 boolean isShifting = false;
 
 void noteOn(Note note) {
-  if (deviceManager.controllerName.contains("Mix")) {
-    if (isShifting) {
+  if (isShifting) {
       switch (note.pitch()) {
         case 3: sequencer.editTrackLFO("1"); break;
         case 6: sequencer.editTrackLFO("2"); break;
@@ -178,20 +158,20 @@ void noteOn(Note note) {
       case 20: sequencer.addSoloTrack("7"); break;
       case 23: sequencer.addSoloTrack("8"); break;
       default: break;
-    } 
-  } else if (deviceManager.controllerName.contains("LPD8")) {
-    switch (note.pitch()) {
-      case 36: sequencer.decrementTrackOffset("1"); break;
-      case 37: sequencer.decrementTrackOffset("2"); break;
-      case 38: sequencer.decrementTrackOffset("3"); break;
-      case 39: sequencer.decrementTrackOffset("4"); break;
-      case 40: sequencer.incrementTrackOffset("1"); break;
-      case 41: sequencer.incrementTrackOffset("2"); break;
-      case 42: sequencer.incrementTrackOffset("3"); break;
-      case 43: sequencer.incrementTrackOffset("4"); break;
-      default: break;
-    } 
-  }
+    }  
+  //else if (deviceManager.controllerName.contains("LPD8")) {
+  //  switch (note.pitch()) {
+  //    case 36: sequencer.decrementTrackOffset("1"); break;
+  //    case 37: sequencer.decrementTrackOffset("2"); break;
+  //    case 38: sequencer.decrementTrackOffset("3"); break;
+  //    case 39: sequencer.decrementTrackOffset("4"); break;
+  //    case 40: sequencer.incrementTrackOffset("1"); break;
+  //    case 41: sequencer.incrementTrackOffset("2"); break;
+  //    case 42: sequencer.incrementTrackOffset("3"); break;
+  //    case 43: sequencer.incrementTrackOffset("4"); break;
+  //    default: break;
+  //  } 
+  //}
   ui.updateTrackLabels();
 }
 

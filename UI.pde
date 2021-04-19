@@ -35,13 +35,7 @@ class UI {
     } else if (viewButton.mouseIsOver()) {
       
     } else if (clockButton.mouseIsOver()) {
-      if (clockButton.label == "CLOCK: INTERNAL") {
-        clockButton.label = "CLOCK: MIDI";
-        internalClock.isActive = false;
-      } else if (clockButton.label == "CLOCK: MIDI") {
-        clockButton.label = "CLOCK: INTERNAL";
-        internalClock.isActive = true;
-      }
+      toggleClock();
     } else if (ioButton.mouseIsOver()) {
       deviceManager.setupIODevices();
     }
@@ -76,15 +70,32 @@ class UI {
   }
   
   public void updateTrackLabels() {
-    Iterator<Map.Entry<String, Track>> iterator = sequencer.sortedTracks.iterator();
-    int index = 0;
-    while (iterator.hasNext()) {
-      Track track = iterator.next().getValue();
-      Label label = trackLabels[index];
-      String text = track.id + " - " + String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents);
+    for (int i = 0; i < trackLabels.length; i++) {
+      Label label = trackLabels[i];
+      Track track = sequencer.tracks.get(String.format("%d", i + 1));
+      String text = String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents);
       label.text = text;
-      index++;
     }
   }
   
+  private void toggleClock() {
+    if (clockButton.label == "CLOCK: INTERNAL") {
+      clockButton.label = "CLOCK: MIDI";
+      clockManager.useMidiClock();
+      deviceManager.addAllInputs();
+    } else if (clockButton.label == "CLOCK: MIDI") {
+      clockButton.label = "CLOCK: INTERNAL";
+      clockManager.useInternalClock();
+      deviceManager.removeNonControllerInputs();
+    }
+  }
+  
+  public void bpm(int bpm) {
+    clockManager.internalClock.setBPM(bpm);
+  }
+
+  public void division(int division) {
+    clockManager.internalClock.division = division;
+    clockManager.midiClock.division = division;
+  }
 }

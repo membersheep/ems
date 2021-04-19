@@ -20,7 +20,7 @@ class Sequencer implements ClockListener {
     tracks.put("1", new Track("KICK", 0, 76, 0, 0, 0, 0, color(237,28,36), 1)); //red
     tracks.put("2", new Track("SNARE", 0, 79, 0, 0, 0, 0, color(238,185,2), 4)); //yellow
     tracks.put("3", new Track("RIM", 0, 81, 0, 0, 0, 0, color(244,93,1), 7)); //orange
-    //tracks.put("4", new Track("CLAP", 0, 82, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
+    //tracks.put("CLAP", new Track("CLAP", 0, 82, 0, 0, 0, 0, color(242,193,20), 10)); //yellow
     tracks.put("4", new Track("TOM", 0, 83, 0, 0, 0, 0, color(162,220,4), 10));// green
     tracks.put("5", new Track("SP1", 0, 86, 0, 0, 0, 0, color(78,20,140), 13));// purple
     tracks.put("6", new Track("SP2", 0, 91, 0, 0, 0, 0, color(255,112,166), 16));// pink

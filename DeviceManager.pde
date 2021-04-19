@@ -1,10 +1,5 @@
 class DeviceManager {  
-  int inputIndex = -1;
-  String inputName = "";
-  int controllerIndex = -1;
-  String controllerName = "";
-  int outputIndex = -1;
-  String outputName = "";
+  String clockSourceName = "";
   
   public void setupIODevices() {
     MidiBus.findMidiDevices();
@@ -16,7 +11,7 @@ class DeviceManager {
   public Boolean addControllerInputs() {
     Boolean found = false;
     for (int i = 0; i < MidiBus.availableInputs().length; i++) {
-      if (MidiBus.availableInputs()[i] == "LPD8" || MidiBus.availableInputs()[i] == "MIDI Mix") {
+      if (MidiBus.availableInputs()[i].contains("Mix")) {
         midiBus.addInput(MidiBus.availableInputs()[i]);
         found = true;
       }
@@ -24,12 +19,26 @@ class DeviceManager {
     return found;
   }
   
-  public Boolean addAllOutputs() {
-    Boolean found = false;
+  public void addAllOutputs() {
     for (int i = 0; i < MidiBus.availableOutputs().length; i++) {
       midiBus.addOutput(MidiBus.availableOutputs()[i]);
-      found = true;
     }
-    return found;
+  }
+  
+  public void addAllInputs() {
+    for (int i = 0; i < MidiBus.availableInputs().length; i++) {
+      println(MidiBus.availableInputs()[i]);
+      println(midiBus.addInput(MidiBus.availableInputs()[i]));
+    }
+  }
+  
+  public void removeNonControllerInputs() {
+    for (int i = 0; i < MidiBus.availableInputs().length; i++) {
+      if (MidiBus.availableInputs()[i].contains("Mix")) {
+        continue;
+      } else {
+        midiBus.removeInput(MidiBus.availableInputs()[i]);
+      }
+    }
   }
 }

@@ -1,3 +1,24 @@
+class ClockManager {
+  Sequencer sequencer;
+  MIDIClock midiClock;
+  InternalClock internalClock;
+  
+  ClockManager(Sequencer inSequencer) {
+    sequencer = inSequencer;
+    midiClock = new MIDIClock(sequencer);
+    internalClock = new InternalClock(sequencer);
+    internalClock.start();
+  }
+  
+  void useInternalClock() {
+    internalClock.isRunning = true;
+  }
+  
+  void useMidiClock() {
+    internalClock.isRunning = false;
+  }
+}
+
 class InternalClock extends Thread {
   public ClockListener listener;
   public int bpm = 120;
