@@ -7,10 +7,9 @@ class UI {
   Button playButton = new Button("PLAY", padding, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
   Button pauseButton = new Button("PAUSE", padding * 2 + buttonWidth, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
   Button stopButton = new Button("STOP", padding * 3 + buttonWidth * 2, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
-  Button circleButton = new Button("C", padding * 4 + buttonWidth * 3, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
-  Button radialButton = new Button("R", padding * 5 + buttonWidth * 4, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
-  Button polygonalButton = new Button("P", padding * 6 + buttonWidth * 5, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
-  Button ioButton = new Button("I/O", padding * 7 + buttonWidth * 6, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
+  Button viewButton = new Button("VIEW", padding * 4 + buttonWidth * 3, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
+  Button ioButton = new Button("I/O", padding * 5 + buttonWidth * 4, screenHeight - padding - buttonHeight, buttonWidth, buttonHeight);
+  Button clockButton = new Button("CLOCK: INTERNAL", padding * 6 + buttonWidth * 5, screenHeight - padding - buttonHeight, buttonWidth * 3, buttonHeight);
   Label[] trackNameLabels = setupTrackNameLabels();
   Label[] trackLabels = setupTrackLabels();
 
@@ -18,9 +17,8 @@ class UI {
     playButton.draw();
     pauseButton.draw();
     stopButton.draw();
-    circleButton.draw();
-    radialButton.draw();
-    polygonalButton.draw();
+    viewButton.draw();
+    clockButton.draw();
     ioButton.draw();
     for (int i = 0; i < trackLabels.length; i++) {
       trackNameLabels[i].draw();
@@ -34,14 +32,18 @@ class UI {
       
     } else if (stopButton.mouseIsOver()) {
       
-    } else if (circleButton.mouseIsOver()) {
+    } else if (viewButton.mouseIsOver()) {
       
-    } else if (radialButton.mouseIsOver()) {
-      
-    } else if (polygonalButton.mouseIsOver()) {
-      
+    } else if (clockButton.mouseIsOver()) {
+      if (clockButton.label == "CLOCK: INTERNAL") {
+        clockButton.label = "CLOCK: MIDI";
+        internalClock.isActive = false;
+      } else if (clockButton.label == "CLOCK: MIDI") {
+        clockButton.label = "CLOCK: INTERNAL";
+        internalClock.isActive = true;
+      }
     } else if (ioButton.mouseIsOver()) {
-      
+      deviceManager.setupIODevices();
     }
   }
   

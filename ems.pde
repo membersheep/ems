@@ -51,96 +51,10 @@ public void division(int division) {
   midiClock.division = division;
 }
 
-public void play() {
-  sequencer.play();
-}
-
-public void pause() {
-  sequencer.pause();
-}
-
-public void stop() {
-  sequencer.stop();
-}
-
-public void save() {
-  // OPEN SAVE MENU
-}
-
-public void load() {
-  // OPEN LOAD MENU
-}
-
-public void quit() {
-  exit();
-}
-
-//public void controller() {
-//  MidiBus.findMidiDevices();
-//  String name = deviceManager.getNextController();
-//  int index = deviceManager.getNextControllerIndex();
-//  if (deviceManager.controllerName != deviceManager.inputName) {
-//    midiBus.removeInput(deviceManager.controllerName);
-//    midiBus.removeOutput(deviceManager.controllerName);
-//  }
-//  ui.controllerButton.setLabel("MIDI CONTROLLER: " + name);
-//  deviceManager.controllerName = name;
-//  deviceManager.controllerIndex = index;
-//  if (name != deviceManager.inputName) {
-//    midiBus.addInput(name);
-//    midiBus.addOutput(name);
-//  }
-//}
-
-//public void input() {
-//  MidiBus.findMidiDevices();
-//  String name = deviceManager.getNextInput();
-//  int index = deviceManager.getNextInputIndex();
-//  if (deviceManager.controllerName != deviceManager.inputName) {
-//    midiBus.removeInput(deviceManager.inputName);
-//  }
-//  ui.inputButton.label = "MIDI CLOCK SOURCE: " + name;
-//  deviceManager.inputName = name;
-//  deviceManager.inputIndex = index;
-//  if (name != deviceManager.controllerName && name != "INTERNAL") {
-//    midiBus.addInput(name);
-//  }
-//  if (name == "INTERNAL") {
-//    internalClock.isRunning = true;
-//  } else {
-//    internalClock.isRunning = false;
-//  }
-//}
-
-//public void output() {
-//  MidiBus.findMidiDevices();
-//  String name = deviceManager.nextOutput();
-//  ui.outputButton.setLabel("MIDI OUTPUT: " + name);
-//  midiBus.clearOutputs();
-//  if (name != "ALL") {
-//    midiBus.addOutput(deviceManager.controllerName);
-//    midiBus.addOutput(name);
-//  } else {
-//    deviceManager.addAllOutputs();
-//  }
-//}
-
-public void circular() {
-  sequencer.drawCircle = !sequencer.drawCircle;
-}
-
-public void radial() {
-  sequencer.drawRadius = !sequencer.drawRadius;
-}
-
-public void polygonal() {
-  sequencer.drawPolygon = !sequencer.drawPolygon;
-}
-
 // MIDI CALLBACKS
 
 void rawMidi(byte[] data) {  
-  if (deviceManager.inputName == "INTERNAL") {
+  if (ui.clockButton.label == "CLOCK: INTERNAL") {
     return;
   }
   if(data[0] == (byte)0xFC) {
