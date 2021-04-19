@@ -2,35 +2,33 @@
 
 ## TODO
 v0.1
+- Send velocity instead of notes for SQ1 tracks
+- Draw new UI without controlP5
+- Rewrite MIDI I/O with javax.sound.midi
+	- Add all available outputs at startup
+	- Add LPD8 and MIDI Mix inputs if found
+- A/B function: A: show/edit A 
+				B: show/edit B 
+				A + B: copy A to B
+				B + A: copy B to A
+				shift + A: run A
+				shift + B: run B
+				shift + A and B while keeping shift pressed: chains A and B
+			Show a letter indicating the current running patterns
+- Polygon wrong colors on tracks
 - Raspberry embedded version
 	- Set default input and output
 	- Fix midi out not working
 	- Optimize raspbian to run ems
 	- Send midi CLOCK message when internal clock is running
-	- Optimize raspbian to run ems
-- Draw new UI without controlP5
-- Rewrite MIDI I/Owith javax.sound.midi
-- Functions
-	- A/B function: bank left button -> A: enables A (immediately) (A led on)
-					bank right button -> B: enables B (immediately) (B led on)
-					shift + A: copy A to B
-					shift + B: copy B to A
-					A + B: chains A and B (both led on)
-- UI
-	- Draw polygons with bezier curves varying over time
-	- Rotate polygons with tick
-	- Polygon wrong colors on tracks
 
 v0.2
-- Rewrite with java midi instead of midibus library
-	- Impossible to refresh input list without restarting. findMidiDevices() is not working as advertised
-	- Add all available outputs at startup
-	- Add LPD8 and MIDI Mix inputs if found
+- Add I/O configuration
+	- select controller, input, and output devices for
+	- select name, input channel, output channel and notes for each track.
 - Settings: Allow to set max steps
 - Save pattern menu: 8 slots (square buttons) to save the current pattern to
 - Load pattern menu: 8 slots (square buttons) to load the current pattern from
-- Add settings: allow to select midi note number and midi channel for each track, and to name each track
-- Flam function (similar to accent but play a flam instead of an accented note). It needs 3 additional knobs per track: for beats, rotation and level (2-3-4).
 - Enable/Disable steps by tapping them.
 
 ## Controllers
@@ -43,7 +41,7 @@ Supported MIDI controllers:
 Clone the repository to your home folder. The build folder contains the executable for ARMv6.
 
 ### Autostart
-copy ems.desktop file to ~/.config/autostart/
+Copy ems.desktop file to /home/pi/.config/autostart
 
 ## Melodic sequencer
 Akai LPD8 controller
@@ -57,7 +55,7 @@ Knobs:
 	7. scale (could use 2 pads)
 	8. undersample factor 0-127
 https://github.com/rmoscowitz/fractal-music
-- how do we generate and play note length?
+how do we generate and play note length?
 
 Apply thue-morse over the generated euclidean sequence
 https://reglos.de/musinum/
