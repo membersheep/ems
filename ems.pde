@@ -32,6 +32,7 @@ void setup() {
 void draw() {
   background(0);
   sequencer.drawTracks();
+  ui.draw();
 }
 
 // BUTTON CALLBACKS

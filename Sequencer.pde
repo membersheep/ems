@@ -8,7 +8,7 @@ class Sequencer implements ClockListener {
   MidiBus midiBus;
   public int tick = 0;
   public int pulse = 0;
-  boolean isPlaying = false;
+  boolean isPlaying = true;
   boolean isSoloing = false;
   boolean drawCircle = true;
   boolean drawRadius = false;

@@ -14,6 +14,13 @@ class UI {
   controlP5.Button outputButton;
   controlP5.Textlabel[] trackLabels;
   
+  Button playButton;
+  Button pauseButton;
+  Button stopButton;
+  
+  public void draw() {
+  }
+  
   public UI(PApplet parent) {
     cp5 = new ControlP5(parent);
     trackLabels = new controlP5.Textlabel[sequencer.sortedTracks.size()];

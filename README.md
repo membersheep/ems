@@ -2,7 +2,6 @@
 
 ## TODO
 v0.1
-- Send velocity instead of notes for SQ1 tracks
 - Draw new UI without controlP5
 - Rewrite MIDI I/O with javax.sound.midi
 	- Add all available outputs at startup
