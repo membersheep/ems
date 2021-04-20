@@ -1,11 +1,11 @@
 import themidibus.*;
 
 class Sequencer implements ClockListener {
+  MidiBus midiBus;
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
   LinkedList<Map.Entry<String, Track>> reversedTracks;
   int maxSteps = 16;
-  MidiBus midiBus;
   public int tick = 0;
   public int pulse = 0;
   boolean isPlaying = true;
@@ -61,7 +61,7 @@ class Sequencer implements ClockListener {
     Collections.sort(list, new Comparator<Map.Entry<String, Track>>() {
         @Override
         public int compare(Map.Entry<String, Track> o1, Map.Entry<String, Track> o2) {
-           return o1.getValue().steps - o2.getValue().steps;      
+           return o1.getValue().steps() - o2.getValue().steps();      
         }
     });
     sortedTracks = list;
@@ -69,7 +69,7 @@ class Sequencer implements ClockListener {
     Collections.sort(reversedList, new Comparator<Map.Entry<String, Track>>() {
         @Override
         public int compare(Map.Entry<String, Track> o1, Map.Entry<String, Track> o2) {
-           return o2.getValue().steps - o1.getValue().steps;      
+           return o2.getValue().steps() - o1.getValue().steps();      
         }
     });
     reversedTracks = reversedList;
@@ -79,7 +79,7 @@ class Sequencer implements ClockListener {
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     int activeTracksCount = 0;
     while (iterator.hasNext()) {
-      if (iterator.next().getValue().steps > 0) {
+      if (iterator.next().getValue().steps() > 0) {
         activeTracksCount++;
       }
     }
@@ -95,14 +95,14 @@ class Sequencer implements ClockListener {
       while(iterator.hasNext()) {
         Track track = iterator.next().getValue();
         int[] steps = track.computedSteps.clone();
-        if (track.steps == 0) {
+        if (track.steps() == 0) {
           continue;
         }
         float radius = screenHeight / (activeTracksCount + 1) * (activeTracksCount-index);
         noStroke();
         fill(track.trackColor);
         beginShape();
-        float angle = TWO_PI / (float)track.steps;
+        float angle = TWO_PI / (float)track.steps();
         for(int j = 0; j < steps.length; j++) {
           int stepVelocity = steps[j];
           if (stepVelocity != 0) {
@@ -125,7 +125,7 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Map.Entry<String, Track> entry = iterator.next();
       int[] steps = entry.getValue().computedSteps.clone();
-      int trackLength = entry.getValue().steps;
+      int trackLength = entry.getValue().steps();
       if (trackLength == 0) {
         continue;
       }
@@ -208,10 +208,10 @@ class Sequencer implements ClockListener {
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      if (track.steps < 1 || track.isMuted) { continue; }
+      if (track.steps() < 1 || track.isMuted) { continue; }
       if (isSoloing && track.isSolo == false) { continue; }
       int[] steps = track.computedSteps;
-      int index = tick % track.steps;
+      int index = tick % track.steps();
       int velocity = steps[index];
       if (velocity > 0) {
         if (track.lfoAmount > 0) {
@@ -273,23 +273,23 @@ class Sequencer implements ClockListener {
   // LENGTH
   
   public void incrementTrackLength(String id) {
-    if (tracks.get(id).steps + 1 <= maxSteps) {
-      tracks.get(id).steps = tracks.get(id).steps + 1;
+    if (tracks.get(id).steps() + 1 <= maxSteps) {
+      tracks.get(id).setSteps(tracks.get(id).steps() + 1);
       tracks.get(id).computeSteps();
       sortTracks();
     }
   }
   
   public void decrementTrackLength(String id) {
-    if (tracks.get(id).steps - 1 >= 0) {
-      tracks.get(id).steps = tracks.get(id).steps - 1;
+    if (tracks.get(id).steps() - 1 >= 0) {
+      tracks.get(id).setSteps(tracks.get(id).steps() - 1);
       tracks.get(id).computeSteps();
       sortTracks();
     }
   }
   
   public void updateTrackLength(String id, int value) {
-    tracks.get(id).steps = maxSteps * value / 127;
+    tracks.get(id).setSteps(maxSteps * value / 127);
     tracks.get(id).computeSteps();
     sortTracks();
   }
@@ -297,27 +297,27 @@ class Sequencer implements ClockListener {
   // BEATS
   
   public void updateTrackBeats(String id, int value) {
-    tracks.get(id).beats = maxSteps * value / 127; 
+    tracks.get(id).setBeats(maxSteps * value / 127); 
     tracks.get(id).computeSteps();
   }
   
   // OFFSET
   
   public void updateTrackOffset(String id, int value) {
-    tracks.get(id).rotate = maxSteps * value / 127; 
+    tracks.get(id).setRotate(maxSteps * value / 127); 
     tracks.get(id).computeSteps();
   }
   
   public void incrementTrackOffset(String id) {
-    if (tracks.get(id).rotate + 1 <= maxSteps) {
-      tracks.get(id).rotate = tracks.get(id).rotate + 1;
+    if (tracks.get(id).rotate() + 1 <= maxSteps) {
+      tracks.get(id).setRotate(tracks.get(id).rotate() + 1);
       tracks.get(id).computeSteps();
     }
   }
   
   public void decrementTrackOffset(String id) {
-    if (tracks.get(id).rotate - 1 >= 0) {
-      tracks.get(id).rotate = tracks.get(id).rotate - 1;
+    if (tracks.get(id).rotate() - 1 >= 0) {
+      tracks.get(id).setRotate(tracks.get(id).rotate() - 1);
       tracks.get(id).computeSteps();
     }
   }
@@ -325,7 +325,7 @@ class Sequencer implements ClockListener {
   // ACCENTS
   
   public void updateTrackAccents(String id, int value) {
-    tracks.get(id).accents = tracks.get(id).beats * value / 127;
+    tracks.get(id).setAccents(maxSteps * value / 127);
     tracks.get(id).computeSteps();
   }
   
@@ -407,11 +407,33 @@ class Sequencer implements ClockListener {
   
   // A/B
   
-  public void switchToA() {
-    
+  public void showA() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      track.currentPatternIndex = 0;
+    }
   }
   
-  public void switchToB() {
-    
+  public void showB() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      track.currentPatternIndex = 1;
+    }
+  }
+  
+  public void copyAtoB() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      iterator.next().getValue().copyAtoB();
+    }
+  }
+  
+  public void copyBtoA() {
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      iterator.next().getValue().copyBtoA();
+    }
   }
 }

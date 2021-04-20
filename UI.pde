@@ -12,6 +12,7 @@ class UI {
   Button clockButton = new Button("CLOCK: INTERNAL", padding * 6 + buttonWidth * 5, screenHeight - padding - buttonHeight, buttonWidth * 3, buttonHeight);
   Label[] trackNameLabels = setupTrackNameLabels();
   Label[] trackLabels = setupTrackLabels();
+  Label clockLabel = new Label("120 bpm", screenWidth - uiWidth, screenHeight - padding, color(255));
 
   public void draw() {
     playButton.draw();
@@ -24,6 +25,7 @@ class UI {
       trackNameLabels[i].draw();
       trackLabels[i].draw();
     }
+    clockLabel.draw();
   }
   
   void onTap() {
@@ -49,7 +51,7 @@ class UI {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       String text = track.id;
-      Label label = new Label(text, screenWidth - uiWidth, screenHeight - padding - padding * 2 * index, track.trackColor);
+      Label label = new Label(text, screenWidth - uiWidth, screenHeight - padding*3 - padding * 2 * index, track.trackColor);
       labels[index] = label;
       index++;
     }
@@ -62,8 +64,8 @@ class UI {
     int index = 0;
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      String text = String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents);
-      Label label = new Label(text, screenWidth - uiWidth + padding * 5, screenHeight - padding - padding * 2 * index, track.trackColor);
+      String text = String.format("%02d", track.steps()) + " - " + String.format("%02d", track.beats()) + " - " + String.format("%02d", track.rotate()) + " - " + String.format("%02d", track.accents());
+      Label label = new Label(text, screenWidth - uiWidth + padding * 5, screenHeight - padding*3 - padding * 2 * index, track.trackColor);
       labels[index] = label;
       index++;
     }
@@ -74,7 +76,7 @@ class UI {
     for (int i = 0; i < trackLabels.length; i++) {
       Label label = trackLabels[i];
       Track track = sequencer.tracks.get(String.format("%d", i + 1));
-      String text = String.format("%02d", track.steps) + " - " + String.format("%02d", track.beats) + " - " + String.format("%02d", track.rotate) + " - " + String.format("%02d", track.accents);
+      String text = String.format("%02d", track.steps()) + " - " + String.format("%02d", track.beats()) + " - " + String.format("%02d", track.rotate()) + " - " + String.format("%02d", track.accents());
       label.text = text;
     }
   }

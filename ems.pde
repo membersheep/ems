@@ -90,7 +90,13 @@ void controllerChange(ControlChange change) {
       }
     } else {
       switch (change.number()) {
-        case 62: sequencer.updateLFOAmount(change.value()); break; 
+        case 62: 
+          if (sequencer.isEditingTrackId == "") {
+            clockManager.setSpeed(change.value());
+          } else {
+            sequencer.updateLFOAmount(change.value()); 
+          }
+          break; 
         default: break;
       }
     } 
@@ -143,12 +149,11 @@ void noteOn(Note note) {
         case 18: sequencer.rollTrack("6"); break;
         case 21: sequencer.rollTrack("7"); break;
         case 24: sequencer.rollTrack("8"); break;
-        case 25: sequencer.switchToA(); break;
-        case 26: sequencer.switchToB(); break;
         case 27: isShifting = true; break;
         default: break;
       }
     }
+    // SOLO
     switch (note.pitch()) {
       case 2: sequencer.addSoloTrack("1"); break;
       case 5: sequencer.addSoloTrack("2"); break;
@@ -199,6 +204,7 @@ void noteOff(Note note) {
       default: break;
     }
   }
+  // SOLO
   switch (note.pitch()) {
     case 2: sequencer.removeSoloTrack("1"); break;
     case 5: sequencer.removeSoloTrack("2"); break;
@@ -210,4 +216,19 @@ void noteOff(Note note) {
     case 23: sequencer.removeSoloTrack("8"); break;
     default: break;
   } 
+  // A/B
+  if (isShifting) {
+    switch (note.pitch()) {
+      case 25: sequencer.copyAtoB(); break;
+      case 26: sequencer.copyBtoA(); break;
+      default: break;
+    } 
+  } else {
+    switch (note.pitch()) {
+      case 25: sequencer.showA(); break;
+      case 26: sequencer.showB(); break;
+      default: break;
+    } 
+  }
+  
 }

@@ -17,13 +17,21 @@ class ClockManager {
   void useMidiClock() {
     internalClock.isRunning = false;
   }
+  
+  void setSpeed(int value) {
+    if (internalClock.isRunning) {
+      internalClock.setBPM(60+value);
+    } else {
+      midiClock.division = value/32;
+    }
+  }
 }
 
 class InternalClock extends Thread {
   public ClockListener listener;
   public int bpm = 120;
   public int pulse = 0;
-  public int division = 4;
+  public int division = 4; // 1 - 2 - 3 - 4
   int ppqn = 24; // pulses per quarter note MIDI standard value is 24
   
   Boolean isActive = true;

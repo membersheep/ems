@@ -2,26 +2,21 @@
 
 ## TODO
 v0.1
-- Draw new UI without controlP5
-- Rewrite MIDI I/O with javax.sound.midi
-	- Add all available outputs at startup
-	- Add LPD8 and MIDI Mix inputs if found
-- A/B function: A: show/edit A 
-				B: show/edit B 
-				A + B: copy A to B
-				B + A: copy B to A
-				shift + A: run A
-				shift + B: run B
-				shift + A and B while keeping shift pressed: chains A and B
+- A/B function: A: show A 
+				B: show B 
+				shift + A: copy A to B
+				shift + B: copy B to A
+				A + B: chains A and B
 			Show a letter indicating the current running patterns
-- Polygon wrong colors on tracks
 - Raspberry embedded version
-	- Set default input and output
-	- Fix midi out not working
+	- Rewrite MIDI I/O with javax.sound.midi
+		- Fix midi out not working
+		- MIDI Clock through
+		- Internal clock send
 	- Optimize raspbian to run ems
-	- Send midi CLOCK message when internal clock is running
 
 v0.2
+- Fix polygon wrong colors on tracks
 - Add I/O configuration
 	- select controller, input, and output devices for
 	- select name, input channel, output channel and notes for each track.
