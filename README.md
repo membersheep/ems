@@ -2,10 +2,10 @@
 
 ## TODO
 v0.1
-- Draw new UI without controlP5
 - Rewrite MIDI I/O with javax.sound.midi
 	- Add all available outputs at startup
 	- Add LPD8 and MIDI Mix inputs if found
+	- MIDI Clock through
 - A/B function: A: show/edit A 
 				B: show/edit B 
 				A + B: copy A to B

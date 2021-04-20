@@ -90,7 +90,13 @@ void controllerChange(ControlChange change) {
       }
     } else {
       switch (change.number()) {
-        case 62: sequencer.updateLFOAmount(change.value()); break; 
+        case 62: 
+          if (sequencer.isEditingTrackId == "") {
+            clockManager.setSpeed(change.value());
+          } else {
+            sequencer.updateLFOAmount(change.value()); 
+          }
+          break; 
         default: break;
       }
     } 
