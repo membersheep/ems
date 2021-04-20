@@ -223,13 +223,10 @@ class Sequencer implements ClockListener {
             velocity = 127;
           }
         }
-        if (track.id.contains("SQ1")) {
-          midiBus.sendNoteOn(track.channel, velocity, velocity);
-          midiBus.sendNoteOff(track.channel, velocity, velocity);
-        } else {
-          midiBus.sendNoteOn(track.channel, track.note, velocity);
-          midiBus.sendNoteOff(track.channel, track.note, velocity);
-        }
+        
+        midiBus.sendNoteOn(track.channel, track.note, velocity);
+        midiBus.sendNoteOff(track.channel, track.note, velocity);
+        
         if (isEditingTrackId == "") {
           midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127); // blink track light
         }
