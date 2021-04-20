@@ -2,12 +2,8 @@
 
 ## TODO
 v0.1
-- A/B function: A: show A 
-				B: show B 
-				shift + A: copy A to B
-				shift + B: copy B to A
-				A + B: chains A and B
-			Show a letter indicating the current running patterns
+- A/B chain
+- Show a letter indicating the current running patterns
 - Raspberry embedded version
 	- Rewrite MIDI I/O with javax.sound.midi
 		- Fix midi out not working
