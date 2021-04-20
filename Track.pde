@@ -3,10 +3,11 @@ class Track {
   public String id;
   public int channel;
   public int note;
-  public int steps;
-  public int beats;
-  public int rotate;
-  public int accents;
+  public int currentPatternIndex = 0;
+  public int[] steps;
+  public int[] beats;
+  public int[] rotate;
+  public int[] accents;
   public color trackColor;
   public boolean isMuted = false;
   public boolean isSolo = false;
@@ -26,18 +27,64 @@ class Track {
     id = inId;
     channel = inChannel;
     note = inNote;
-    steps = inSteps;
-    beats = inBeats;
-    rotate = inRotate;
-    accents = inAccents;
+    steps = new int[]{inSteps, inSteps};
+    beats = new int[]{inBeats, inBeats};
+    rotate = new int[]{inRotate, inRotate};
+    accents = new int[]{inAccents, inAccents};
     trackColor = inColor;
     controllerLightNote = inControllerLightNote;
     computeSteps();
   }
+  
+  public int steps() {
+    return steps[currentPatternIndex];
+  }
+  
+  public void setSteps(int count) {
+    steps[currentPatternIndex] = count;
+  }
+  
+  public int beats() {
+    return beats[currentPatternIndex];
+  }
+  
+  public void setBeats(int count) {
+    beats[currentPatternIndex] = count;
+  }
+  
+  public int rotate() {
+    return rotate[currentPatternIndex];
+  }
+  
+  public void setRotate(int count) {
+    rotate[currentPatternIndex] = count;
+  }
+  
+  public int accents() {
+    return accents[currentPatternIndex];
+  }
+  
+  public void setAccents(int count) {
+    accents[currentPatternIndex] = count;
+  }
+  
+  public void copyAtoB() {
+    steps[1] = steps[0];
+    beats[1] = beats[0];
+    rotate[1] = rotate[0];
+    accents[1] = accents[0];
+  }
+  
+  public void copyBtoA() {
+    steps[0] = steps[1];
+    beats[0] = beats[1];
+    rotate[0] = rotate[1];
+    accents[0] = accents[1];
+  }
 
   public void computeSteps() {
-    Vector<Boolean> sequence = computeEuclideanSequence(beats, steps);
-    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents, beats);
+    Vector<Boolean> sequence = computeEuclideanSequence(beats[currentPatternIndex], steps[currentPatternIndex]);
+    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[currentPatternIndex], beats[currentPatternIndex]);
     
     int[] beats = new int[sequence.capacity()];
     int beatIndex = 0;
@@ -53,7 +100,7 @@ class Track {
         beats[i] = 0;
       }
     }
-    ArrayRightRotation.rotateRight(beats, rotate, steps);
+    ArrayRightRotation.rotateRight(beats, rotate[currentPatternIndex], steps[currentPatternIndex]);
     computedSteps = beats;
   }
   
