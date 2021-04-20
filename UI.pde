@@ -12,7 +12,7 @@ class UI {
   Button clockButton = new Button("CLOCK: INTERNAL", padding * 6 + buttonWidth * 5, screenHeight - padding - buttonHeight, buttonWidth * 3, buttonHeight);
   Label[] trackNameLabels = setupTrackNameLabels();
   Label[] trackLabels = setupTrackLabels();
-  Label clockLabel = new Label("120 bpm", screenWidth - uiWidth, screenHeight - padding * 2, color(255));
+  Label clockLabel = new Label("120 bpm", screenWidth - uiWidth, screenHeight - padding, color(255));
 
   public void draw() {
     playButton.draw();
