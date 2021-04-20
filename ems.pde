@@ -21,10 +21,10 @@ void setup() {
   deviceManager = new DeviceManager();
   deviceManager.setupIODevices();
   sequencer = new Sequencer(midiBus);
-  clockManager = new ClockManager(sequencer); //<>//
+  clockManager = new ClockManager(sequencer); //<>// //<>//
   ui = new UI();
 }
- //<>//
+ //<>// //<>//
 void draw() {
   background(0);
   sequencer.drawTracks();
@@ -230,5 +230,5 @@ void noteOff(Note note) {
       default: break;
     } 
   }
-  
+  ui.updateTrackLabels();
 }

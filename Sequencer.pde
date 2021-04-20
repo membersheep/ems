@@ -412,7 +412,9 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       track.currentPatternIndex = 0;
+      track.computeSteps();
     }
+    sortTracks();
   }
   
   public void showB() {
@@ -420,7 +422,9 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       track.currentPatternIndex = 1;
+      track.computeSteps();
     }
+    sortTracks();
   }
   
   public void copyAtoB() {
