@@ -3,7 +3,7 @@
 ## TODO
 v0.1
 - A/B chain
-- Show a letter indicating the current running patterns
+- Avoid taking clock from all inputs, cycle inputs when clock button is tapped
 - Raspberry embedded version
 	- Rewrite MIDI I/O with javax.sound.midi
 		- Fix midi out not working
