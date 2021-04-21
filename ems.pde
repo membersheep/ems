@@ -11,6 +11,10 @@ MidiBus midiBus;
 float screenWidth = 800;
 float screenHeight = 480;
 
+boolean isShifting = false;
+
+// PROCESSING METHODS
+
 void setup() {
   //fullScreen();
   //noCursor();
@@ -21,10 +25,10 @@ void setup() {
   deviceManager = new DeviceManager();
   deviceManager.setupIODevices();
   sequencer = new Sequencer(midiBus);
-  clockManager = new ClockManager(sequencer); //<>// //<>//
+  clockManager = new ClockManager(sequencer);
   ui = new UI();
 }
- //<>// //<>//
+
 void draw() {
   background(0);
   sequencer.drawTracks();
@@ -34,6 +38,7 @@ void draw() {
 void mousePressed() {
   ui.onTap();
 }
+
 // MIDI CALLBACKS
 
 void rawMidi(byte[] data) {  
@@ -116,55 +121,53 @@ void controllerChange(ControlChange change) {
   ui.updateTrackLabels();
 }
 
-boolean isShifting = false;
-
 void noteOn(Note note) {
   if (isShifting) {
-      switch (note.pitch()) {
-        case 3: sequencer.editTrackLFO("1"); break;
-        case 6: sequencer.editTrackLFO("2"); break;
-        case 9: sequencer.editTrackLFO("3"); break;
-        case 12: sequencer.editTrackLFO("4"); break;
-        case 15: sequencer.editTrackLFO("5"); break;
-        case 18: sequencer.editTrackLFO("6"); break;
-        case 21: sequencer.editTrackLFO("7"); break;
-        case 24: sequencer.editTrackLFO("8"); break;
-        default: break;
-      }  
-    } else {
-      switch (note.pitch()) {
-        case 1: sequencer.muteTrack("1"); break;
-        case 4: sequencer.muteTrack("2"); break;
-        case 7: sequencer.muteTrack("3"); break;
-        case 10: sequencer.muteTrack("4"); break;
-        case 13: sequencer.muteTrack("5"); break;
-        case 16: sequencer.muteTrack("6"); break;
-        case 19: sequencer.muteTrack("7"); break;
-        case 22: sequencer.muteTrack("8"); break;
-        case 3: sequencer.rollTrack("1"); break;
-        case 6: sequencer.rollTrack("2"); break;
-        case 9: sequencer.rollTrack("3"); break;
-        case 12: sequencer.rollTrack("4"); break;
-        case 15: sequencer.rollTrack("5"); break;
-        case 18: sequencer.rollTrack("6"); break;
-        case 21: sequencer.rollTrack("7"); break;
-        case 24: sequencer.rollTrack("8"); break;
-        case 27: isShifting = true; break;
-        default: break;
-      }
-    }
-    // SOLO
     switch (note.pitch()) {
-      case 2: sequencer.addSoloTrack("1"); break;
-      case 5: sequencer.addSoloTrack("2"); break;
-      case 8: sequencer.addSoloTrack("3"); break;
-      case 11: sequencer.addSoloTrack("4"); break;
-      case 14: sequencer.addSoloTrack("5"); break;
-      case 17: sequencer.addSoloTrack("6"); break;
-      case 20: sequencer.addSoloTrack("7"); break;
-      case 23: sequencer.addSoloTrack("8"); break;
+      case 3: sequencer.editTrackLFO("1"); break;
+      case 6: sequencer.editTrackLFO("2"); break;
+      case 9: sequencer.editTrackLFO("3"); break;
+      case 12: sequencer.editTrackLFO("4"); break;
+      case 15: sequencer.editTrackLFO("5"); break;
+      case 18: sequencer.editTrackLFO("6"); break;
+      case 21: sequencer.editTrackLFO("7"); break;
+      case 24: sequencer.editTrackLFO("8"); break;
       default: break;
     }  
+  } else {
+    switch (note.pitch()) {
+      case 1: sequencer.muteTrack("1"); break;
+      case 4: sequencer.muteTrack("2"); break;
+      case 7: sequencer.muteTrack("3"); break;
+      case 10: sequencer.muteTrack("4"); break;
+      case 13: sequencer.muteTrack("5"); break;
+      case 16: sequencer.muteTrack("6"); break;
+      case 19: sequencer.muteTrack("7"); break;
+      case 22: sequencer.muteTrack("8"); break;
+      case 3: sequencer.rollTrack("1"); break;
+      case 6: sequencer.rollTrack("2"); break;
+      case 9: sequencer.rollTrack("3"); break;
+      case 12: sequencer.rollTrack("4"); break;
+      case 15: sequencer.rollTrack("5"); break;
+      case 18: sequencer.rollTrack("6"); break;
+      case 21: sequencer.rollTrack("7"); break;
+      case 24: sequencer.rollTrack("8"); break;
+      case 27: isShifting = true; break;
+      default: break;
+    }
+  }   
+  // SOLO
+  switch (note.pitch()) {
+    case 2: sequencer.addSoloTrack("1"); break;
+    case 5: sequencer.addSoloTrack("2"); break;
+    case 8: sequencer.addSoloTrack("3"); break;
+    case 11: sequencer.addSoloTrack("4"); break;
+    case 14: sequencer.addSoloTrack("5"); break;
+    case 17: sequencer.addSoloTrack("6"); break;
+    case 20: sequencer.addSoloTrack("7"); break;
+    case 23: sequencer.addSoloTrack("8"); break;
+    default: break;
+  }
   //else if (deviceManager.controllerName.contains("LPD8")) {
   //  switch (note.pitch()) {
   //    case 36: sequencer.decrementTrackOffset("1"); break;
@@ -200,7 +203,10 @@ void noteOff(Note note) {
       case 18: sequencer.rollTrack("6"); break;
       case 21: sequencer.rollTrack("7"); break;
       case 24: sequencer.rollTrack("8"); break;
-      case 27: isShifting = false; break;
+      case 27: 
+        isShifting = false; 
+        sequencer.runChain();
+        break;
       default: break;
     }
   }
@@ -219,8 +225,8 @@ void noteOff(Note note) {
   // A/B
   if (isShifting) {
     switch (note.pitch()) {
-      case 25: sequencer.copyAtoB(); break;
-      case 26: sequencer.copyBtoA(); break;
+      case 25: sequencer.chainA(); break;
+      case 26: sequencer.chainB(); break;
       default: break;
     } 
   } else {

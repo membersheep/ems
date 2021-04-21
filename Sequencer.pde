@@ -1,11 +1,13 @@
 import themidibus.*;
 
 class Sequencer implements ClockListener {
+  int maxSteps = 16;
   MidiBus midiBus;
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
   LinkedList<Map.Entry<String, Track>> reversedTracks;
-  int maxSteps = 16;
+  ArrayList<Integer> patternChain = new ArrayList<Integer>();
+  ArrayList<Integer> runningPatternChain = new ArrayList<Integer>();
   public int tick = 0;
   public int pulse = 0;
   boolean isPlaying = true;
@@ -440,4 +442,18 @@ class Sequencer implements ClockListener {
       iterator.next().getValue().copyBtoA();
     }
   }
+
+  public void chainA() {
+
+  }
+
+  public void chainB() {
+
+  }
+
+  public void runChain() {
+    
+  }
+
+  
 }

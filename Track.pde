@@ -21,7 +21,6 @@ class Track {
   int accentVelocity = 127;
   
   public int[] computedSteps;
-  public int[] computedAccents;
 
   public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor, int inControllerLightNote) {
     id = inId;
