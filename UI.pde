@@ -12,8 +12,9 @@ class UI {
   Button clockButton = new Button("CLOCK: INTERNAL", padding * 6 + buttonWidth * 5, screenHeight - padding - buttonHeight, buttonWidth * 3, buttonHeight);
   Label[] trackNameLabels = setupTrackNameLabels();
   Label[] trackLabels = setupTrackLabels();
-  Label clockLabel = new Label("120 bpm", screenWidth - uiWidth, screenHeight - padding - buttonHeight/2, color(255), LEFT, CENTER);
-  Label patternLabel = new Label("PATTERN: A", screenWidth - padding, screenHeight - padding - buttonHeight/2, color(255), RIGHT, CENTER);
+  Label clockLabel = new Label("120 bpm", 5, 5 + padding * 2, color(255), LEFT, TOP);
+  Label patternLabel = new Label("PATTERN: A", 5, 5, color(255), LEFT, TOP);
+  Label chainLabel = new Label("CHAIN: A", screenWidth - uiWidth, screenHeight - padding - buttonHeight/2, color(255), LEFT, CENTER);
 
   public void draw() {
     playButton.draw();
@@ -28,6 +29,7 @@ class UI {
     }
     clockLabel.draw();
     patternLabel.draw();
+    chainLabel.draw();
   }
   
   void onTap() {
@@ -53,7 +55,7 @@ class UI {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       String text = track.id;
-      Label label = new Label(text, screenWidth - uiWidth, screenHeight - padding*4 - padding * 2 * index, track.trackColor);
+      Label label = new Label(text, screenWidth - uiWidth - padding, 5 + padding * 2 * index, track.trackColor, LEFT, TOP);
       labels[index] = label;
       index++;
     }
@@ -67,7 +69,7 @@ class UI {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       String text = String.format("%02d", track.steps()) + " - " + String.format("%02d", track.beats()) + " - " + String.format("%02d", track.rotate()) + " - " + String.format("%02d", track.accents());
-      Label label = new Label(text, screenWidth - uiWidth + padding * 5, screenHeight - padding*4 - padding * 2 * index, track.trackColor);
+      Label label = new Label(text, screenWidth - padding, 5 + padding * 2 * index, track.trackColor, RIGHT, TOP);
       labels[index] = label;
       index++;
     }
@@ -86,6 +88,7 @@ class UI {
     } else {
       patternLabel.text = "PATTERN: B";
     }
+    chainLabel.text = "CHAIN: " + sequencer.tracks.get("1").patternChain;
   }
   
   private void toggleClock() {

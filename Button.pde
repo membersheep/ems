@@ -5,6 +5,8 @@ class Button {
   float w;    // width of button
   float h;    // height of button
   PFont font = createFont("PreschoolBits.ttf", 16);
+  int hAlignment;
+  int vAlignment;
   
   Button(String labelB, float xpos, float ypos, float widthB, float heightB) {
     label = labelB;
@@ -12,12 +14,24 @@ class Button {
     y = ypos;
     w = widthB;
     h = heightB;
+    hAlignment = CENTER;
+    vAlignment = CENTER;
+  }
+
+  Button(String labelB, float xpos, float ypos, float widthB, float heightB, int hALign, int vAlign) {
+    label = labelB;
+    x = xpos;
+    y = ypos;
+    w = widthB;
+    h = heightB;
+    hAlignment = hALign;
+    vAlignment = vAlign;
   }
   
   void draw() {
     fill(255);
     rect(x, y, w, h);
-    textAlign(CENTER, CENTER);
+    textAlign(hAlignment, vAlignment);
     fill(0);
     textFont(font);
     text(label, x + (w / 2), y + (h / 2));

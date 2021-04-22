@@ -190,7 +190,7 @@ class Sequencer implements ClockListener {
       stroke(track.trackColor);
       strokeWeight(2);
       int x = (int)screenWidth - 300;
-      int y = (int)screenHeight/4;
+      int y = (int)screenHeight*11/16;
       int lineSpacing = 4;
       float period = 300.0 / 127.0 * track.lfoPeriod;
       double degrees = (double)((tick % track.lfoPeriod) * 360 / track.lfoPeriod);
