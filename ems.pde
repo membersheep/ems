@@ -21,10 +21,10 @@ void setup() {
   size(800, 480); // debug
   frameRate(25);
   MidiBus.list();
-  midiBus = new MidiBus(this, "MIDI Mix", "Unknown name");
+  midiBus = new MidiBus(this, "MIDI Mix", "Unknown name"); //<>//
   deviceManager = new DeviceManager();
   deviceManager.setupIODevices();
-  sequencer = new Sequencer(midiBus);
+  sequencer = new Sequencer(midiBus); //<>//
   clockManager = new ClockManager(sequencer);
   ui = new UI();
 }
@@ -190,6 +190,7 @@ void noteOff(Note note) {
       case 27: 
         isShifting = false;
         sequencer.clearSoloTracks();
+        sequencer.updatePatternChain();
         break;
       default: break;
     }
@@ -205,7 +206,6 @@ void noteOff(Note note) {
       case 24: sequencer.rollTrack("8"); break;
       case 27: 
         isShifting = false; 
-        sequencer.updatePatternChain();
         break;
       default: break;
     }
