@@ -205,7 +205,7 @@ void noteOff(Note note) {
       case 24: sequencer.rollTrack("8"); break;
       case 27: 
         isShifting = false; 
-        sequencer.runChain();
+        sequencer.updatePatternChain();
         break;
       default: break;
     }

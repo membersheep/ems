@@ -3,7 +3,6 @@ class Track {
   public String id;
   public int channel;
   public int note;
-  public int currentPatternIndex = 0;
   public int[] steps;
   public int[] beats;
   public int[] rotate;
@@ -20,7 +19,11 @@ class Track {
   int normalVelocity = 100;
   int accentVelocity = 127;
   
+  public int currentPatternIndex = 0;
+  public int[] computedStepsA;
+  public int[] computedStepsB;
   public int[] computedSteps;
+  public String patternChain = "A";
 
   public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor, int inControllerLightNote) {
     id = inId;
@@ -33,6 +36,10 @@ class Track {
     trackColor = inColor;
     controllerLightNote = inControllerLightNote;
     computeSteps();
+  }
+
+  public int[] currentPattern() {
+    return currentPatternIndex == 0 ? computedStepsA : computedStepsB;
   }
   
   public int steps() {
@@ -82,9 +89,34 @@ class Track {
   }
 
   public void computeSteps() {
-    Vector<Boolean> sequence = computeEuclideanSequence(beats[currentPatternIndex], steps[currentPatternIndex]);
-    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[currentPatternIndex], beats[currentPatternIndex]);
-    
+    computeStepsA();
+    computeStepsB();
+    int aCount = 0;
+    int bCount = 0;
+    for (char character: patternChain.toCharArray()) {
+      if (character == 'A') {
+        aCount++;
+      } else if (character == 'B') {
+        bCount++;
+      }
+    }
+    int[] chain = new int[aCount * computedStepsA.length + bCount * computedStepsB.length];
+    int index = 0;
+    for (char character: patternChain.toCharArray()) {
+      if (character == 'A') {
+        System.arraycopy(computedStepsA, 0, chain, index, computedStepsA.length);
+        index = index + computedStepsA.length;
+      } else if (character == 'B') {
+        System.arraycopy(computedStepsB, 0, chain, index, computedStepsB.length);
+        index = index + computedStepsB.length;
+      }
+    }
+    computedSteps = chain;
+  }
+
+  private void computeStepsA() {
+    Vector<Boolean> sequence = computeEuclideanSequence(beats[0], steps[0]);
+    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[0], beats[0]);
     int[] beats = new int[sequence.capacity()];
     int beatIndex = 0;
     for (int i = 0; i < sequence.size(); i++) {
@@ -99,8 +131,29 @@ class Track {
         beats[i] = 0;
       }
     }
-    ArrayRightRotation.rotateRight(beats, rotate[currentPatternIndex], steps[currentPatternIndex]);
-    computedSteps = beats;
+    ArrayRightRotation.rotateRight(beats, rotate[0], steps[0]);
+    computedStepsA = beats;
+  }
+
+  private void computeStepsB() {
+    Vector<Boolean> sequence = computeEuclideanSequence(beats[1], steps[1]);
+    Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[1], beats[1]);
+    int[] beats = new int[sequence.capacity()];
+    int beatIndex = 0;
+    for (int i = 0; i < sequence.size(); i++) {
+      if (sequence.get(i) == true) {
+        if (accentsSequence.get(beatIndex) == true) {
+          beats[i] = accentVelocity;
+        } else {
+          beats[i] = normalVelocity;
+        }
+        beatIndex++;
+      } else {
+        beats[i] = 0;
+      }
+    }
+    ArrayRightRotation.rotateRight(beats, rotate[0], steps[0]);
+    computedStepsB = beats;
   }
   
   private Vector<Boolean> computeEuclideanSequence(int beats, int steps) {

@@ -6,8 +6,8 @@ class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
   LinkedList<Map.Entry<String, Track>> reversedTracks;
-  ArrayList<Integer> patternChain = new ArrayList<Integer>();
-  ArrayList<Integer> runningPatternChain = new ArrayList<Integer>();
+  String currentPatternChain = "A";
+  String newPatternChain = "";
   public int tick = 0;
   public int pulse = 0;
   boolean isPlaying = true;
@@ -414,7 +414,6 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       track.currentPatternIndex = 0;
-      track.computeSteps();
     }
     sortTracks();
   }
@@ -424,7 +423,6 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       track.currentPatternIndex = 1;
-      track.computeSteps();
     }
     sortTracks();
   }
@@ -444,16 +442,20 @@ class Sequencer implements ClockListener {
   }
 
   public void chainA() {
-
+    newPatternChain = newPatternChain + "A";
   }
 
   public void chainB() {
-
+    newPatternChain = newPatternChain + "B";
   }
 
-  public void runChain() {
-    
+  public void updatePatternChain() {
+    if (newPatternChain == "") { return; }
+    currentPatternChain = newPatternChain;
+    newPatternChain = "";
+    Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
+    while (iterator.hasNext()) {
+      iterator.next().getValue().patternChain = currentPatternChain;
+    }
   }
-
-  
 }

@@ -3,6 +3,7 @@
 ## TODO
 v0.1
 - A/B chain
+- Show LFO period and amount per track
 - Avoid taking clock from all inputs, cycle inputs when clock button is tapped
 - Raspberry embedded version
 	- Rewrite MIDI I/O with javax.sound.midi
