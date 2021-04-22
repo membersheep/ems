@@ -1,5 +1,6 @@
 class DeviceManager {  
-  String clockSourceName = "";
+  String clockSourceName = "INTERNAL";
+  int clockSourceIndex = -1;
   
   public void setupIODevices() {
     MidiBus.findMidiDevices();
@@ -23,6 +24,21 @@ class DeviceManager {
     for (int i = 0; i < MidiBus.availableOutputs().length; i++) {
       midiBus.addOutput(MidiBus.availableOutputs()[i]);
     }
+  }
+
+  public String setNextClock() {
+    clockSourceIndex++;
+    removeNonControllerInputs();
+    if (clockSourceIndex < MidiBus.availableInputs().length) {
+      midiBus.addInput(MidiBus.availableInputs()[clockSourceIndex]);
+      clockSourceName = MidiBus.availableInputs()[clockSourceIndex];
+      clockManager.useMidiClock();
+    } else if (clockSourceIndex == MidiBus.availableInputs().length) {
+      clockSourceIndex = -1;
+      clockSourceName = "INTERNAL";
+      clockManager.useInternalClock();
+    }
+    return clockSourceName;
   }
   
   public void addAllInputs() {

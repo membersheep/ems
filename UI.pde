@@ -92,14 +92,7 @@ class UI {
   }
   
   private void toggleClock() {
-    if (clockButton.label == "CLOCK: INTERNAL") {
-      clockButton.label = "CLOCK: MIDI";
-      clockManager.useMidiClock();
-      deviceManager.addAllInputs();
-    } else if (clockButton.label == "CLOCK: MIDI") {
-      clockButton.label = "CLOCK: INTERNAL";
-      clockManager.useInternalClock();
-      deviceManager.removeNonControllerInputs();
-    }
+    String name = deviceManager.setNextClock();
+    clockButton.label = "CLOCK: " + name;
   }
 }

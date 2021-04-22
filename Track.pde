@@ -19,7 +19,7 @@ class Track {
   int normalVelocity = 100;
   int accentVelocity = 127;
   
-  public int currentPatternIndex = 0;
+  public int currentPatternIndex = 0; // 0 or 1, the pattern currently displayed and being edited
   public int[] computedStepsA;
   public int[] computedStepsB;
   public int[] computedSteps;
