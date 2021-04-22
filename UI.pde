@@ -88,7 +88,7 @@ class UI {
     } else {
       patternLabel.text = "PATTERN: B";
     }
-    chainLabel.text = "CHAIN: " + sequencer.tracks.get("1").patternChain;
+    chainLabel.text = "CHAIN: " + sequencer.currentPatternChain;
   }
   
   private void toggleClock() {

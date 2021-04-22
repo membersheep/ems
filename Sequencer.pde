@@ -457,7 +457,9 @@ class Sequencer implements ClockListener {
     newPatternChain = "";
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
-      iterator.next().getValue().patternChain = currentPatternChain;
+      Track track = iterator.next().getValue();
+      track.patternChain = currentPatternChain;
+      track.computeSteps();
     }
   }
 }

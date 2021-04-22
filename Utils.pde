@@ -5,7 +5,7 @@ public static class ArrayRightRotation {
   }
   
   public static void rotateArrayByOne(int array[], int n) {   
-    if (n < 1 || array.length < 1) {
+    if (n < 1 || array.length < 1 || n - 1 >= array.length) {
       return;
     }
     int i, temp;   
