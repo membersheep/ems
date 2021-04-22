@@ -41,6 +41,31 @@ class Track {
   public int[] currentPattern() {
     return currentPatternIndex == 0 ? computedStepsA : computedStepsB;
   }
+
+  // Returns the current step index given a tick. If the current step is not in the current pattern it returns -1.
+  public int currentStepIndexFor(int tick) {
+    int stepIndex = tick % computedSteps.length;
+    int currentStepIndex = -1;
+    int index = 0;
+    for (char character: patternChain.toCharArray()) {
+      if (character == 'A') {
+        if (stepIndex < index + computedStepsA.length && currentPatternIndex == 0) { // FOUND!
+          currentStepIndex = stepIndex - index;
+          break;
+        } else {
+          index = index + computedStepsA.length;
+        }
+      } else if (character == 'B') {
+        if (stepIndex < index + computedStepsB.length && currentPatternIndex == 1) { // FOUND!
+          currentStepIndex = stepIndex - index;
+          break;
+        } else {
+          index = index + computedStepsA.length;
+        }
+      }
+    }
+    return currentStepIndex;
+  }
   
   public int steps() {
     return steps[currentPatternIndex];

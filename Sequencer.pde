@@ -46,15 +46,15 @@ class Sequencer implements ClockListener {
     visualizationIndex++;
   }
   
-  private Boolean drawSteps() {
+  private Boolean shouldDrawSteps() {
     return visualizationIndex%6 == 0 || visualizationIndex%6 == 1 || visualizationIndex%6 == 2 || visualizationIndex%6 == 5; 
   }
   
-  private Boolean drawCircle() {
+  private Boolean shouldDrawCircles() {
     return visualizationIndex%6 == 1 || visualizationIndex%6 == 2 || visualizationIndex%6 == 3; 
   }
   
-  private Boolean drawPolygon() {
+  private Boolean shouldDrawPolygons() {
     return visualizationIndex%6 == 2 || visualizationIndex%6 == 3 || visualizationIndex%6 == 4 || visualizationIndex%6 == 5; 
   }
   
@@ -89,66 +89,36 @@ class Sequencer implements ClockListener {
   }
   
   void drawTracks() {
-    int activeTracksCount = activeTracksCount();
-    // Draw polygon
-    if (drawPolygon()) {
-      int index = 0;
-      Iterator<Map.Entry<String, Track>> iterator = reversedTracks.iterator();
-      while(iterator.hasNext()) {
-        Track track = iterator.next().getValue();
-        int[] steps = track.computedSteps.clone();
-        if (track.steps() == 0) {
-          continue;
-        }
-        float radius = screenHeight / (activeTracksCount + 1) * (activeTracksCount-index);
-        noStroke();
-        fill(track.trackColor);
-        beginShape();
-        float angle = TWO_PI / (float)track.steps();
-        for(int j = 0; j < steps.length; j++) {
-          int stepVelocity = steps[j];
-          if (stepVelocity != 0) {
-            float x = radius/2 * sin(angle*j) + screenHeight/2;
-            float y = radius/2 * -cos(angle*j) + screenHeight/2;
-            vertex(x,y);
-          }
-        }
-        endShape();
-        noFill();
-        noStroke();
-        index++;
-      }
-    }
-    
+    int activeTracksCount = activeTracksCount();    
     ellipseMode(CENTER);
     noFill();
     int index = 1;
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
-      Map.Entry<String, Track> entry = iterator.next();
-      int[] steps = entry.getValue().computedSteps.clone();
-      int trackLength = entry.getValue().steps();
+      Track track = iterator.next().getValue();
+      int[] currentPatternSteps = track.currentPattern().clone();
+      int trackLength = currentPatternSteps.length;
       if (trackLength == 0) {
         continue;
       }
-      // Draw track circle
       float radius = screenHeight / (activeTracksCount + 1) * index;
       noFill();
-      if (drawCircle()) {
+      // Draw track circle
+      if (shouldDrawCircles()) {
         strokeWeight(24);
-        stroke(entry.getValue().trackColor, 64);
+        stroke(track.trackColor, 64);
         ellipse(screenHeight/2, screenHeight/2, radius, radius);
         noStroke();
       }      
       // Draw track steps
-      if (drawSteps()) {
+      if (shouldDrawSteps()) {
         float angle = TWO_PI / (float)trackLength;
-        int currentStepIndex = tick % trackLength;
+        int currentStepIndex = track.currentStepIndexFor(tick);
         for(int i = 0; i < trackLength; i++) {
-          int stepVelocity = steps[i];
+          int stepVelocity = currentPatternSteps[i];
           color stepColor;
           if (stepVelocity == 0) {
-            stepColor = entry.getValue().trackColor;
+            stepColor = track.trackColor;
           } else {
             stepColor = Color.WHITE.getRGB();
           }
@@ -164,7 +134,7 @@ class Sequencer implements ClockListener {
               size = 10;
             }
           }
-          // Draw radius
+          // Draw radius - disabled
           //if (drawRadius && stepVelocity != 0) {
           //  stroke(entry.getValue().trackColor, 64);
           //  strokeWeight(size/2);
@@ -178,10 +148,42 @@ class Sequencer implements ClockListener {
       }
       index++;
     }
-    
+    if (shouldDrawPolygons()) {
+      drawPolygons();
+    }
     drawLFO();
   }
   
+  void drawPolygons() {
+    int activeTracksCount = activeTracksCount();
+    int index = 0;
+    Iterator<Map.Entry<String, Track>> iterator = reversedTracks.iterator();
+    while(iterator.hasNext()) {
+      Track track = iterator.next().getValue();
+      int[] steps = track.currentPattern().clone();
+      if (steps.length == 0) {
+        continue;
+      }
+      float radius = screenHeight / (activeTracksCount + 1) * (activeTracksCount - index);
+      noStroke();
+      fill(track.trackColor);
+      beginShape();
+      float angle = TWO_PI / (float)steps.length;
+      for(int j = 0; j < steps.length; j++) {
+        int stepVelocity = steps[j];
+        if (stepVelocity != 0) {
+          float x = radius/2 * sin(angle*j) + screenHeight/2;
+          float y = radius/2 * -cos(angle*j) + screenHeight/2;
+          vertex(x,y);
+        }
+      }
+      endShape();
+      noFill();
+      noStroke();
+      index++;
+    }
+  }
+
   void drawLFO() {
     if (isEditingTrackId != "") {
       Track track = tracks.get(isEditingTrackId);
