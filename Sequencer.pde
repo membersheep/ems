@@ -6,15 +6,15 @@ class Sequencer implements ClockListener {
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
   LinkedList<Map.Entry<String, Track>> reversedTracks;
-  String currentPatternChain = "A";
-  String newPatternChain = "";
   public int tick = 0;
   public int pulse = 0;
   boolean isPlaying = true;
   boolean isSoloing = false;
   int visualizationIndex = 1;
   String isEditingTrackId = "";
-  
+  String currentPatternChain = "A";
+  String newPatternChain = "";
+
   public Sequencer(MidiBus bus) {
     midiBus = bus;
     tracks.put("1", new Track("KICK", 0, 76, 0, 0, 0, 0, color(237,28,36), 1)); //red
@@ -210,10 +210,10 @@ class Sequencer implements ClockListener {
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
-      if (track.steps() < 1 || track.isMuted) { continue; }
-      if (isSoloing && track.isSolo == false) { continue; }
       int[] steps = track.computedSteps;
-      int index = tick % track.steps();
+      if (steps.length < 1 || track.isMuted) { continue; }
+      if (isSoloing && track.isSolo == false) { continue; }
+      int index = tick % steps.length;
       int velocity = steps[index];
       if (velocity > 0) {
         if (track.lfoAmount > 0) {
