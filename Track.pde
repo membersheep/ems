@@ -44,6 +44,9 @@ class Track {
 
   // Returns the current step index given a tick. If the current step is not in the current pattern it returns -1.
   public int currentStepIndexFor(int tick) {
+    if (computedSteps.length < 1) {
+      return -1;
+    }
     int stepIndex = tick % computedSteps.length;
     int currentStepIndex = -1;
     int index = 0;
@@ -142,43 +145,43 @@ class Track {
   private void computeStepsA() {
     Vector<Boolean> sequence = computeEuclideanSequence(beats[0], steps[0]);
     Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[0], beats[0]);
-    int[] beats = new int[sequence.capacity()];
+    int[] patternBeats = new int[sequence.size()];
     int beatIndex = 0;
     for (int i = 0; i < sequence.size(); i++) {
       if (sequence.get(i) == true) {
         if (accentsSequence.get(beatIndex) == true) {
-          beats[i] = accentVelocity;
+          patternBeats[i] = accentVelocity;
         } else {
-          beats[i] = normalVelocity;
+          patternBeats[i] = normalVelocity;
         }
         beatIndex++;
       } else {
-        beats[i] = 0;
+        patternBeats[i] = 0;
       }
     }
-    ArrayRightRotation.rotateRight(beats, rotate[0], steps[0]);
-    computedStepsA = beats;
+    ArrayRightRotation.rotateRight(patternBeats, rotate[0], steps[0]);
+    computedStepsA = patternBeats;
   }
 
   private void computeStepsB() {
     Vector<Boolean> sequence = computeEuclideanSequence(beats[1], steps[1]);
     Vector<Boolean> accentsSequence = computeEuclideanSequence(accents[1], beats[1]);
-    int[] beats = new int[sequence.capacity()];
+    int[] patternBeats = new int[sequence.size()];
     int beatIndex = 0;
     for (int i = 0; i < sequence.size(); i++) {
       if (sequence.get(i) == true) {
         if (accentsSequence.get(beatIndex) == true) {
-          beats[i] = accentVelocity;
+          patternBeats[i] = accentVelocity;
         } else {
-          beats[i] = normalVelocity;
+          patternBeats[i] = normalVelocity;
         }
         beatIndex++;
       } else {
-        beats[i] = 0;
+        patternBeats[i] = 0;
       }
     }
-    ArrayRightRotation.rotateRight(beats, rotate[0], steps[0]);
-    computedStepsB = beats;
+    ArrayRightRotation.rotateRight(patternBeats, rotate[0], steps[0]);
+    computedStepsB = patternBeats;
   }
   
   private Vector<Boolean> computeEuclideanSequence(int beats, int steps) {

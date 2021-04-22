@@ -97,7 +97,7 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       int[] currentPatternSteps = track.currentPattern().clone();
-      int trackLength = currentPatternSteps.length;
+      int trackLength = track.steps();
       if (trackLength == 0) {
         continue;
       }
