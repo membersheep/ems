@@ -148,7 +148,7 @@ void rawMidi(byte[] data) {
     return;
   }
   if(data[0] == (byte)0xFC) {
-    // reset timing when clock stops to stay in sync for the next start
+    sequencer.stop();
   } else if(data[0] == (byte)0xF8) { // CLOCK PULSE
     clockManager.midiClock.pulse();
   }
