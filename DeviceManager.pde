@@ -57,7 +57,8 @@ class DeviceManager implements Receiver {
     for (int i = 0; i < devices.length; i++) {
       MidiDevice.Info info = devices[i];
       println("Found Midi device " + info.getName());
-      if (!outputNames.contains(info.getName())) {
+      //if (!outputNames.contains(info.getName())) {
+      if (!info.getName().contains("Interface")) {
         continue;
       }
       try {
@@ -70,6 +71,7 @@ class DeviceManager implements Receiver {
         println("Midi device " + info.getName() + " added as output.");
       } catch (MidiUnavailableException e) {
         println("Midi device " + info.getName() + " unavailable as output");
+        println(e);
       }
     }
   }
