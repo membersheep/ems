@@ -8,7 +8,7 @@ interface DeviceListener {
 }
 
 class DeviceManager implements Receiver {  
-  public DeviceListener listener;
+  ArrayList<String> outputNames;
   MidiDevice.Info[] devices;
   MidiDevice controllerDevice;
   Transmitter controllerTransmitter;
@@ -17,6 +17,10 @@ class DeviceManager implements Receiver {
   String clockSourceName = "INTERNAL";
   int clockSourceIndex = -1;
   boolean isShifting = false;
+
+  DeviceManager(ArrayList<String> outputs) {
+    outputNames = outputs;
+  }
   
   // SETUP
 
@@ -34,13 +38,16 @@ class DeviceManager implements Receiver {
         MidiDevice device = MidiSystem.getMidiDevice(devices[i]);
         if (info.getName().contains("Mix")) {
           controllerDevice = device;
+          if (!device.isOpen()) { 
+            device.open();
+          }
           controllerTransmitter = controllerDevice.getTransmitter();
           controllerTransmitter.setReceiver(this); 
           println("Midi device " + info.getName() + " controller found!");
           break;
         }
       } catch (MidiUnavailableException e) {
-        println("Midi device " + info.getName() + " unavailable");
+        println("Midi device " + info.getName() + " unavailable as controller");
       }
     }
   }
@@ -49,14 +56,20 @@ class DeviceManager implements Receiver {
     outputs = new ArrayList<Receiver>();
     for (int i = 0; i < devices.length; i++) {
       MidiDevice.Info info = devices[i];
-      println("Midi device " + info.getName());
+      println("Found Midi device " + info.getName());
+      if (!outputNames.contains(info.getName())) {
+        continue;
+      }
       try {
         MidiDevice device = MidiSystem.getMidiDevice(devices[i]);
+        if (!device.isOpen()) { 
+          device.open();
+        }
         Receiver receiver = device.getReceiver();
         outputs.add(receiver);
         println("Midi device " + info.getName() + " added as output.");
       } catch (MidiUnavailableException e) {
-        println("Midi device " + info.getName() + " unavailable");
+        println("Midi device " + info.getName() + " unavailable as output");
       }
     }
   }
@@ -66,11 +79,16 @@ class DeviceManager implements Receiver {
     if (clockSourceIndex < devices.length) {
       try {
         MidiDevice device = MidiSystem.getMidiDevice(devices[clockSourceIndex]);
+        if (!device.isOpen()) { 
+          device.open();
+        }
+        Transmitter clockTransmitter = device.getTransmitter();
+        clockTransmitter.setReceiver(this); 
         clockDevice = device;
         clockSourceName = devices[clockSourceIndex].getName();
         println("Midi device " + devices[clockSourceIndex].getName() + " added as clock.");
       } catch (MidiUnavailableException e) {
-        println("Midi device " + devices[clockSourceIndex].getName() + " unavailable");
+        println("Midi device " + devices[clockSourceIndex].getName() + " unavailable as clock");
       }
       clockManager.useMidiClock();
     } else if (clockSourceIndex == devices.length) {
