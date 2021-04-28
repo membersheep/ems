@@ -3,10 +3,9 @@
 ## TODO
 v0.1
 - Raspberry embedded version
-	- Rewrite MIDI I/O with javax.sound.midi
-		- Fix midi out not working
-		- MIDI Clock through
-		- Internal clock send
+	- Fix midi out not working
+	- MIDI Clock through
+	- Internal clock send as MIDI clock
 	- Optimize raspbian to run ems
 
 v0.2

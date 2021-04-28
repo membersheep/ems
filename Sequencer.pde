@@ -1,8 +1,6 @@
-import themidibus.*;
-
 class Sequencer implements ClockListener {
   int maxSteps = 16;
-  MidiBus midiBus;
+  DeviceManager devices;
   Map<String, Track> tracks = new HashMap<String, Track>();
   LinkedList<Map.Entry<String, Track>> sortedTracks;
   LinkedList<Map.Entry<String, Track>> reversedTracks;
@@ -15,8 +13,8 @@ class Sequencer implements ClockListener {
   String currentPatternChain = "A";
   String newPatternChain = "";
 
-  public Sequencer(MidiBus bus) {
-    midiBus = bus;
+  public Sequencer(DeviceManager deviceManager) {
+    devices = deviceManager;
     tracks.put("1", new Track("KICK", 0, 76, 0, 0, 0, 0, color(237,28,36), 1)); //red
     tracks.put("2", new Track("SNARE", 0, 79, 0, 0, 0, 0, color(238,185,2), 4)); //yellow
     tracks.put("3", new Track("RIM", 0, 81, 0, 0, 0, 0, color(244,93,1), 7)); //orange
@@ -228,11 +226,11 @@ class Sequencer implements ClockListener {
           }
         }
         
-        midiBus.sendNoteOn(track.channel, track.note, velocity);
-        midiBus.sendNoteOff(track.channel, track.note, velocity);
+        devices.sendNoteOn(track.channel, track.note, velocity);
+        devices.sendNoteOff(track.channel, track.note, velocity);
         
         if (isEditingTrackId == "") {
-          midiBus.sendNoteOn(0, track.controllerLightNote + 2, 127); // blink track light
+          devices.sendNoteOn(0, track.controllerLightNote + 2, 127); // blink track light
         }
       }
     }
@@ -253,25 +251,25 @@ class Sequencer implements ClockListener {
     while (iterator.hasNext()) {
       Track track = iterator.next().getValue();
       if (!track.isMuted && track.isRolling && pulse % track.rollPeriod == 0) {
-        midiBus.sendNoteOn(track.channel, track.note, track.normalVelocity);
-        midiBus.sendNoteOff(track.channel, track.note, track.normalVelocity);
+        devices.sendNoteOn(track.channel, track.note, track.normalVelocity);
+        devices.sendNoteOff(track.channel, track.note, track.normalVelocity);
       }
     }
   }
   
   private void turnOffBeatLights() {
-    midiBus.sendNoteOn(0, 3, 0);
-    midiBus.sendNoteOn(0, 6, 0);
-    midiBus.sendNoteOn(0, 9, 0);
-    midiBus.sendNoteOn(0, 12, 0);
-    midiBus.sendNoteOn(0, 15, 0);
-    midiBus.sendNoteOn(0, 18, 0);
-    midiBus.sendNoteOn(0, 21, 0);
-    midiBus.sendNoteOn(0, 24, 0);
+    devices.sendNoteOn(0, 3, 0);
+    devices.sendNoteOn(0, 6, 0);
+    devices.sendNoteOn(0, 9, 0);
+    devices.sendNoteOn(0, 12, 0);
+    devices.sendNoteOn(0, 15, 0);
+    devices.sendNoteOn(0, 18, 0);
+    devices.sendNoteOn(0, 21, 0);
+    devices.sendNoteOn(0, 24, 0);
   }
   
   private void turnOnBeatLightFor(String id) {
-    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote + 2, 127);
+    devices.sendNoteOn(0, tracks.get(id).controllerLightNote + 2, 127);
   }
   
   // LENGTH
@@ -338,7 +336,7 @@ class Sequencer implements ClockListener {
   public void muteTrack(String id) {
     tracks.get(id).isMuted = !tracks.get(id).isMuted;
     int velocity = tracks.get(id).isMuted ? 127 : 0;
-    midiBus.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
+    devices.sendNoteOn(0, tracks.get(id).controllerLightNote, velocity);
   }
   
   public void addSoloTrack(String id) {
