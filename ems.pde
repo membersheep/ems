@@ -19,12 +19,12 @@ void setup() {
   String[] outputs = new String[]{"fmidi", "CRAVE", "CTRL"};
   deviceManager = new DeviceManager(new ArrayList<String>(Arrays.asList(outputs)));
   deviceManager.setupIODevices();
-  sequencer = new Sequencer(deviceManager); //<>//
+  sequencer = new Sequencer(deviceManager);
   clockManager = new ClockManager(sequencer);
-  ui = new UI(); //<>// //<>//
+  ui = new UI();
 }
 
-void draw() { //<>// //<>//
+void draw() {
   background(0);
   sequencer.drawTracks();
   ui.draw();

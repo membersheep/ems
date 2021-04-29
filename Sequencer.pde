@@ -245,6 +245,7 @@ class Sequencer implements ClockListener {
   
   @Override 
   void pulse() {
+    devices.sendPulse();
     if (!isPlaying) { return; }
     pulse++;
     Iterator<Map.Entry<String, Track>> iterator = sortedTracks.iterator();

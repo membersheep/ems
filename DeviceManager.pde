@@ -137,6 +137,21 @@ class DeviceManager implements Receiver {
     }
   }
 
+  public void sendPulse() {
+    try {
+      ShortMessage message = new ShortMessage(ShortMessage.TIMING_CLOCK);
+      long timeStamp = -1;
+      for (Receiver receiver : outputs) {
+        receiver.send(message, timeStamp);
+      }
+    } catch (InvalidMidiDataException e) {
+      println("InvalidMidiDataException");
+    } catch (IllegalStateException e) {
+      println("IllegalStateException");
+    }
+    
+  }
+
   // RECEIVE
 
   public void send(MidiMessage message, long timeStamp) {
