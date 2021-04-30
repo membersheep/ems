@@ -57,15 +57,14 @@ class DeviceManager implements Receiver {
     for (int i = 0; i < devices.length; i++) {
       MidiDevice.Info info = devices[i];
       println("Found Midi device " + info.getName());
-      //if (!outputNames.contains(info.getName())) {
-      if (!info.getName().contains("Interface")) {
-        continue;
+      Boolean found = false;
+      for (String name : outputNames) {
+        if (info.getName().contains(name)) found = true;
       }
+      if (!found) continue;
       try {
         MidiDevice device = MidiSystem.getMidiDevice(devices[i]);
-        if (!device.isOpen()) { 
-          device.open();
-        }
+        if (!device.isOpen()) device.open();
         Receiver receiver = device.getReceiver();
         outputs.add(receiver);
         println("Midi device " + info.getName() + " added as output.");
