@@ -29,6 +29,7 @@ class Sequencer implements ClockListener {
   
   public void play() {
     isPlaying = true;
+    devices.sendStart();
   }
   
   public void pause() {
@@ -38,6 +39,7 @@ class Sequencer implements ClockListener {
   public void stop() {
     isPlaying = false;
     tick = 0;
+    devices.sendStop();
   }
   
   public void toggleVisualization() {
