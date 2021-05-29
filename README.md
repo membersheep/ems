@@ -3,7 +3,7 @@
 ## TODO
 v0.1
 - Raspberry embedded version
-	- Test sending MIDI Clock
+	- MIDI clock source/thru
 	- Fix fmidi interface not working
 	- Optimize raspbian to run ems
 

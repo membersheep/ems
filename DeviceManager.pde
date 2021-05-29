@@ -137,45 +137,48 @@ class DeviceManager implements Receiver {
   }
 
   public void sendPulse() {
-    try {
-      ShortMessage message = new ShortMessage(ShortMessage.TIMING_CLOCK);
-      long timeStamp = -1;
-      for (Receiver receiver : outputs) {
-        receiver.send(message, timeStamp);
-      }
-    } catch (InvalidMidiDataException e) {
-      println("InvalidMidiDataException");
-    } catch (IllegalStateException e) {
-      println("IllegalStateException");
-    }
+    // temporarily disabled
+    // try {
+    //   ShortMessage message = new ShortMessage(ShortMessage.TIMING_CLOCK);
+    //   long timeStamp = -1;
+    //   for (Receiver receiver : outputs) {
+    //     receiver.send(message, timeStamp);
+    //   }
+    // } catch (InvalidMidiDataException e) {
+    //   println("InvalidMidiDataException");
+    // } catch (IllegalStateException e) {
+    //   println("IllegalStateException");
+    // }
   }
 
   public void sendStart() {
-    try {
-      ShortMessage message = new ShortMessage(ShortMessage.START);
-      long timeStamp = -1;
-      for (Receiver receiver : outputs) {
-        receiver.send(message, timeStamp);
-      }
-    } catch (InvalidMidiDataException e) {
-      println("InvalidMidiDataException");
-    } catch (IllegalStateException e) {
-      println("IllegalStateException");
-    }
+    // temporarily disabled
+    // try {
+    //   ShortMessage message = new ShortMessage(ShortMessage.START);
+    //   long timeStamp = -1;
+    //   for (Receiver receiver : outputs) {
+    //     receiver.send(message, timeStamp);
+    //   }
+    // } catch (InvalidMidiDataException e) {
+    //   println("InvalidMidiDataException");
+    // } catch (IllegalStateException e) {
+    //   println("IllegalStateException");
+    // }
   }
 
   public void sendStop() {
-    try {
-      ShortMessage message = new ShortMessage(ShortMessage.STOP);
-      long timeStamp = -1;
-      for (Receiver receiver : outputs) {
-        receiver.send(message, timeStamp);
-      }
-    } catch (InvalidMidiDataException e) {
-      println("InvalidMidiDataException");
-    } catch (IllegalStateException e) {
-      println("IllegalStateException");
-    }
+    // temporarily disabled
+    // try {
+    //   ShortMessage message = new ShortMessage(ShortMessage.STOP);
+    //   long timeStamp = -1;
+    //   for (Receiver receiver : outputs) {
+    //     receiver.send(message, timeStamp);
+    //   }
+    // } catch (InvalidMidiDataException e) {
+    //   println("InvalidMidiDataException");
+    // } catch (IllegalStateException e) {
+    //   println("IllegalStateException");
+    // }
   }
 
   // RECEIVE
