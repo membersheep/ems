@@ -2,10 +2,7 @@
 
 ## TODO
 v0.1
-- Raspberry embedded version
-	- MIDI clock source/thru
-	- Fix fmidi interface not working
-	- Optimize raspbian to run ems
+- MIDI clock source/thru
 
 v0.2
 - Fix polygon wrong colors on tracks
