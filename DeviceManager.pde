@@ -26,24 +26,28 @@ class DeviceManager implements Receiver {
 
   public void setupIODevices() {
     devices = MidiSystem.getMidiDeviceInfo();
-    addControllerInputs();
+    addController();
     addAllOutputs();
   }
   
   // Adds MIDI Mix controller if found
-  public void addControllerInputs() {
+  public void addController() {
     for (int i = 0; i < devices.length; i++) {
       MidiDevice.Info info = devices[i];
       try {
         MidiDevice device = MidiSystem.getMidiDevice(devices[i]);
         if (info.getName().contains("Mix")) {
+          println("Midi device " + info.getName() + " adding as controller");
           controllerDevice = device;
           if (!device.isOpen()) { 
             device.open();
           }
           controllerTransmitter = controllerDevice.getTransmitter();
           controllerTransmitter.setReceiver(this); 
-          println("Midi device " + info.getName() + " controller found!");
+          println("Midi device " + info.getName() + " controller input added!");
+          Receiver receiver = device.getReceiver();
+          outputs.add(receiver);
+          println("Midi device " + info.getName() + " controller output added!");
           break;
         }
       } catch (MidiUnavailableException e) {
@@ -56,7 +60,7 @@ class DeviceManager implements Receiver {
     outputs = new ArrayList<Receiver>();
     for (int i = 0; i < devices.length; i++) {
       MidiDevice.Info info = devices[i];
-      println("Found Midi device " + info.getName());
+      println("Midi device " + info.getName() + " adding as output");
       Boolean found = false;
       for (String name : outputNames) {
         if (info.getName().contains(name)) found = true;
@@ -89,6 +93,8 @@ class DeviceManager implements Receiver {
         clockSourceName = devices[clockSourceIndex].getName();
         println("Midi device " + devices[clockSourceIndex].getName() + " added as clock.");
       } catch (MidiUnavailableException e) {
+        println("Midi device " + devices[clockSourceIndex].getName() + " unavailable as clock");
+      } catch (IllegalArgumentException e) {
         println("Midi device " + devices[clockSourceIndex].getName() + " unavailable as clock");
       }
       clockManager.useMidiClock();

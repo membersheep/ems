@@ -16,7 +16,7 @@ class Track {
   public int lfoAmount = 0; // -27 - +27
   public int controllerLightNote;
 
-  int normalVelocity = 100;
+  int normalVelocity = 90;
   int accentVelocity = 127;
   
   public int currentPatternIndex = 0; // 0 or 1, the pattern currently displayed and being edited

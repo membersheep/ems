@@ -16,7 +16,7 @@ void setup() {
   //noCursor();
   size(800, 480); // debug
   frameRate(25);
-  String[] outputs = new String[]{"fmidi", "CRAVE", "CTRL", "Interface", "Unknown"};
+  String[] outputs = new String[]{"fmidi", "Unknown", "Interface", "U0x7630x150"};
   deviceManager = new DeviceManager(new ArrayList<String>(Arrays.asList(outputs)));
   deviceManager.setupIODevices();
   sequencer = new Sequencer(deviceManager);

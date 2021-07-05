@@ -21,7 +21,7 @@ class ClockManager {
   void setSpeed(int value) {
     if (internalClock.isRunning) {
       internalClock.setBPM(60+value);
-    } else {
+    } else if (value/32 > 0) {
       midiClock.division = value/32;
     }
   }
