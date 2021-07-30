@@ -65,6 +65,7 @@ class DeviceManager implements Receiver {
       for (String name : outputNames) {
         if (info.getName().contains(name)) found = true;
       }
+      println("Midi device is a listed output? " + found);
       if (!found) continue;
       try {
         MidiDevice device = MidiSystem.getMidiDevice(devices[i]);
