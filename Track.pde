@@ -1,3 +1,21 @@
+class TrackParameter {
+  public String name;
+  public int lfoPeriod = 32; // period in ticks, from 0 to 127
+  public int lfoAmount = 0; // -27 - +27
+  // todo: add parameter to control the wave shape
+  public int minValue = 0;
+  public int maxValue = 127;
+  public int midiCC;
+
+    public TrackParameter(String inName, int inPeriod, int inAmount, int inMin, int inMax, int inCc) {
+      name = inName;
+      lfoPeriod = inPeriod;
+      lfoAmount = inAmount;
+      minValue = inMin;
+      maxValue = inMax;
+      midiCC = inCc;
+    }
+}
 
 class Track {
   public String id;
@@ -12,12 +30,9 @@ class Track {
   public boolean isSolo = false;
   public boolean isRolling = false;
   public int rollPeriod = 2; // when rolling, play a note every *rollPeriod* pulses
-  public int lfoPeriod = 32; // period in ticks, from 0 to 127
-  public int lfoAmount = 0; // -27 - +27
+  public TrackParameter[] parameters;
+  public currentParameterIndex = 0;
   public int controllerLightNote;
-
-  int normalVelocity = 90;
-  int accentVelocity = 127;
   
   public int currentPatternIndex = 0; // 0 or 1, the pattern currently displayed and being edited
   public int[] computedStepsA;
@@ -25,7 +40,7 @@ class Track {
   public int[] computedSteps;
   public String patternChain = "A";
 
-  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, color inColor, int inControllerLightNote) {
+  public Track(String inId, int inChannel, int inNote, int inSteps, int inBeats, int inRotate, int inAccents, TrackParameter[] params, color inColor, int inControllerLightNote) {
     id = inId;
     channel = inChannel;
     note = inNote;
@@ -34,6 +49,7 @@ class Track {
     rotate = new int[]{inRotate, inRotate};
     accents = new int[]{inAccents, inAccents};
     trackColor = inColor;
+    parameters = params;
     controllerLightNote = inControllerLightNote;
     computeSteps();
   }
